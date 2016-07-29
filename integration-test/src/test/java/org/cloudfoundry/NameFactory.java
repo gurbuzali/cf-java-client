@@ -35,6 +35,8 @@ public interface NameFactory {
 
     String HOST_PREFIX = "test-host-";
 
+    String IDENTITY_PROVIDER_PREFIX = "test-identity-provider-";
+
     String IDENTITY_ZONE_PREFIX = "test-identity-zone-";
 
     String ORGANIZATION_PREFIX = "test-organization-";
@@ -119,7 +121,16 @@ public interface NameFactory {
     }
 
     /**
-     * Creates a identity zone name
+     * Creates an identity provider name
+     *
+     * @return the identity provider name
+     */
+    default String getIdentityProviderName() {
+        return getName(IDENTITY_PROVIDER_PREFIX);
+    }
+
+    /**
+     * Creates an identity zone name
      *
      * @return the identity zone name
      */
@@ -136,7 +147,7 @@ public interface NameFactory {
     String getName(String prefix);
 
     /**
-     * Creates a organization name
+     * Creates an organization name
      *
      * @return the organization name
      */
@@ -284,6 +295,16 @@ public interface NameFactory {
      */
     default boolean isHostName(String candidate) {
         return isName(HOST_PREFIX, candidate);
+    }
+
+    /**
+     * Tests a name to determine if it is an identity provider name
+     *
+     * @param candidate the candidate name
+     * @return {@code true} if the name is an identity provider name, {@code false} otherwise
+     */
+    default boolean isIdentityProviderName(String candidate) {
+        return isName(IDENTITY_PROVIDER_PREFIX, candidate);
     }
 
     /**
