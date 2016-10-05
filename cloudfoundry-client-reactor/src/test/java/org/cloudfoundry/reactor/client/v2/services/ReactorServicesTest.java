@@ -90,17 +90,19 @@ public final class ReactorServicesTest {
 
         @Override
         protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
-            return DeleteServiceResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .createdAt("2016-02-02T17:16:31Z")
-                    .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+            return ScriptedSubscriber.<DeleteServiceResponse>create()
+                .expectValue(DeleteServiceResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .createdAt("2016-02-02T17:16:31Z")
+                        .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .build())
+                    .entity(JobEntity.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .status("queued")
+                        .build())
                     .build())
-                .entity(JobEntity.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .status("queued")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -137,23 +139,25 @@ public final class ReactorServicesTest {
 
         @Override
         protected ScriptedSubscriber<GetServiceResponse> expectations() {
-            return GetServiceResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("58eb36ad-0636-428b-b4ed-afc14e48d926")
-                    .url("/v2/services/58eb36ad-0636-428b-b4ed-afc14e48d926")
-                    .createdAt("2015-07-27T22:43:35Z")
+            return ScriptedSubscriber.<GetServiceResponse>create()
+                .expectValue(GetServiceResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("58eb36ad-0636-428b-b4ed-afc14e48d926")
+                        .url("/v2/services/58eb36ad-0636-428b-b4ed-afc14e48d926")
+                        .createdAt("2015-07-27T22:43:35Z")
+                        .build())
+                    .entity(ServiceEntity.builder()
+                        .label("label-86")
+                        .description("desc-219")
+                        .active(true)
+                        .bindable(true)
+                        .uniqueId("8fbdd3bc-3eee-4b03-97a3-57929484649b")
+                        .serviceBrokerId("fe6e3f23-7b92-4855-aaa7-56f515d678c5")
+                        .planUpdateable(false)
+                        .servicePlansUrl("/v2/services/58eb36ad-0636-428b-b4ed-afc14e48d926/service_plans")
+                        .build())
                     .build())
-                .entity(ServiceEntity.builder()
-                    .label("label-86")
-                    .description("desc-219")
-                    .active(true)
-                    .bindable(true)
-                    .uniqueId("8fbdd3bc-3eee-4b03-97a3-57929484649b")
-                    .serviceBrokerId("fe6e3f23-7b92-4855-aaa7-56f515d678c5")
-                    .planUpdateable(false)
-                    .servicePlansUrl("/v2/services/58eb36ad-0636-428b-b4ed-afc14e48d926/service_plans")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -189,29 +193,31 @@ public final class ReactorServicesTest {
 
         @Override
         protected ScriptedSubscriber<ListServicesResponse> expectations() {
-            return ListServicesResponse.builder()
-                .totalResults(1)
-                .totalPages(1)
-                .resource(ServiceResource.builder()
-                    .metadata(Metadata.builder()
-                        .id("69b84c38-e786-4270-9cca-59d02a700798")
-                        .url("/v2/services/69b84c38-e786-4270-9cca-59d02a700798")
-                        .createdAt("2015-07-27T22:43:35Z")
-                        .build())
-                    .entity(ServiceEntity.builder()
-                        .label("label-87")
-                        .description("desc-220")
-                        .active(true)
-                        .bindable(true)
-                        .requires(Collections.emptyList())
-                        .tags(Collections.emptyList())
-                        .uniqueId("e46b095e-aa85-4ffb-98d9-0bc94b84d45c")
-                        .serviceBrokerId("5c323c18-e26c-45ff-a4f9-6a8916912a22")
-                        .planUpdateable(false)
-                        .servicePlansUrl("/v2/services/69b84c38-e786-4270-9cca-59d02a700798/service_plans")
+            return ScriptedSubscriber.<ListServicesResponse>create()
+                .expectValue(ListServicesResponse.builder()
+                    .totalResults(1)
+                    .totalPages(1)
+                    .resource(ServiceResource.builder()
+                        .metadata(Metadata.builder()
+                            .id("69b84c38-e786-4270-9cca-59d02a700798")
+                            .url("/v2/services/69b84c38-e786-4270-9cca-59d02a700798")
+                            .createdAt("2015-07-27T22:43:35Z")
+                            .build())
+                        .entity(ServiceEntity.builder()
+                            .label("label-87")
+                            .description("desc-220")
+                            .active(true)
+                            .bindable(true)
+                            .requires(Collections.emptyList())
+                            .tags(Collections.emptyList())
+                            .uniqueId("e46b095e-aa85-4ffb-98d9-0bc94b84d45c")
+                            .serviceBrokerId("5c323c18-e26c-45ff-a4f9-6a8916912a22")
+                            .planUpdateable(false)
+                            .servicePlansUrl("/v2/services/69b84c38-e786-4270-9cca-59d02a700798/service_plans")
+                            .build())
                         .build())
                     .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -248,28 +254,30 @@ public final class ReactorServicesTest {
 
         @Override
         protected ScriptedSubscriber<ListServiceServicePlansResponse> expectations() {
-            return ListServiceServicePlansResponse.builder()
-                .totalResults(1)
-                .totalPages(1)
-                .resource(ServicePlanResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2015-07-27T22:43:35Z")
-                        .id("51067400-d79f-4ca5-9400-1f36f5dd09e7")
-                        .url("/v2/service_plans/51067400-d79f-4ca5-9400-1f36f5dd09e7")
-                        .build())
-                    .entity(ServicePlanEntity.builder()
-                        .name("name-2409")
-                        .free(false)
-                        .description("desc-218")
-                        .serviceId("f1b0edbe-fac4-4512-9071-8b26045413bb")
-                        .uniqueId("48fb5a34-1c14-4da5-944e-a14fa1ba5325")
-                        .publiclyVisible(true)
-                        .active(true)
-                        .serviceUrl("/v2/services/f1b0edbe-fac4-4512-9071-8b26045413bb")
-                        .serviceInstancesUrl("/v2/service_plans/51067400-d79f-4ca5-9400-1f36f5dd09e7/service_instances")
+            return ScriptedSubscriber.<ListServiceServicePlansResponse>create()
+                .expectValue(ListServiceServicePlansResponse.builder()
+                    .totalResults(1)
+                    .totalPages(1)
+                    .resource(ServicePlanResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2015-07-27T22:43:35Z")
+                            .id("51067400-d79f-4ca5-9400-1f36f5dd09e7")
+                            .url("/v2/service_plans/51067400-d79f-4ca5-9400-1f36f5dd09e7")
+                            .build())
+                        .entity(ServicePlanEntity.builder()
+                            .name("name-2409")
+                            .free(false)
+                            .description("desc-218")
+                            .serviceId("f1b0edbe-fac4-4512-9071-8b26045413bb")
+                            .uniqueId("48fb5a34-1c14-4da5-944e-a14fa1ba5325")
+                            .publiclyVisible(true)
+                            .active(true)
+                            .serviceUrl("/v2/services/f1b0edbe-fac4-4512-9071-8b26045413bb")
+                            .serviceInstancesUrl("/v2/service_plans/51067400-d79f-4ca5-9400-1f36f5dd09e7/service_instances")
+                            .build())
                         .build())
                     .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
