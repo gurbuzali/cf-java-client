@@ -51,6 +51,26 @@ public final class ReactorRouteMappingsTest {
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<CreateRouteMappingResponse> expectations() {
+            return ScriptedSubscriber.<CreateRouteMappingResponse>create()
+                .expectValue(CreateRouteMappingResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2016-01-19T19:40:59Z")
+                        .id("ca9cdd28-53c4-4b8e-a7e0-1838f69b8f91")
+                        .url("/v2/route_mappings/ca9cdd28-53c4-4b8e-a7e0-1838f69b8f91")
+                        .build())
+                    .entity(RouteMappingEntity.builder()
+                        .applicationId("d232b485-b035-4d65-9f77-6b867d859de5")
+                        .applicationPort(8888)
+                        .routeId("c041e8a3-64d0-4beb-bac8-1900e3aedd07")
+                        .applicationUrl("/v2/apps/d232b485-b035-4d65-9f77-6b867d859de5")
+                        .routeUrl("/v2/routes/c041e8a3-64d0-4beb-bac8-1900e3aedd07")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -65,21 +85,8 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<CreateRouteMappingResponse> expectations() {
-            return CreateRouteMappingResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2016-01-19T19:40:59Z")
-                    .id("ca9cdd28-53c4-4b8e-a7e0-1838f69b8f91")
-                    .url("/v2/route_mappings/ca9cdd28-53c4-4b8e-a7e0-1838f69b8f91")
-                    .build())
-                .entity(RouteMappingEntity.builder()
-                    .applicationId("d232b485-b035-4d65-9f77-6b867d859de5")
-                    .applicationPort(8888)
-                    .routeId("c041e8a3-64d0-4beb-bac8-1900e3aedd07")
-                    .applicationUrl("/v2/apps/d232b485-b035-4d65-9f77-6b867d859de5")
-                    .routeUrl("/v2/routes/c041e8a3-64d0-4beb-bac8-1900e3aedd07")
-                    .build())
-                .build();
+        protected Mono<CreateRouteMappingResponse> invoke(CreateRouteMappingRequest request) {
+            return this.routeMappings.create(request);
         }
 
         @Override
@@ -90,16 +97,16 @@ public final class ReactorRouteMappingsTest {
                 .applicationPort(8888)
                 .build();
         }
-
-        @Override
-        protected Mono<CreateRouteMappingResponse> invoke(CreateRouteMappingRequest request) {
-            return this.routeMappings.create(request);
-        }
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteRouteMappingRequest, DeleteRouteMappingResponse> {
 
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -114,8 +121,8 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
-            return null;
+        protected Publisher<DeleteRouteMappingResponse> invoke(DeleteRouteMappingRequest request) {
+            return this.routeMappings.delete(request);
         }
 
         @Override
@@ -124,16 +131,28 @@ public final class ReactorRouteMappingsTest {
                 .routeMappingId("random-route-mapping-id")
                 .build();
         }
-
-        @Override
-        protected Publisher<DeleteRouteMappingResponse> invoke(DeleteRouteMappingRequest request) {
-            return this.routeMappings.delete(request);
-        }
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeleteRouteMappingRequest, DeleteRouteMappingResponse> {
 
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
+            return ScriptedSubscriber.<DeleteRouteMappingResponse>create()
+                .expectValue(DeleteRouteMappingResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .createdAt("2016-02-02T17:16:31Z")
+                        .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .build())
+                    .entity(JobEntity.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .status("queued")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -149,18 +168,8 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
-            return DeleteRouteMappingResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .createdAt("2016-02-02T17:16:31Z")
-                    .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .build())
-                .entity(JobEntity.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .status("queued")
-                    .build())
-                .build();
+        protected Mono<DeleteRouteMappingResponse> invoke(DeleteRouteMappingRequest request) {
+            return this.routeMappings.delete(request);
         }
 
         @Override
@@ -171,16 +180,31 @@ public final class ReactorRouteMappingsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<DeleteRouteMappingResponse> invoke(DeleteRouteMappingRequest request) {
-            return this.routeMappings.delete(request);
-        }
-
     }
 
     public static final class Get extends AbstractClientApiTest<GetRouteMappingRequest, GetRouteMappingResponse> {
 
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetRouteMappingResponse> expectations() {
+            return ScriptedSubscriber.<GetRouteMappingResponse>create()
+                .expectValue(GetRouteMappingResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("304bead7-ad5a-4f6e-a093-f2a85d30c54a")
+                        .createdAt("2016-04-06T00:17:40Z")
+                        .url("/v2/route_mappings/304bead7-ad5a-4f6e-a093-f2a85d30c54a")
+                        .build())
+                    .entity(RouteMappingEntity.builder()
+                        .applicationId("65489f49-f437-431a-8f58-c118ce08d83a")
+                        .applicationPort(8888)
+                        .applicationUrl("/v2/apps/65489f49-f437-431a-8f58-c118ce08d83a")
+                        .routeId("c7ce0cac-f1d6-405c-83fd-c2d75513eb23")
+                        .routeUrl("/v2/routes/c7ce0cac-f1d6-405c-83fd-c2d75513eb23")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -196,21 +220,8 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetRouteMappingResponse> expectations() {
-            return GetRouteMappingResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("304bead7-ad5a-4f6e-a093-f2a85d30c54a")
-                    .createdAt("2016-04-06T00:17:40Z")
-                    .url("/v2/route_mappings/304bead7-ad5a-4f6e-a093-f2a85d30c54a")
-                    .build())
-                .entity(RouteMappingEntity.builder()
-                    .applicationId("65489f49-f437-431a-8f58-c118ce08d83a")
-                    .applicationPort(8888)
-                    .applicationUrl("/v2/apps/65489f49-f437-431a-8f58-c118ce08d83a")
-                    .routeId("c7ce0cac-f1d6-405c-83fd-c2d75513eb23")
-                    .routeUrl("/v2/routes/c7ce0cac-f1d6-405c-83fd-c2d75513eb23")
-                    .build())
-                .build();
+        protected Publisher<GetRouteMappingResponse> invoke(GetRouteMappingRequest request) {
+            return this.routeMappings.get(request);
         }
 
         @Override
@@ -219,16 +230,35 @@ public final class ReactorRouteMappingsTest {
                 .routeMappingId("route-mapping-id")
                 .build();
         }
-
-        @Override
-        protected Publisher<GetRouteMappingResponse> invoke(GetRouteMappingRequest request) {
-            return this.routeMappings.get(request);
-        }
     }
 
     public static final class List extends AbstractClientApiTest<ListRouteMappingsRequest, ListRouteMappingsResponse> {
 
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListRouteMappingsResponse> expectations() {
+            return ScriptedSubscriber.<ListRouteMappingsResponse>create()
+                .expectValue(ListRouteMappingsResponse.builder()
+                    .totalPages(1)
+                    .totalResults(1)
+                    .resource(RouteMappingResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2016-04-06T00:17:40Z")
+                            .id("50dedf28-08db-4cdd-9903-0d74f3b8708d")
+                            .url("/v2/route_mappings/50dedf28-08db-4cdd-9903-0d74f3b8708d")
+                            .build())
+                        .entity(RouteMappingEntity.builder()
+                            .applicationId("fbfe5df8-5391-4e75-966b-69fe34b7ee5d")
+                            .applicationPort(8888)
+                            .routeId("b683ae9e-0a54-4445-a2ea-5d78d9f89266")
+                            .applicationUrl("/v2/apps/fbfe5df8-5391-4e75-966b-69fe34b7ee5d")
+                            .routeUrl("/v2/routes/b683ae9e-0a54-4445-a2ea-5d78d9f89266")
+                            .build())
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -244,25 +274,8 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListRouteMappingsResponse> expectations() {
-            return ListRouteMappingsResponse.builder()
-                .totalPages(1)
-                .totalResults(1)
-                .resource(RouteMappingResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2016-04-06T00:17:40Z")
-                        .id("50dedf28-08db-4cdd-9903-0d74f3b8708d")
-                        .url("/v2/route_mappings/50dedf28-08db-4cdd-9903-0d74f3b8708d")
-                        .build())
-                    .entity(RouteMappingEntity.builder()
-                        .applicationId("fbfe5df8-5391-4e75-966b-69fe34b7ee5d")
-                        .applicationPort(8888)
-                        .routeId("b683ae9e-0a54-4445-a2ea-5d78d9f89266")
-                        .applicationUrl("/v2/apps/fbfe5df8-5391-4e75-966b-69fe34b7ee5d")
-                        .routeUrl("/v2/routes/b683ae9e-0a54-4445-a2ea-5d78d9f89266")
-                        .build())
-                    .build())
-                .build();
+        protected Mono<ListRouteMappingsResponse> invoke(ListRouteMappingsRequest request) {
+            return this.routeMappings.list(request);
         }
 
         @Override
@@ -270,11 +283,6 @@ public final class ReactorRouteMappingsTest {
             return ListRouteMappingsRequest.builder()
                 .page(-1)
                 .build();
-        }
-
-        @Override
-        protected Mono<ListRouteMappingsResponse> invoke(ListRouteMappingsRequest request) {
-            return this.routeMappings.list(request);
         }
 
     }

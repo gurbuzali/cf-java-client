@@ -57,20 +57,6 @@ public final class ReactorIdentityZonesTest {
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/identity-zones")
-                    .payload("fixtures/uaa/identity-zones/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/identity-zones/POST_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<CreateIdentityZoneResponse> expectations() {
             return CreateIdentityZoneResponse.builder()
                 .createdAt(1463595920184L)
@@ -127,6 +113,25 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/identity-zones")
+                    .payload("fixtures/uaa/identity-zones/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/identity-zones/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateIdentityZoneResponse> invoke(CreateIdentityZoneRequest request) {
+            return this.identityZones.create(request);
+        }
+
+        @Override
         protected CreateIdentityZoneRequest validRequest() {
             return CreateIdentityZoneRequest.builder()
                 .description("Like the Twilight Zone but tastier.")
@@ -179,29 +184,11 @@ public final class ReactorIdentityZonesTest {
                     .build())
                 .build();
         }
-
-        @Override
-        protected Mono<CreateIdentityZoneResponse> invoke(CreateIdentityZoneRequest request) {
-            return this.identityZones.create(request);
-        }
     }
 
     public static final class Delete extends AbstractUaaApiTest<DeleteIdentityZoneRequest, DeleteIdentityZoneResponse> {
 
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/identity-zones/twiglet-delete")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-zones/DELETE_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteIdentityZoneResponse> expectations() {
@@ -260,9 +247,15 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected DeleteIdentityZoneRequest validRequest() {
-            return DeleteIdentityZoneRequest.builder()
-                .identityZoneId("twiglet-delete")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/identity-zones/twiglet-delete")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-zones/DELETE_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -270,24 +263,18 @@ public final class ReactorIdentityZonesTest {
         protected Mono<DeleteIdentityZoneResponse> invoke(DeleteIdentityZoneRequest request) {
             return this.identityZones.delete(request);
         }
+
+        @Override
+        protected DeleteIdentityZoneRequest validRequest() {
+            return DeleteIdentityZoneRequest.builder()
+                .identityZoneId("twiglet-delete")
+                .build();
+        }
     }
 
     public static final class Get extends AbstractUaaApiTest<GetIdentityZoneRequest, GetIdentityZoneResponse> {
 
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/identity-zones/twiglet-get")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-zones/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetIdentityZoneResponse> expectations() {
@@ -345,9 +332,15 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected GetIdentityZoneRequest validRequest() {
-            return GetIdentityZoneRequest.builder()
-                .identityZoneId("twiglet-get")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/identity-zones/twiglet-get")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-zones/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -355,24 +348,18 @@ public final class ReactorIdentityZonesTest {
         protected Mono<GetIdentityZoneResponse> invoke(GetIdentityZoneRequest request) {
             return this.identityZones.get(request);
         }
+
+        @Override
+        protected GetIdentityZoneRequest validRequest() {
+            return GetIdentityZoneRequest.builder()
+                .identityZoneId("twiglet-get")
+                .build();
+        }
     }
 
     public static final class List extends AbstractUaaApiTest<ListIdentityZonesRequest, ListIdentityZonesResponse> {
 
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/identity-zones")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-zones/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListIdentityZonesResponse> expectations() {
@@ -485,33 +472,32 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected ListIdentityZonesRequest validRequest() {
-            return ListIdentityZonesRequest.builder().build();
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/identity-zones")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-zones/GET_response.json")
+                    .build())
+                .build();
         }
 
         @Override
         protected Mono<ListIdentityZonesResponse> invoke(ListIdentityZonesRequest request) {
             return this.identityZones.list(request);
         }
+
+        @Override
+        protected ListIdentityZonesRequest validRequest() {
+            return ListIdentityZonesRequest.builder().build();
+        }
     }
 
     public static final class Update extends AbstractUaaApiTest<UpdateIdentityZoneRequest, UpdateIdentityZoneResponse> {
 
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/identity-zones/twiglet-update")
-                    .payload("fixtures/uaa/identity-zones/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-zones/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateIdentityZoneResponse> expectations() {
@@ -570,6 +556,25 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/identity-zones/twiglet-update")
+                    .payload("fixtures/uaa/identity-zones/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-zones/PUT_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<UpdateIdentityZoneResponse> invoke(UpdateIdentityZoneRequest request) {
+            return this.identityZones.update(request);
+        }
+
+        @Override
         protected UpdateIdentityZoneRequest validRequest() {
             return UpdateIdentityZoneRequest.builder()
                 .description("Like the Twilight Zone but not tastier.")
@@ -621,11 +626,6 @@ public final class ReactorIdentityZonesTest {
                     .ldapDiscoveryEnabled(false)
                     .build())
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateIdentityZoneResponse> invoke(UpdateIdentityZoneRequest request) {
-            return this.identityZones.update(request);
         }
     }
 

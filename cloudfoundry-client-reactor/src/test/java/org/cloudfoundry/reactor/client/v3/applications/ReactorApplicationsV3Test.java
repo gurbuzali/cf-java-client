@@ -103,20 +103,6 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v3/apps/test-application-id/current_droplet")
-                    .payload("fixtures/client/v3/apps/PUT_{id}_current_droplet_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/PUT_{id}_current_droplet_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<AssignApplicationDropletResponse> expectations() {
             return AssignApplicationDropletResponse.builder()
                 .id("guid-a08fd981-137f-4a8f-9c32-6be10007edde")
@@ -170,10 +156,16 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected AssignApplicationDropletRequest validRequest() {
-            return AssignApplicationDropletRequest.builder()
-                .dropletId("guid-3b5793e7-f6c8-40cb-a8d8-07080280da83")
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v3/apps/test-application-id/current_droplet")
+                    .payload("fixtures/client/v3/apps/PUT_{id}_current_droplet_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/PUT_{id}_current_droplet_response.json")
+                    .build())
                 .build();
         }
 
@@ -182,24 +174,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.assignDroplet(request);
         }
 
+        @Override
+        protected AssignApplicationDropletRequest validRequest() {
+            return AssignApplicationDropletRequest.builder()
+                .dropletId("guid-3b5793e7-f6c8-40cb-a8d8-07080280da83")
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class CancelTask extends AbstractClientApiTest<CancelApplicationTaskRequest, CancelApplicationTaskResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v3/apps/test-application-id/tasks/test-task-id/cancel")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v3/apps/PUT_{id}_tasks_{id}_cancel_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CancelApplicationTaskResponse> expectations() {
@@ -225,10 +212,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected CancelApplicationTaskRequest validRequest() {
-            return CancelApplicationTaskRequest.builder()
-                .applicationId("test-application-id")
-                .taskId("test-task-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v3/apps/test-application-id/tasks/test-task-id/cancel")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v3/apps/PUT_{id}_tasks_{id}_cancel_response.json")
+                    .build())
                 .build();
         }
 
@@ -237,25 +229,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.cancelTask(request);
         }
 
+        @Override
+        protected CancelApplicationTaskRequest validRequest() {
+            return CancelApplicationTaskRequest.builder()
+                .applicationId("test-application-id")
+                .taskId("test-task-id")
+                .build();
+        }
+
     }
 
     public static final class Create extends AbstractClientApiTest<CreateApplicationRequest, CreateApplicationResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v3/apps")
-                    .payload("fixtures/client/v3/apps/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v3/apps/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateApplicationResponse> expectations() {
@@ -307,6 +293,25 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v3/apps")
+                    .payload("fixtures/client/v3/apps/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v3/apps/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateApplicationResponse> invoke(CreateApplicationRequest request) {
+            return this.applications.create(request);
+        }
+
+        @Override
         protected CreateApplicationRequest validRequest() {
             return CreateApplicationRequest.builder()
                 .name("my_app")
@@ -326,16 +331,16 @@ public final class ReactorApplicationsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<CreateApplicationResponse> invoke(CreateApplicationRequest request) {
-            return this.applications.create(request);
-        }
-
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteApplicationRequest, Void> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -350,8 +355,8 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(DeleteApplicationRequest request) {
+            return this.applications.delete(request);
         }
 
         @Override
@@ -361,16 +366,16 @@ public final class ReactorApplicationsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(DeleteApplicationRequest request) {
-            return this.applications.delete(request);
-        }
-
     }
 
     public static final class DeleteProcess extends AbstractClientApiTest<TerminateApplicationInstanceRequest, Void> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -385,8 +390,8 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(TerminateApplicationInstanceRequest request) {
+            return this.applications.terminateInstance(request);
         }
 
         @Override
@@ -398,29 +403,11 @@ public final class ReactorApplicationsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(TerminateApplicationInstanceRequest request) {
-            return this.applications.terminateInstance(request);
-        }
-
     }
 
     public static final class Get extends AbstractClientApiTest<GetApplicationRequest, GetApplicationResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetApplicationResponse> expectations() {
@@ -475,9 +462,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationRequest validRequest() {
-            return GetApplicationRequest.builder()
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -486,24 +479,18 @@ public final class ReactorApplicationsV3Test {
             return this.applications.get(request);
         }
 
+        @Override
+        protected GetApplicationRequest validRequest() {
+            return GetApplicationRequest.builder()
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class GetApplicationProcessStatistics extends AbstractClientApiTest<GetApplicationProcessStatisticsRequest, GetApplicationProcessStatisticsResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-id/processes/test-type/stats")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_processes_{type}_stats_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetApplicationProcessStatisticsResponse> expectations() {
@@ -532,10 +519,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationProcessStatisticsRequest validRequest() {
-            return GetApplicationProcessStatisticsRequest.builder()
-                .applicationId("test-id")
-                .type("test-type")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-id/processes/test-type/stats")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_processes_{type}_stats_response.json")
+                    .build())
                 .build();
         }
 
@@ -544,24 +536,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.getProcessStatistics(request);
         }
 
+        @Override
+        protected GetApplicationProcessStatisticsRequest validRequest() {
+            return GetApplicationProcessStatisticsRequest.builder()
+                .applicationId("test-id")
+                .type("test-type")
+                .build();
+        }
+
     }
 
     public static final class GetEnvironment extends AbstractClientApiTest<GetApplicationEnvironmentRequest, GetApplicationEnvironmentResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/env")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_env_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetApplicationEnvironmentResponse> expectations() {
@@ -585,9 +572,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationEnvironmentRequest validRequest() {
-            return GetApplicationEnvironmentRequest.builder()
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/env")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_env_response.json")
+                    .build())
                 .build();
         }
 
@@ -596,24 +589,18 @@ public final class ReactorApplicationsV3Test {
             return this.applications.getEnvironment(request);
         }
 
+        @Override
+        protected GetApplicationEnvironmentRequest validRequest() {
+            return GetApplicationEnvironmentRequest.builder()
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class GetProcess extends AbstractClientApiTest<GetApplicationProcessRequest, GetApplicationProcessResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/processes/web")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_processes_{type}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetApplicationProcessResponse> expectations() {
@@ -649,10 +636,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationProcessRequest validRequest() {
-            return GetApplicationProcessRequest.builder()
-                .applicationId("test-application-id")
-                .type("web")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/processes/web")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_processes_{type}_response.json")
+                    .build())
                 .build();
         }
 
@@ -661,24 +653,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.getProcess(request);
         }
 
+        @Override
+        protected GetApplicationProcessRequest validRequest() {
+            return GetApplicationProcessRequest.builder()
+                .applicationId("test-application-id")
+                .type("web")
+                .build();
+        }
+
     }
 
     public static final class GetTask extends AbstractClientApiTest<GetApplicationTaskRequest, GetApplicationTaskResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/tasks/test-task-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_tasks_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetApplicationTaskResponse> expectations() {
@@ -704,10 +691,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationTaskRequest validRequest() {
-            return GetApplicationTaskRequest.builder()
-                .applicationId("test-application-id")
-                .taskId("test-task-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/tasks/test-task-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_tasks_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -716,24 +708,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.getTask(request);
         }
 
+        @Override
+        protected GetApplicationTaskRequest validRequest() {
+            return GetApplicationTaskRequest.builder()
+                .applicationId("test-application-id")
+                .taskId("test-task-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListApplicationsRequest, ListApplicationsResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps?names=test-name&order_by=%2Bcreated_at&page=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListApplicationsResponse> expectations() {
@@ -844,11 +831,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationsRequest validRequest() {
-            return ListApplicationsRequest.builder()
-                .page(1)
-                .orderBy("+created_at")
-                .name("test-name")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps?names=test-name&order_by=%2Bcreated_at&page=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -857,24 +848,20 @@ public final class ReactorApplicationsV3Test {
             return this.applications.list(request);
         }
 
+        @Override
+        protected ListApplicationsRequest validRequest() {
+            return ListApplicationsRequest.builder()
+                .page(1)
+                .orderBy("+created_at")
+                .name("test-name")
+                .build();
+        }
+
     }
 
     public static final class ListDroplets extends AbstractClientApiTest<ListApplicationDropletsRequest, ListApplicationDropletsResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/droplets?order_by=-created_at&page=1&per_page=2")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_droplets_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListApplicationDropletsResponse> expectations() {
@@ -962,6 +949,24 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/droplets?order_by=-created_at&page=1&per_page=2")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_droplets_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<ListApplicationDropletsResponse> invoke(ListApplicationDropletsRequest request) {
+            return this.applications.listDroplets(request);
+        }
+
+        @Override
         protected ListApplicationDropletsRequest validRequest() {
             return ListApplicationDropletsRequest.builder()
                 .page(1)
@@ -971,29 +976,11 @@ public final class ReactorApplicationsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<ListApplicationDropletsResponse> invoke(ListApplicationDropletsRequest request) {
-            return this.applications.listDroplets(request);
-        }
-
     }
 
     public static final class ListPackages extends AbstractClientApiTest<ListApplicationPackagesRequest, ListApplicationPackagesResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/packages?page=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_packages_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListApplicationPackagesResponse> expectations() {
@@ -1040,10 +1027,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationPackagesRequest validRequest() {
-            return ListApplicationPackagesRequest.builder()
-                .page(1)
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/packages?page=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_packages_response.json")
+                    .build())
                 .build();
         }
 
@@ -1052,24 +1044,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.listPackages(request);
         }
 
+        @Override
+        protected ListApplicationPackagesRequest validRequest() {
+            return ListApplicationPackagesRequest.builder()
+                .page(1)
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class ListProcesses extends AbstractClientApiTest<ListApplicationProcessesRequest, ListApplicationProcessesResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/processes?page=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_processes_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListApplicationProcessesResponse> expectations() {
@@ -1148,10 +1135,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationProcessesRequest validRequest() {
-            return ListApplicationProcessesRequest.builder()
-                .page(1)
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/processes?page=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_processes_response.json")
+                    .build())
                 .build();
         }
 
@@ -1160,24 +1152,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.listProcesses(request);
         }
 
+        @Override
+        protected ListApplicationProcessesRequest validRequest() {
+            return ListApplicationProcessesRequest.builder()
+                .page(1)
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class ListTasks extends AbstractClientApiTest<ListApplicationTasksRequest, ListApplicationTasksResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/apps/test-application-id/tasks?page=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/GET_{id}_tasks_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListApplicationTasksResponse> expectations() {
@@ -1237,10 +1224,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationTasksRequest validRequest() {
-            return ListApplicationTasksRequest.builder()
-                .page(1)
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/apps/test-application-id/tasks?page=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/GET_{id}_tasks_response.json")
+                    .build())
                 .build();
         }
 
@@ -1249,25 +1241,19 @@ public final class ReactorApplicationsV3Test {
             return this.applications.listTasks(request);
         }
 
+        @Override
+        protected ListApplicationTasksRequest validRequest() {
+            return ListApplicationTasksRequest.builder()
+                .page(1)
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class Scale extends AbstractClientApiTest<ScaleApplicationRequest, ScaleApplicationResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v3/apps/test-application-id/processes/web/scale")
-                    .payload("fixtures/client/v3/apps/PUT_{id}_processes_{type}_scale_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/PUT_{id}_processes_{type}_scale_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ScaleApplicationResponse> expectations() {
@@ -1303,6 +1289,25 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v3/apps/test-application-id/processes/web/scale")
+                    .payload("fixtures/client/v3/apps/PUT_{id}_processes_{type}_scale_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/PUT_{id}_processes_{type}_scale_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<ScaleApplicationResponse> invoke(ScaleApplicationRequest request) {
+            return this.applications.scale(request);
+        }
+
+        @Override
         protected ScaleApplicationRequest validRequest() {
             return ScaleApplicationRequest.builder()
                 .applicationId("test-application-id")
@@ -1313,29 +1318,11 @@ public final class ReactorApplicationsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<ScaleApplicationResponse> invoke(ScaleApplicationRequest request) {
-            return this.applications.scale(request);
-        }
-
     }
 
     public static final class Start extends AbstractClientApiTest<StartApplicationRequest, StartApplicationResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v3/apps/test-application-id/start")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/PUT_{id}_start_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<StartApplicationResponse> expectations() {
@@ -1391,9 +1378,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected StartApplicationRequest validRequest() {
-            return StartApplicationRequest.builder()
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v3/apps/test-application-id/start")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/PUT_{id}_start_response.json")
+                    .build())
                 .build();
         }
 
@@ -1402,24 +1395,18 @@ public final class ReactorApplicationsV3Test {
             return this.applications.start(request);
         }
 
+        @Override
+        protected StartApplicationRequest validRequest() {
+            return StartApplicationRequest.builder()
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class Stop extends AbstractClientApiTest<StopApplicationRequest, StopApplicationResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v3/apps/test-application-id/stop")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/PUT_{id}_stop_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<StopApplicationResponse> expectations() {
@@ -1475,9 +1462,15 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected StopApplicationRequest validRequest() {
-            return StopApplicationRequest.builder()
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v3/apps/test-application-id/stop")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/PUT_{id}_stop_response.json")
+                    .build())
                 .build();
         }
 
@@ -1486,25 +1479,18 @@ public final class ReactorApplicationsV3Test {
             return this.applications.stop(request);
         }
 
+        @Override
+        protected StopApplicationRequest validRequest() {
+            return StopApplicationRequest.builder()
+                .applicationId("test-application-id")
+                .build();
+        }
+
     }
 
     public static final class Update extends AbstractClientApiTest<UpdateApplicationRequest, UpdateApplicationResponse> {
 
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PATCH).path("/v3/apps/test-application-id")
-                    .payload("fixtures/client/v3/apps/PATCH_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/PATCH_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateApplicationResponse> expectations() {
@@ -1558,6 +1544,25 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PATCH).path("/v3/apps/test-application-id")
+                    .payload("fixtures/client/v3/apps/PATCH_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/PATCH_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<UpdateApplicationResponse> invoke(UpdateApplicationRequest request) {
+            return this.applications.update(request);
+        }
+
+        @Override
         protected UpdateApplicationRequest validRequest() {
             return UpdateApplicationRequest.builder()
                 .applicationId("test-application-id")
@@ -1572,11 +1577,6 @@ public final class ReactorApplicationsV3Test {
                         .build())
                     .build())
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateApplicationResponse> invoke(UpdateApplicationRequest request) {
-            return this.applications.update(request);
         }
 
     }

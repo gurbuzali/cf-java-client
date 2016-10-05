@@ -59,6 +59,11 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -71,8 +76,8 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(TerminateProcessInstanceRequest request) {
+            return this.processes.terminateInstance(request);
         }
 
         @Override
@@ -83,11 +88,6 @@ public final class ReactorProcessesTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(TerminateProcessInstanceRequest request) {
-            return this.processes.terminateInstance(request);
-        }
-
     }
 
     public static final class Get extends AbstractClientApiTest<GetProcessRequest, GetProcessResponse> {
@@ -95,155 +95,9 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/processes/test-process-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/processes/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<GetProcessResponse> expectations() {
-            return GetProcessResponse.builder()
-                .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
-                .type("web")
-                .command("rackup")
-                .instances(5)
-                .memoryInMb(256)
-                .diskInMb(1_024)
-                .port(8080)
-                .healthCheck(HealthCheck.builder()
-                    .type(Type.PORT)
-                    .data(Data.builder()
-                        .build())
-                    .build())
-                .createdAt("2016-03-23T18:48:22Z")
-                .updatedAt("2016-03-23T18:48:42Z")
-                .link("self", Link.builder()
-                    .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82")
-                    .build())
-                .link("scale", Link.builder()
-                    .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
-                    .method("PUT")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                    .build())
-                .link("space", Link.builder()
-                    .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected GetProcessRequest validRequest() {
-            return GetProcessRequest.builder()
-                .processId("test-process-id")
-                .build();
-        }
-
-        @Override
-        protected Mono<GetProcessResponse> invoke(GetProcessRequest request) {
-            return this.processes.get(request);
-        }
-
-    }
-
-    public static final class GetProcessStatistics extends AbstractClientApiTest<GetProcessStatisticsRequest, GetProcessStatisticsResponse> {
-
-        private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/processes/test-id/stats")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/processes/GET_{id}_stats_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected ScriptedSubscriber<GetProcessStatisticsResponse> expectations() {
-            return GetProcessStatisticsResponse.builder()
-                .resource(ProcessStatisticsResource.builder()
-                    .type("web")
-                    .index(0)
-                    .state("RUNNING")
-                    .usage(ProcessUsage.builder()
-                        .time("2016-03-23T23:17:30.476314154Z")
-                        .cpu(0.00038711029163348665)
-                        .memory(19177472L)
-                        .disk(69705728L)
-                        .build())
-                    .host("10.244.16.10")
-                    .instancePort(PortMapping.builder()
-                        .external(64546)
-                        .internal(8080)
-                        .build())
-                    .uptime(9042L)
-                    .memoryQuota(268435456L)
-                    .diskQuota(1073741824L)
-                    .fdsQuota(16384L)
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected GetProcessStatisticsRequest validRequest() {
-            return GetProcessStatisticsRequest.builder()
-                .processId("test-id")
-                .build();
-        }
-
-        @Override
-        protected Mono<GetProcessStatisticsResponse> invoke(GetProcessStatisticsRequest request) {
-            return this.processes.getStatistics(request);
-        }
-
-    }
-
-    public static final class List extends AbstractClientApiTest<ListProcessesRequest, ListProcessesResponse> {
-
-        private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/processes?page=1&per_page=2")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/processes/GET_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected ScriptedSubscriber<ListProcessesResponse> expectations() {
-            return ListProcessesResponse.builder()
-                .pagination(Pagination.builder()
-                    .totalResults(3)
-                    .first(Link.builder()
-                        .href("/v3/processes?page=1&per_page=2")
-                        .build())
-                    .last(Link.builder()
-                        .href("/v3/processes?page=2&per_page=2")
-                        .build())
-                    .next(Link.builder()
-                        .href("/v3/processes?page=2&per_page=2")
-                        .build())
-                    .build())
-                .resource(ProcessResource.builder()
+            return ScriptedSubscriber.<GetProcessResponse>create()
+                .expectValue(GetProcessResponse.builder()
                     .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                     .type("web")
                     .command("rackup")
@@ -272,23 +126,229 @@ public final class ReactorProcessesTest {
                         .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
                         .build())
                     .build())
-                .resource(ProcessResource.builder()
-                    .id("3fccacd9-4b02-4b96-8d02-8e865865e9eb")
-                    .type("worker")
-                    .command("bundle exec rake worker")
-                    .instances(1)
+                .expectComplete();
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/processes/test-process-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/processes/GET_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<GetProcessResponse> invoke(GetProcessRequest request) {
+            return this.processes.get(request);
+        }
+
+        @Override
+        protected GetProcessRequest validRequest() {
+            return GetProcessRequest.builder()
+                .processId("test-process-id")
+                .build();
+        }
+
+    }
+
+    public static final class GetProcessStatistics extends AbstractClientApiTest<GetProcessStatisticsRequest, GetProcessStatisticsResponse> {
+
+        private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetProcessStatisticsResponse> expectations() {
+            return ScriptedSubscriber.<GetProcessStatisticsResponse>create()
+                .expectValue(GetProcessStatisticsResponse.builder()
+                    .resource(ProcessStatisticsResource.builder()
+                        .type("web")
+                        .index(0)
+                        .state("RUNNING")
+                        .usage(ProcessUsage.builder()
+                            .time("2016-03-23T23:17:30.476314154Z")
+                            .cpu(0.00038711029163348665)
+                            .memory(19177472L)
+                            .disk(69705728L)
+                            .build())
+                        .host("10.244.16.10")
+                        .instancePort(PortMapping.builder()
+                            .external(64546)
+                            .internal(8080)
+                            .build())
+                        .uptime(9042L)
+                        .memoryQuota(268435456L)
+                        .diskQuota(1073741824L)
+                        .fdsQuota(16384L)
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/processes/test-id/stats")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/processes/GET_{id}_stats_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<GetProcessStatisticsResponse> invoke(GetProcessStatisticsRequest request) {
+            return this.processes.getStatistics(request);
+        }
+
+        @Override
+        protected GetProcessStatisticsRequest validRequest() {
+            return GetProcessStatisticsRequest.builder()
+                .processId("test-id")
+                .build();
+        }
+
+    }
+
+    public static final class List extends AbstractClientApiTest<ListProcessesRequest, ListProcessesResponse> {
+
+        private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListProcessesResponse> expectations() {
+            return ScriptedSubscriber.<ListProcessesResponse>create()
+                .expectValue(ListProcessesResponse.builder()
+                    .pagination(Pagination.builder()
+                        .totalResults(3)
+                        .first(Link.builder()
+                            .href("/v3/processes?page=1&per_page=2")
+                            .build())
+                        .last(Link.builder()
+                            .href("/v3/processes?page=2&per_page=2")
+                            .build())
+                        .next(Link.builder()
+                            .href("/v3/processes?page=2&per_page=2")
+                            .build())
+                        .build())
+                    .resource(ProcessResource.builder()
+                        .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
+                        .type("web")
+                        .command("rackup")
+                        .instances(5)
+                        .memoryInMb(256)
+                        .diskInMb(1_024)
+                        .port(8080)
+                        .healthCheck(HealthCheck.builder()
+                            .type(Type.PORT)
+                            .data(Data.builder()
+                                .build())
+                            .build())
+                        .createdAt("2016-03-23T18:48:22Z")
+                        .updatedAt("2016-03-23T18:48:42Z")
+                        .link("self", Link.builder()
+                            .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82")
+                            .build())
+                        .link("scale", Link.builder()
+                            .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
+                            .method("PUT")
+                            .build())
+                        .link("app", Link.builder()
+                            .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                            .build())
+                        .link("space", Link.builder()
+                            .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
+                            .build())
+                        .build())
+                    .resource(ProcessResource.builder()
+                        .id("3fccacd9-4b02-4b96-8d02-8e865865e9eb")
+                        .type("worker")
+                        .command("bundle exec rake worker")
+                        .instances(1)
+                        .memoryInMb(256)
+                        .diskInMb(1_024)
+                        .ports(Collections.emptyList())
+                        .healthCheck(HealthCheck.builder()
+                            .type(Type.PROCESS)
+                            .data(Data.builder()
+                                .build())
+                            .build())
+                        .createdAt("2016-03-23T18:48:22Z")
+                        .updatedAt("2016-03-23T18:48:42Z")
+                        .link("self", Link.builder()
+                            .href("/v3/processes/3fccacd9-4b02-4b96-8d02-8e865865e9eb")
+                            .build())
+                        .link("scale", Link.builder()
+                            .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
+                            .method("PUT")
+                            .build())
+                        .link("app", Link.builder()
+                            .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                            .build())
+                        .link("space", Link.builder()
+                            .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
+                            .build())
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/processes?page=1&per_page=2")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/processes/GET_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<ListProcessesResponse> invoke(ListProcessesRequest request) {
+            return this.processes.list(request);
+        }
+
+        @Override
+        protected ListProcessesRequest validRequest() {
+            return ListProcessesRequest.builder()
+                .page(1)
+                .perPage(2)
+                .build();
+        }
+
+    }
+
+    public static final class Scale extends AbstractClientApiTest<ScaleProcessRequest, ScaleProcessResponse> {
+
+        private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ScaleProcessResponse> expectations() {
+            return ScriptedSubscriber.<ScaleProcessResponse>create()
+                .expectValue(ScaleProcessResponse.builder()
+                    .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
+                    .type("web")
+                    .command("rackup")
+                    .instances(5)
                     .memoryInMb(256)
                     .diskInMb(1_024)
-                    .ports(Collections.emptyList())
+                    .port(8080)
                     .healthCheck(HealthCheck.builder()
-                        .type(Type.PROCESS)
+                        .type(Type.PORT)
                         .data(Data.builder()
                             .build())
                         .build())
                     .createdAt("2016-03-23T18:48:22Z")
                     .updatedAt("2016-03-23T18:48:42Z")
                     .link("self", Link.builder()
-                        .href("/v3/processes/3fccacd9-4b02-4b96-8d02-8e865865e9eb")
+                        .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                         .build())
                     .link("scale", Link.builder()
                         .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
@@ -301,27 +361,8 @@ public final class ReactorProcessesTest {
                         .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
                         .build())
                     .build())
-                .build();
+                .expectComplete();
         }
-
-        @Override
-        protected ListProcessesRequest validRequest() {
-            return ListProcessesRequest.builder()
-                .page(1)
-                .perPage(2)
-                .build();
-        }
-
-        @Override
-        protected Mono<ListProcessesResponse> invoke(ListProcessesRequest request) {
-            return this.processes.list(request);
-        }
-
-    }
-
-    public static final class Scale extends AbstractClientApiTest<ScaleProcessRequest, ScaleProcessResponse> {
-
-        private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
         protected InteractionContext interactionContext() {
@@ -338,36 +379,8 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ScaleProcessResponse> expectations() {
-            return ScaleProcessResponse.builder()
-                .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
-                .type("web")
-                .command("rackup")
-                .instances(5)
-                .memoryInMb(256)
-                .diskInMb(1_024)
-                .port(8080)
-                .healthCheck(HealthCheck.builder()
-                    .type(Type.PORT)
-                    .data(Data.builder()
-                        .build())
-                    .build())
-                .createdAt("2016-03-23T18:48:22Z")
-                .updatedAt("2016-03-23T18:48:42Z")
-                .link("self", Link.builder()
-                    .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82")
-                    .build())
-                .link("scale", Link.builder()
-                    .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
-                    .method("PUT")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                    .build())
-                .link("space", Link.builder()
-                    .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
-                    .build())
-                .build();
+        protected Mono<ScaleProcessResponse> invoke(ScaleProcessRequest request) {
+            return this.processes.scale(request);
         }
 
         @Override
@@ -379,16 +392,46 @@ public final class ReactorProcessesTest {
                 .diskInMb(1_024)
                 .build();
         }
-
-        @Override
-        protected Mono<ScaleProcessResponse> invoke(ScaleProcessRequest request) {
-            return this.processes.scale(request);
-        }
     }
 
     public static final class Update extends AbstractClientApiTest<UpdateProcessRequest, UpdateProcessResponse> {
 
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateProcessResponse> expectations() {
+            return ScriptedSubscriber.<UpdateProcessResponse>create()
+                .expectValue(UpdateProcessResponse.builder()
+                    .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
+                    .type("web")
+                    .command("rackup")
+                    .instances(5)
+                    .memoryInMb(256)
+                    .diskInMb(1_024)
+                    .port(8080)
+                    .healthCheck(HealthCheck.builder()
+                        .type(Type.PORT)
+                        .data(Data.builder()
+                            .build())
+                        .build())
+                    .createdAt("2016-03-23T18:48:22Z")
+                    .updatedAt("2016-03-23T18:48:42Z")
+                    .link("self", Link.builder()
+                        .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82")
+                        .build())
+                    .link("scale", Link.builder()
+                        .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
+                        .method("PUT")
+                        .build())
+                    .link("app", Link.builder()
+                        .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                        .build())
+                    .link("space", Link.builder()
+                        .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -405,36 +448,8 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateProcessResponse> expectations() {
-            return UpdateProcessResponse.builder()
-                .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
-                .type("web")
-                .command("rackup")
-                .instances(5)
-                .memoryInMb(256)
-                .diskInMb(1_024)
-                .port(8080)
-                .healthCheck(HealthCheck.builder()
-                    .type(Type.PORT)
-                    .data(Data.builder()
-                        .build())
-                    .build())
-                .createdAt("2016-03-23T18:48:22Z")
-                .updatedAt("2016-03-23T18:48:42Z")
-                .link("self", Link.builder()
-                    .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82")
-                    .build())
-                .link("scale", Link.builder()
-                    .href("/v3/processes/6a901b7c-9417-4dc1-8189-d3234aa0ab82/scale")
-                    .method("PUT")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                    .build())
-                .link("space", Link.builder()
-                    .href("/v2/spaces/2f35885d-0c9d-4423-83ad-fd05066f8576")
-                    .build())
-                .build();
+        protected Mono<UpdateProcessResponse> invoke(UpdateProcessRequest request) {
+            return this.processes.update(request);
         }
 
         @Override
@@ -443,11 +458,6 @@ public final class ReactorProcessesTest {
                 .processId("test-process-id")
                 .command("rackup")
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateProcessResponse> invoke(UpdateProcessRequest request) {
-            return this.processes.update(request);
         }
     }
 

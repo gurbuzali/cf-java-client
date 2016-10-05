@@ -69,6 +69,14 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<ChangeUserPasswordResponse> expectations() {
+            return ChangeUserPasswordResponse.builder()
+                .status("ok")
+                .message("password updated")
+                .build();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -83,11 +91,8 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ChangeUserPasswordResponse> expectations() {
-            return ChangeUserPasswordResponse.builder()
-                .status("ok")
-                .message("password updated")
-                .build();
+        protected Mono<ChangeUserPasswordResponse> invoke(ChangeUserPasswordRequest request) {
+            return this.users.changePassword(request);
         }
 
         @Override
@@ -99,30 +104,11 @@ public final class ReactorUsersTest {
                 .build();
         }
 
-        @Override
-        protected Mono<ChangeUserPasswordResponse> invoke(ChangeUserPasswordRequest request) {
-            return this.users.changePassword(request);
-        }
-
     }
 
     public static final class Create extends AbstractUaaApiTest<CreateUserRequest, CreateUserResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/Users")
-                    .payload("fixtures/uaa/users/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateUserResponse> expectations() {
@@ -218,6 +204,25 @@ public final class ReactorUsersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/Users")
+                    .payload("fixtures/uaa/users/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateUserResponse> invoke(CreateUserRequest request) {
+            return this.users.create(request);
+        }
+
+        @Override
         protected CreateUserRequest validRequest() {
             return CreateUserRequest.builder()
                 .externalId("test-user")
@@ -237,30 +242,11 @@ public final class ReactorUsersTest {
                 .build();
         }
 
-        @Override
-        protected Mono<CreateUserResponse> invoke(CreateUserRequest request) {
-            return this.users.create(request);
-        }
-
     }
 
     public static final class Delete extends AbstractUaaApiTest<DeleteUserRequest, DeleteUserResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/Users/421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                    .header("If-Match", "*")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/DELETE_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteUserResponse> expectations() {
@@ -372,10 +358,16 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected DeleteUserRequest validRequest() {
-            return DeleteUserRequest.builder()
-                .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                .version("*")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/Users/421225f4-318e-4a4d-9219-4b6a0ed3678a")
+                    .header("If-Match", "*")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/DELETE_response.json")
+                    .build())
                 .build();
         }
 
@@ -384,11 +376,26 @@ public final class ReactorUsersTest {
             return this.users.delete(request);
         }
 
+        @Override
+        protected DeleteUserRequest validRequest() {
+            return DeleteUserRequest.builder()
+                .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
+                .version("*")
+                .build();
+        }
+
     }
 
     public static final class GetVerificationLink extends AbstractUaaApiTest<GetUserVerificationLinkRequest, GetUserVerificationLinkResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetUserVerificationLinkResponse> expectations() {
+            return GetUserVerificationLinkResponse.builder()
+                .verifyLink("http://localhost/verify_user?code=nOGQWBqCx5")
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -404,10 +411,8 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetUserVerificationLinkResponse> expectations() {
-            return GetUserVerificationLinkResponse.builder()
-                .verifyLink("http://localhost/verify_user?code=nOGQWBqCx5")
-                .build();
+        protected Mono<GetUserVerificationLinkResponse> invoke(GetUserVerificationLinkRequest request) {
+            return this.users.getVerificationLink(request);
         }
 
         @Override
@@ -418,30 +423,11 @@ public final class ReactorUsersTest {
                 .build();
         }
 
-        @Override
-        protected Mono<GetUserVerificationLinkResponse> invoke(GetUserVerificationLinkRequest request) {
-            return this.users.getVerificationLink(request);
-        }
-
     }
 
     public static final class InviteUsers extends AbstractUaaApiTest<InviteUsersRequest, InviteUsersResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/invite_users?client_id=u7ptqw&redirect_uri=example.com")
-                    .payload("fixtures/uaa/users/POST_invite_users_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users//POST_invite_users_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<InviteUsersResponse> expectations() {
@@ -465,11 +451,16 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected InviteUsersRequest validRequest() {
-            return InviteUsersRequest.builder()
-                .clientId("u7ptqw")
-                .email("user1@pjy596.com", "user2@pjy596.com")
-                .redirectUri("example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/invite_users?client_id=u7ptqw&redirect_uri=example.com")
+                    .payload("fixtures/uaa/users/POST_invite_users_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users//POST_invite_users_response.json")
+                    .build())
                 .build();
         }
 
@@ -478,25 +469,20 @@ public final class ReactorUsersTest {
             return this.users.invite(request);
         }
 
+        @Override
+        protected InviteUsersRequest validRequest() {
+            return InviteUsersRequest.builder()
+                .clientId("u7ptqw")
+                .email("user1@pjy596.com", "user2@pjy596.com")
+                .redirectUri("example.com")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractUaaApiTest<ListUsersRequest, ListUsersResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path(
-                        "/Users?count=50&filter=id%2Beq%2B%22a94534d5-de08-41eb-8712-a51314e6a484%22%2Bor%2Bemail%2Beq%2B%22Da63pG@test.org%22&sortBy=email&sortOrder=ascending&startIndex=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListUsersResponse> expectations() {
@@ -606,6 +592,25 @@ public final class ReactorUsersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path(
+                        "/Users?count=50&filter=id%2Beq%2B%22a94534d5-de08-41eb-8712-a51314e6a484%22%2Bor%2Bemail%2Beq%2B%22Da63pG@test.org%22&sortBy=email&sortOrder=ascending&startIndex=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/GET_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<ListUsersResponse> invoke(ListUsersRequest request) {
+            return this.users.list(request);
+        }
+
+        @Override
         protected ListUsersRequest validRequest() {
             return ListUsersRequest.builder()
                 .filter("id+eq+\"a94534d5-de08-41eb-8712-a51314e6a484\"+or+email+eq+\"Da63pG@test.org\"")
@@ -616,31 +621,11 @@ public final class ReactorUsersTest {
                 .build();
         }
 
-        @Override
-        protected Mono<ListUsersResponse> invoke(ListUsersRequest request) {
-            return this.users.list(request);
-        }
-
     }
 
     public static final class Lookup extends AbstractUaaApiTest<LookupUserIdsRequest, LookupUserIdsResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path(
-                        "/ids/Users?count=10&filter=userName%2Beq%2B%22bobOu38vE@test.org%22%2Bor%2Bid%2Beq%2B%22c1476587-5ec9-4b7e-9ed2-381e3133f07a%22" +
-                            "&includeInactive=true&sortOrder=descending&startIndex=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/GET_ids_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<LookupUserIdsResponse> expectations() {
@@ -663,6 +648,26 @@ public final class ReactorUsersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path(
+                        "/ids/Users?count=10&filter=userName%2Beq%2B%22bobOu38vE@test.org%22%2Bor%2Bid%2Beq%2B%22c1476587-5ec9-4b7e-9ed2-381e3133f07a%22" +
+                            "&includeInactive=true&sortOrder=descending&startIndex=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/GET_ids_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<LookupUserIdsResponse> invoke(LookupUserIdsRequest request) {
+            return this.users.lookup(request);
+        }
+
+        @Override
         protected LookupUserIdsRequest validRequest() {
             return LookupUserIdsRequest.builder()
                 .filter("userName+eq+\"bobOu38vE@test.org\"+or+id+eq+\"c1476587-5ec9-4b7e-9ed2-381e3133f07a\"")
@@ -673,31 +678,11 @@ public final class ReactorUsersTest {
                 .build();
         }
 
-        @Override
-        protected Mono<LookupUserIdsResponse> invoke(LookupUserIdsRequest request) {
-            return this.users.lookup(request);
-        }
-
     }
 
     public static final class Update extends AbstractUaaApiTest<UpdateUserRequest, UpdateUserResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/Users/test-user-id")
-                    .header("If-Match", "*")
-                    .payload("fixtures/uaa/users/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateUserResponse> expectations() {
@@ -759,6 +744,26 @@ public final class ReactorUsersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/Users/test-user-id")
+                    .header("If-Match", "*")
+                    .payload("fixtures/uaa/users/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/PUT_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<UpdateUserResponse> invoke(UpdateUserRequest request) {
+            return this.users.update(request);
+        }
+
+        @Override
         protected UpdateUserRequest validRequest() {
             return UpdateUserRequest.builder()
                 .active(true)
@@ -778,30 +783,11 @@ public final class ReactorUsersTest {
                 .verified(true)
                 .build();
         }
-
-        @Override
-        protected Mono<UpdateUserResponse> invoke(UpdateUserRequest request) {
-            return this.users.update(request);
-        }
     }
 
     public static final class Verify extends AbstractUaaApiTest<VerifyUserRequest, VerifyUserResponse> {
 
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/Users/c0d42e48-9b69-461d-a77b-f75d3a5948b6/verify")
-                    .header("If-Match", "12")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/GET_{id}_verify_user_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<VerifyUserResponse> expectations() {
@@ -831,16 +817,30 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected VerifyUserRequest validRequest() {
-            return VerifyUserRequest.builder()
-                .userId("c0d42e48-9b69-461d-a77b-f75d3a5948b6")
-                .version("12")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/Users/c0d42e48-9b69-461d-a77b-f75d3a5948b6/verify")
+                    .header("If-Match", "12")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/GET_{id}_verify_user_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<VerifyUserResponse> invoke(VerifyUserRequest request) {
             return this.users.verify(request);
+        }
+
+        @Override
+        protected VerifyUserRequest validRequest() {
+            return VerifyUserRequest.builder()
+                .userId("c0d42e48-9b69-461d-a77b-f75d3a5948b6")
+                .version("12")
+                .build();
         }
 
     }

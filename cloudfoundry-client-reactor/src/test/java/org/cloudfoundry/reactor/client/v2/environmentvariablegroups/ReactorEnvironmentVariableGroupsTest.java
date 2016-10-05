@@ -45,6 +45,16 @@ public class ReactorEnvironmentVariableGroupsTest {
         private ReactorEnvironmentVariableGroups environmentVariableGroups = new ReactorEnvironmentVariableGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<GetRunningEnvironmentVariablesResponse> expectations() {
+            return ScriptedSubscriber.<GetRunningEnvironmentVariablesResponse>create()
+                .expectValue(GetRunningEnvironmentVariablesResponse.builder()
+                    .environmentVariable("abc", 123)
+                    .environmentVariable("do-re-me", "far-so-la-tee")
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -58,11 +68,8 @@ public class ReactorEnvironmentVariableGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetRunningEnvironmentVariablesResponse> expectations() {
-            return GetRunningEnvironmentVariablesResponse.builder()
-                .environmentVariable("abc", 123)
-                .environmentVariable("do-re-me", "far-so-la-tee")
-                .build();
+        protected Mono<GetRunningEnvironmentVariablesResponse> invoke(GetRunningEnvironmentVariablesRequest request) {
+            return this.environmentVariableGroups.getRunningEnvironmentVariables(request);
         }
 
         @Override
@@ -70,16 +77,21 @@ public class ReactorEnvironmentVariableGroupsTest {
             return GetRunningEnvironmentVariablesRequest.builder()
                 .build();
         }
-
-        @Override
-        protected Mono<GetRunningEnvironmentVariablesResponse> invoke(GetRunningEnvironmentVariablesRequest request) {
-            return this.environmentVariableGroups.getRunningEnvironmentVariables(request);
-        }
     }
 
     public static final class GetStagingEnvironmentVariables extends AbstractClientApiTest<GetStagingEnvironmentVariablesRequest, GetStagingEnvironmentVariablesResponse> {
 
         private ReactorEnvironmentVariableGroups environmentVariableGroups = new ReactorEnvironmentVariableGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetStagingEnvironmentVariablesResponse> expectations() {
+            return ScriptedSubscriber.<GetStagingEnvironmentVariablesResponse>create()
+                .expectValue(GetStagingEnvironmentVariablesResponse.builder()
+                    .environmentVariable("abc", 123)
+                    .environmentVariable("do-re-me", "far-so-la-tee")
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -95,11 +107,8 @@ public class ReactorEnvironmentVariableGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetStagingEnvironmentVariablesResponse> expectations() {
-            return GetStagingEnvironmentVariablesResponse.builder()
-                .environmentVariable("abc", 123)
-                .environmentVariable("do-re-me", "far-so-la-tee")
-                .build();
+        protected Mono<GetStagingEnvironmentVariablesResponse> invoke(GetStagingEnvironmentVariablesRequest request) {
+            return this.environmentVariableGroups.getStagingEnvironmentVariables(request);
         }
 
         @Override
@@ -107,16 +116,21 @@ public class ReactorEnvironmentVariableGroupsTest {
             return GetStagingEnvironmentVariablesRequest.builder()
                 .build();
         }
-
-        @Override
-        protected Mono<GetStagingEnvironmentVariablesResponse> invoke(GetStagingEnvironmentVariablesRequest request) {
-            return this.environmentVariableGroups.getStagingEnvironmentVariables(request);
-        }
     }
 
     public static final class UpdateRunningEnvironmentVariables extends AbstractClientApiTest<UpdateRunningEnvironmentVariablesRequest, UpdateRunningEnvironmentVariablesResponse> {
 
         private ReactorEnvironmentVariableGroups environmentVariableGroups = new ReactorEnvironmentVariableGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateRunningEnvironmentVariablesResponse> expectations() {
+            return ScriptedSubscriber.<UpdateRunningEnvironmentVariablesResponse>create()
+                .expectValue(UpdateRunningEnvironmentVariablesResponse.builder()
+                    .environmentVariable("abc", 123)
+                    .environmentVariable("do-re-me", "fa-so-la-tee")
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -133,11 +147,8 @@ public class ReactorEnvironmentVariableGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateRunningEnvironmentVariablesResponse> expectations() {
-            return UpdateRunningEnvironmentVariablesResponse.builder()
-                .environmentVariable("abc", 123)
-                .environmentVariable("do-re-me", "fa-so-la-tee")
-                .build();
+        protected Mono<UpdateRunningEnvironmentVariablesResponse> invoke(UpdateRunningEnvironmentVariablesRequest request) {
+            return this.environmentVariableGroups.updateRunningEnvironmentVariables(request);
         }
 
         @Override
@@ -147,16 +158,20 @@ public class ReactorEnvironmentVariableGroupsTest {
                 .environmentVariable("do-re-me", "fa-so-la-tee")
                 .build();
         }
-
-        @Override
-        protected Mono<UpdateRunningEnvironmentVariablesResponse> invoke(UpdateRunningEnvironmentVariablesRequest request) {
-            return this.environmentVariableGroups.updateRunningEnvironmentVariables(request);
-        }
     }
 
     public static final class UpdateRunningEnvironmentVariablesEmpty extends AbstractClientApiTest<UpdateRunningEnvironmentVariablesRequest, UpdateRunningEnvironmentVariablesResponse> {
 
         private ReactorEnvironmentVariableGroups environmentVariableGroups = new ReactorEnvironmentVariableGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateRunningEnvironmentVariablesResponse> expectations() {
+            return ScriptedSubscriber.<UpdateRunningEnvironmentVariablesResponse>create()
+                .expectValue(UpdateRunningEnvironmentVariablesResponse.builder()
+                    .environmentVariables(Collections.emptyMap())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -173,10 +188,8 @@ public class ReactorEnvironmentVariableGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateRunningEnvironmentVariablesResponse> expectations() {
-            return UpdateRunningEnvironmentVariablesResponse.builder()
-                .environmentVariables(Collections.emptyMap())
-                .build();
+        protected Mono<UpdateRunningEnvironmentVariablesResponse> invoke(UpdateRunningEnvironmentVariablesRequest request) {
+            return this.environmentVariableGroups.updateRunningEnvironmentVariables(request);
         }
 
         @Override
@@ -185,16 +198,21 @@ public class ReactorEnvironmentVariableGroupsTest {
                 .environmentVariables(Collections.emptyMap())
                 .build();
         }
-
-        @Override
-        protected Mono<UpdateRunningEnvironmentVariablesResponse> invoke(UpdateRunningEnvironmentVariablesRequest request) {
-            return this.environmentVariableGroups.updateRunningEnvironmentVariables(request);
-        }
     }
 
     public static final class UpdateStagingEnvironmentVariables extends AbstractClientApiTest<UpdateStagingEnvironmentVariablesRequest, UpdateStagingEnvironmentVariablesResponse> {
 
         private ReactorEnvironmentVariableGroups environmentVariableGroups = new ReactorEnvironmentVariableGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateStagingEnvironmentVariablesResponse> expectations() {
+            return ScriptedSubscriber.<UpdateStagingEnvironmentVariablesResponse>create()
+                .expectValue(UpdateStagingEnvironmentVariablesResponse.builder()
+                    .environmentVariable("abc", 123)
+                    .environmentVariable("do-re-me", "far-so-la-tee")
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -211,11 +229,8 @@ public class ReactorEnvironmentVariableGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateStagingEnvironmentVariablesResponse> expectations() {
-            return UpdateStagingEnvironmentVariablesResponse.builder()
-                .environmentVariable("abc", 123)
-                .environmentVariable("do-re-me", "far-so-la-tee")
-                .build();
+        protected Mono<UpdateStagingEnvironmentVariablesResponse> invoke(UpdateStagingEnvironmentVariablesRequest request) {
+            return this.environmentVariableGroups.updateStagingEnvironmentVariables(request);
         }
 
         @Override
@@ -225,16 +240,20 @@ public class ReactorEnvironmentVariableGroupsTest {
                 .environmentVariable("do-re-me", "far-so-la-tee")
                 .build();
         }
-
-        @Override
-        protected Mono<UpdateStagingEnvironmentVariablesResponse> invoke(UpdateStagingEnvironmentVariablesRequest request) {
-            return this.environmentVariableGroups.updateStagingEnvironmentVariables(request);
-        }
     }
 
     public static final class UpdateStagingEnvironmentVariablesEmpty extends AbstractClientApiTest<UpdateStagingEnvironmentVariablesRequest, UpdateStagingEnvironmentVariablesResponse> {
 
         private ReactorEnvironmentVariableGroups environmentVariableGroups = new ReactorEnvironmentVariableGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateStagingEnvironmentVariablesResponse> expectations() {
+            return ScriptedSubscriber.<UpdateStagingEnvironmentVariablesResponse>create()
+                .expectValue(UpdateStagingEnvironmentVariablesResponse.builder()
+                    .environmentVariables(Collections.emptyMap())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -251,10 +270,8 @@ public class ReactorEnvironmentVariableGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateStagingEnvironmentVariablesResponse> expectations() {
-            return UpdateStagingEnvironmentVariablesResponse.builder()
-                .environmentVariables(Collections.emptyMap())
-                .build();
+        protected Mono<UpdateStagingEnvironmentVariablesResponse> invoke(UpdateStagingEnvironmentVariablesRequest request) {
+            return this.environmentVariableGroups.updateStagingEnvironmentVariables(request);
         }
 
         @Override
@@ -262,11 +279,6 @@ public class ReactorEnvironmentVariableGroupsTest {
             return UpdateStagingEnvironmentVariablesRequest.builder()
                 .environmentVariables(Collections.emptyMap())
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateStagingEnvironmentVariablesResponse> invoke(UpdateStagingEnvironmentVariablesRequest request) {
-            return this.environmentVariableGroups.updateStagingEnvironmentVariables(request);
         }
     }
 

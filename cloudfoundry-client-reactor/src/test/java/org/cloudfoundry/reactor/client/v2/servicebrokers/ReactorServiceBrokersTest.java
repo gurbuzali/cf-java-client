@@ -51,6 +51,24 @@ public final class ReactorServiceBrokersTest {
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<CreateServiceBrokerResponse> expectations() {
+            return ScriptedSubscriber.<CreateServiceBrokerResponse>create()
+                .expectValue(CreateServiceBrokerResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2015-07-27T22:43:23Z")
+                        .id("1e86a649-e4a2-4bed-830d-b12435ed4cd9")
+                        .url("/v2/service_brokers/1e86a649-e4a2-4bed-830d-b12435ed4cd9")
+                        .build())
+                    .entity(ServiceBrokerEntity.builder()
+                        .name("service-broker-name")
+                        .brokerUrl("https://broker.example.com")
+                        .authenticationUsername("admin")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -65,19 +83,8 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<CreateServiceBrokerResponse> expectations() {
-            return CreateServiceBrokerResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2015-07-27T22:43:23Z")
-                    .id("1e86a649-e4a2-4bed-830d-b12435ed4cd9")
-                    .url("/v2/service_brokers/1e86a649-e4a2-4bed-830d-b12435ed4cd9")
-                    .build())
-                .entity(ServiceBrokerEntity.builder()
-                    .name("service-broker-name")
-                    .brokerUrl("https://broker.example.com")
-                    .authenticationUsername("admin")
-                    .build())
-                .build();
+        protected Mono<CreateServiceBrokerResponse> invoke(CreateServiceBrokerRequest request) {
+            return this.serviceBrokers.create(request);
         }
 
         @Override
@@ -90,16 +97,16 @@ public final class ReactorServiceBrokersTest {
                 .build();
         }
 
-        @Override
-        protected Mono<CreateServiceBrokerResponse> invoke(CreateServiceBrokerRequest request) {
-            return this.serviceBrokers.create(request);
-        }
-
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteServiceBrokerRequest, Void> {
 
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -114,8 +121,8 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(DeleteServiceBrokerRequest request) {
+            return this.serviceBrokers.delete(request);
         }
 
         @Override
@@ -124,16 +131,31 @@ public final class ReactorServiceBrokersTest {
                 .serviceBrokerId("test-service-broker-id")
                 .build();
         }
-
-        @Override
-        protected Mono<Void> invoke(DeleteServiceBrokerRequest request) {
-            return this.serviceBrokers.delete(request);
-        }
     }
 
     public static final class Get extends AbstractClientApiTest<GetServiceBrokerRequest, GetServiceBrokerResponse> {
 
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetServiceBrokerResponse> expectations() {
+            return ScriptedSubscriber.<GetServiceBrokerResponse>create()
+                .expectValue(GetServiceBrokerResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2015-07-27T22:43:23Z")
+                        .id("1311f77f-cfb6-499e-bcba-82c7ef968ae6")
+                        .updatedAt("2015-07-27T22:43:23Z")
+                        .url("/v2/service_brokers/1311f77f-cfb6-499e-bcba-82c7ef968ae6")
+                        .build())
+                    .entity(ServiceBrokerEntity.builder()
+                        .name("name-974")
+                        .brokerUrl("https://foo.com/url-36")
+                        .authenticationUsername("auth_username-36")
+                        .spaceId("7878cee1-a484-4148-92bf-84beae20842f")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -149,21 +171,8 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetServiceBrokerResponse> expectations() {
-            return GetServiceBrokerResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2015-07-27T22:43:23Z")
-                    .id("1311f77f-cfb6-499e-bcba-82c7ef968ae6")
-                    .updatedAt("2015-07-27T22:43:23Z")
-                    .url("/v2/service_brokers/1311f77f-cfb6-499e-bcba-82c7ef968ae6")
-                    .build())
-                .entity(ServiceBrokerEntity.builder()
-                    .name("name-974")
-                    .brokerUrl("https://foo.com/url-36")
-                    .authenticationUsername("auth_username-36")
-                    .spaceId("7878cee1-a484-4148-92bf-84beae20842f")
-                    .build())
-                .build();
+        protected Publisher<GetServiceBrokerResponse> invoke(GetServiceBrokerRequest request) {
+            return this.serviceBrokers.get(request);
         }
 
         @Override
@@ -172,16 +181,59 @@ public final class ReactorServiceBrokersTest {
                 .serviceBrokerId("test-service-broker-id")
                 .build();
         }
-
-        @Override
-        protected Publisher<GetServiceBrokerResponse> invoke(GetServiceBrokerRequest request) {
-            return this.serviceBrokers.get(request);
-        }
     }
 
     public static final class List extends AbstractClientApiTest<ListServiceBrokersRequest, ListServiceBrokersResponse> {
 
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListServiceBrokersResponse> expectations() {
+            return ScriptedSubscriber.<ListServiceBrokersResponse>create()
+                .expectValue(ListServiceBrokersResponse.builder()
+                    .totalResults(3)
+                    .totalPages(1)
+                    .resource(ServiceBrokerResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2015-07-27T22:43:23Z")
+                            .id("b52de6f1-15dd-4069-8b42-f052cc9333fc")
+                            .updatedAt("2015-07-27T22:43:23Z")
+                            .url("/v2/service_brokers/b52de6f1-15dd-4069-8b42-f052cc9333fc")
+                            .build())
+                        .entity(ServiceBrokerEntity.builder()
+                            .name("name-980")
+                            .brokerUrl("https://foo.com/url-39")
+                            .authenticationUsername("auth_username-39")
+                            .spaceId("4f34c35e-be0d-409e-9279-1ccd7058c5d8")
+                            .build())
+                        .build())
+                    .resource(ServiceBrokerResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2015-07-27T22:43:23Z")
+                            .id("812e9e7f-b5b0-4587-ba3c-b4a7c574fb88")
+                            .url("/v2/service_brokers/812e9e7f-b5b0-4587-ba3c-b4a7c574fb88")
+                            .build())
+                        .entity(ServiceBrokerEntity.builder()
+                            .name("name-981")
+                            .brokerUrl("https://foo.com/url-40")
+                            .authenticationUsername("auth_username-40")
+                            .build())
+                        .build())
+                    .resource(ServiceBrokerResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2015-07-27T22:43:23Z")
+                            .id("93e760c4-ff3d-447a-9cff-a17f4454eaee")
+                            .url("/v2/service_brokers/93e760c4-ff3d-447a-9cff-a17f4454eaee")
+                            .build())
+                        .entity(ServiceBrokerEntity.builder()
+                            .name("name-982")
+                            .brokerUrl("https://foo.com/url-41")
+                            .authenticationUsername("auth_username-41")
+                            .build())
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -197,49 +249,8 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListServiceBrokersResponse> expectations() {
-            return ListServiceBrokersResponse.builder()
-                .totalResults(3)
-                .totalPages(1)
-                .resource(ServiceBrokerResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2015-07-27T22:43:23Z")
-                        .id("b52de6f1-15dd-4069-8b42-f052cc9333fc")
-                        .updatedAt("2015-07-27T22:43:23Z")
-                        .url("/v2/service_brokers/b52de6f1-15dd-4069-8b42-f052cc9333fc")
-                        .build())
-                    .entity(ServiceBrokerEntity.builder()
-                        .name("name-980")
-                        .brokerUrl("https://foo.com/url-39")
-                        .authenticationUsername("auth_username-39")
-                        .spaceId("4f34c35e-be0d-409e-9279-1ccd7058c5d8")
-                        .build())
-                    .build())
-                .resource(ServiceBrokerResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2015-07-27T22:43:23Z")
-                        .id("812e9e7f-b5b0-4587-ba3c-b4a7c574fb88")
-                        .url("/v2/service_brokers/812e9e7f-b5b0-4587-ba3c-b4a7c574fb88")
-                        .build())
-                    .entity(ServiceBrokerEntity.builder()
-                        .name("name-981")
-                        .brokerUrl("https://foo.com/url-40")
-                        .authenticationUsername("auth_username-40")
-                        .build())
-                    .build())
-                .resource(ServiceBrokerResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2015-07-27T22:43:23Z")
-                        .id("93e760c4-ff3d-447a-9cff-a17f4454eaee")
-                        .url("/v2/service_brokers/93e760c4-ff3d-447a-9cff-a17f4454eaee")
-                        .build())
-                    .entity(ServiceBrokerEntity.builder()
-                        .name("name-982")
-                        .brokerUrl("https://foo.com/url-41")
-                        .authenticationUsername("auth_username-41")
-                        .build())
-                    .build())
-                .build();
+        protected Publisher<ListServiceBrokersResponse> invoke(ListServiceBrokersRequest request) {
+            return this.serviceBrokers.list(request);
         }
 
         @Override
@@ -249,16 +260,31 @@ public final class ReactorServiceBrokersTest {
                 .page(-1)
                 .build();
         }
-
-        @Override
-        protected Publisher<ListServiceBrokersResponse> invoke(ListServiceBrokersRequest request) {
-            return this.serviceBrokers.list(request);
-        }
     }
 
     public static final class Update extends AbstractClientApiTest<UpdateServiceBrokerRequest, UpdateServiceBrokerResponse> {
 
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateServiceBrokerResponse> expectations() {
+            return ScriptedSubscriber.<UpdateServiceBrokerResponse>create()
+                .expectValue(UpdateServiceBrokerResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2015-07-27T22:43:23Z")
+                        .id("92b935f5-20e2-4377-a7e2-f15faa110eab")
+                        .updatedAt("2015-07-27T22:43:23Z")
+                        .url("/v2/service_brokers/92b935f5-20e2-4377-a7e2-f15faa110eab")
+                        .build())
+                    .entity(ServiceBrokerEntity.builder()
+                        .name("name-998")
+                        .brokerUrl("https://mybroker.example.com")
+                        .authenticationUsername("admin-user")
+                        .spaceId("85e59d96-b68b-4908-8ff5-8d54f4371f14")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -275,21 +301,8 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateServiceBrokerResponse> expectations() {
-            return UpdateServiceBrokerResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2015-07-27T22:43:23Z")
-                    .id("92b935f5-20e2-4377-a7e2-f15faa110eab")
-                    .updatedAt("2015-07-27T22:43:23Z")
-                    .url("/v2/service_brokers/92b935f5-20e2-4377-a7e2-f15faa110eab")
-                    .build())
-                .entity(ServiceBrokerEntity.builder()
-                    .name("name-998")
-                    .brokerUrl("https://mybroker.example.com")
-                    .authenticationUsername("admin-user")
-                    .spaceId("85e59d96-b68b-4908-8ff5-8d54f4371f14")
-                    .build())
-                .build();
+        protected Publisher<UpdateServiceBrokerResponse> invoke(UpdateServiceBrokerRequest request) {
+            return this.serviceBrokers.update(request);
         }
 
         @Override
@@ -300,11 +313,6 @@ public final class ReactorServiceBrokersTest {
                 .brokerUrl("https://mybroker.example.com")
                 .serviceBrokerId("test-service-broker-id")
                 .build();
-        }
-
-        @Override
-        protected Publisher<UpdateServiceBrokerResponse> invoke(UpdateServiceBrokerRequest request) {
-            return this.serviceBrokers.update(request);
         }
     }
 

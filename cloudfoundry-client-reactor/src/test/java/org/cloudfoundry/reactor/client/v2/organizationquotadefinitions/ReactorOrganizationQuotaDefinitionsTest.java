@@ -51,20 +51,6 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
 
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/quota_definitions")
-                    .payload("fixtures/client/v2/quota_definitions/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v2/quota_definitions/POST_response.json")
-                    .build())
-                .build();
-        }
-
         @SuppressWarnings("deprecation")
         @Override
         protected ScriptedSubscriber<CreateOrganizationQuotaDefinitionResponse> expectations() {
@@ -91,6 +77,25 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/quota_definitions")
+                    .payload("fixtures/client/v2/quota_definitions/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v2/quota_definitions/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateOrganizationQuotaDefinitionResponse> invoke(CreateOrganizationQuotaDefinitionRequest request) {
+            return this.quotaDefinitions.create(request);
+        }
+
+        @Override
         protected CreateOrganizationQuotaDefinitionRequest validRequest() {
             return CreateOrganizationQuotaDefinitionRequest.builder()
                 .name("gold_quota")
@@ -104,16 +109,16 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<CreateOrganizationQuotaDefinitionResponse> invoke(CreateOrganizationQuotaDefinitionRequest request) {
-            return this.quotaDefinitions.create(request);
-        }
-
     }
 
     public static final class DeleteQuotaDefinition extends AbstractClientApiTest<DeleteOrganizationQuotaDefinitionRequest, DeleteOrganizationQuotaDefinitionResponse> {
 
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteOrganizationQuotaDefinitionResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -128,8 +133,8 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteOrganizationQuotaDefinitionResponse> expectations() {
-            return null;
+        protected Mono<DeleteOrganizationQuotaDefinitionResponse> invoke(DeleteOrganizationQuotaDefinitionRequest request) {
+            return this.quotaDefinitions.delete(request);
         }
 
         @Override
@@ -139,29 +144,11 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<DeleteOrganizationQuotaDefinitionResponse> invoke(DeleteOrganizationQuotaDefinitionRequest request) {
-            return this.quotaDefinitions.delete(request);
-        }
-
     }
 
     public static final class GetQuotaDefinition extends AbstractClientApiTest<GetOrganizationQuotaDefinitionRequest, GetOrganizationQuotaDefinitionResponse> {
 
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/quota_definitions/test-quota-definition-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/quota_definitions/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @SuppressWarnings("deprecation")
         @Override
@@ -189,9 +176,15 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected GetOrganizationQuotaDefinitionRequest validRequest() {
-            return GetOrganizationQuotaDefinitionRequest.builder()
-                .organizationQuotaDefinitionId("test-quota-definition-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/quota_definitions/test-quota-definition-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/quota_definitions/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -200,24 +193,18 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
             return this.quotaDefinitions.get(request);
         }
 
+        @Override
+        protected GetOrganizationQuotaDefinitionRequest validRequest() {
+            return GetOrganizationQuotaDefinitionRequest.builder()
+                .organizationQuotaDefinitionId("test-quota-definition-id")
+                .build();
+        }
+
     }
 
     public static final class ListOrganizationQuotaDefinitions extends AbstractClientApiTest<ListOrganizationQuotaDefinitionsRequest, ListOrganizationQuotaDefinitionsResponse> {
 
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/quota_definitions?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/quota_definitions/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @SuppressWarnings("deprecation")
         @Override
@@ -249,9 +236,15 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected ListOrganizationQuotaDefinitionsRequest validRequest() {
-            return ListOrganizationQuotaDefinitionsRequest.builder()
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/quota_definitions?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/quota_definitions/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -260,25 +253,18 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
             return this.quotaDefinitions.list(request);
         }
 
+        @Override
+        protected ListOrganizationQuotaDefinitionsRequest validRequest() {
+            return ListOrganizationQuotaDefinitionsRequest.builder()
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class UpdateQuotaDefinition extends AbstractClientApiTest<UpdateOrganizationQuotaDefinitionRequest, UpdateOrganizationQuotaDefinitionResponse> {
 
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/quota_definitions/test-quota-definition-id")
-                    .payload("fixtures/client/v2/quota_definitions/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v2/quota_definitions/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @SuppressWarnings("deprecation")
         @Override
@@ -307,15 +293,29 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected UpdateOrganizationQuotaDefinitionRequest validRequest() {
-            return UpdateOrganizationQuotaDefinitionRequest.builder()
-                .organizationQuotaDefinitionId("test-quota-definition-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/quota_definitions/test-quota-definition-id")
+                    .payload("fixtures/client/v2/quota_definitions/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v2/quota_definitions/PUT_{id}_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<UpdateOrganizationQuotaDefinitionResponse> invoke(UpdateOrganizationQuotaDefinitionRequest request) {
             return this.quotaDefinitions.update(request);
+        }
+
+        @Override
+        protected UpdateOrganizationQuotaDefinitionRequest validRequest() {
+            return UpdateOrganizationQuotaDefinitionRequest.builder()
+                .organizationQuotaDefinitionId("test-quota-definition-id")
+                .build();
         }
 
     }

@@ -57,6 +57,30 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<CreateUserProvidedServiceInstanceResponse> expectations() {
+            return ScriptedSubscriber.<CreateUserProvidedServiceInstanceResponse>create()
+                .expectValue(CreateUserProvidedServiceInstanceResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2015-07-27T22:43:35Z")
+                        .id("34d5500e-712d-49ef-8bbe-c9ac349532da")
+                        .url("/v2/user_provided_service_instances/34d5500e-712d-49ef-8bbe-c9ac349532da")
+                        .build())
+                    .entity(UserProvidedServiceInstanceEntity.builder()
+                        .name("my-user-provided-instance")
+                        .credential("somekey", "somevalue")
+                        .spaceId("0d45d43f-7d50-43c6-9981-b32ce8d5a373")
+                        .type("user_provided_service_instance")
+                        .syslogDrainUrl("syslog://example.com")
+                        .routeServiceUrl("https://logger.example.com")
+                        .spaceUrl("/v2/spaces/0d45d43f-7d50-43c6-9981-b32ce8d5a373")
+                        .serviceBindingsUrl("/v2/user_provided_service_instances/34d5500e-712d-49ef-8bbe-c9ac349532da/service_bindings")
+                        .routesUrl("/v2/user_provided_service_instances/34d5500e-712d-49ef-8bbe-c9ac349532da/routes")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -71,25 +95,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<CreateUserProvidedServiceInstanceResponse> expectations() {
-            return CreateUserProvidedServiceInstanceResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2015-07-27T22:43:35Z")
-                    .id("34d5500e-712d-49ef-8bbe-c9ac349532da")
-                    .url("/v2/user_provided_service_instances/34d5500e-712d-49ef-8bbe-c9ac349532da")
-                    .build())
-                .entity(UserProvidedServiceInstanceEntity.builder()
-                    .name("my-user-provided-instance")
-                    .credential("somekey", "somevalue")
-                    .spaceId("0d45d43f-7d50-43c6-9981-b32ce8d5a373")
-                    .type("user_provided_service_instance")
-                    .syslogDrainUrl("syslog://example.com")
-                    .routeServiceUrl("https://logger.example.com")
-                    .spaceUrl("/v2/spaces/0d45d43f-7d50-43c6-9981-b32ce8d5a373")
-                    .serviceBindingsUrl("/v2/user_provided_service_instances/34d5500e-712d-49ef-8bbe-c9ac349532da/service_bindings")
-                    .routesUrl("/v2/user_provided_service_instances/34d5500e-712d-49ef-8bbe-c9ac349532da/routes")
-                    .build())
-                .build();
+        protected Mono<CreateUserProvidedServiceInstanceResponse> invoke(CreateUserProvidedServiceInstanceRequest request) {
+            return this.userProvidedServiceInstances.create(request);
         }
 
         @Override
@@ -102,16 +109,16 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .syslogDrainUrl("syslog://example.com")
                 .build();
         }
-
-        @Override
-        protected Mono<CreateUserProvidedServiceInstanceResponse> invoke(CreateUserProvidedServiceInstanceRequest request) {
-            return this.userProvidedServiceInstances.create(request);
-        }
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteUserProvidedServiceInstanceRequest, Void> {
 
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -126,8 +133,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(DeleteUserProvidedServiceInstanceRequest request) {
+            return this.userProvidedServiceInstances.delete(request);
         }
 
         @Override
@@ -136,16 +143,34 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .userProvidedServiceInstanceId("5b6b45c8-89be-48d2-affd-f64346ad4d93")
                 .build();
         }
-
-        @Override
-        protected Mono<Void> invoke(DeleteUserProvidedServiceInstanceRequest request) {
-            return this.userProvidedServiceInstances.delete(request);
-        }
     }
 
     public static final class Get extends AbstractClientApiTest<GetUserProvidedServiceInstanceRequest, GetUserProvidedServiceInstanceResponse> {
 
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetUserProvidedServiceInstanceResponse> expectations() {
+            return ScriptedSubscriber.<GetUserProvidedServiceInstanceResponse>create()
+                .expectValue(GetUserProvidedServiceInstanceResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2015-07-27T22:43:34Z")
+                        .id("8c12fd06-6639-4844-b5e7-a6831cadbbcc")
+                        .url("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc")
+                        .build())
+                    .entity(UserProvidedServiceInstanceEntity.builder()
+                        .name("name-2361")
+                        .credential("creds-key-662", "creds-val-662")
+                        .spaceId("cebb3962-4e5b-4204-b117-3140ec4a62d9")
+                        .type("user_provided_service_instance")
+                        .syslogDrainUrl("https://foo.com/url-89")
+                        .spaceUrl("/v2/spaces/cebb3962-4e5b-4204-b117-3140ec4a62d9")
+                        .serviceBindingsUrl("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc/service_bindings")
+                        .routesUrl("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc/routes")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -161,24 +186,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetUserProvidedServiceInstanceResponse> expectations() {
-            return GetUserProvidedServiceInstanceResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2015-07-27T22:43:34Z")
-                    .id("8c12fd06-6639-4844-b5e7-a6831cadbbcc")
-                    .url("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc")
-                    .build())
-                .entity(UserProvidedServiceInstanceEntity.builder()
-                    .name("name-2361")
-                    .credential("creds-key-662", "creds-val-662")
-                    .spaceId("cebb3962-4e5b-4204-b117-3140ec4a62d9")
-                    .type("user_provided_service_instance")
-                    .syslogDrainUrl("https://foo.com/url-89")
-                    .spaceUrl("/v2/spaces/cebb3962-4e5b-4204-b117-3140ec4a62d9")
-                    .serviceBindingsUrl("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc/service_bindings")
-                    .routesUrl("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc/routes")
-                    .build())
-                .build();
+        protected Mono<GetUserProvidedServiceInstanceResponse> invoke(GetUserProvidedServiceInstanceRequest request) {
+            return this.userProvidedServiceInstances.get(request);
         }
 
         @Override
@@ -187,16 +196,38 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .userProvidedServiceInstanceId("8c12fd06-6639-4844-b5e7-a6831cadbbcc")
                 .build();
         }
-
-        @Override
-        protected Mono<GetUserProvidedServiceInstanceResponse> invoke(GetUserProvidedServiceInstanceRequest request) {
-            return this.userProvidedServiceInstances.get(request);
-        }
     }
 
     public static final class List extends AbstractClientApiTest<ListUserProvidedServiceInstancesRequest, ListUserProvidedServiceInstancesResponse> {
 
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListUserProvidedServiceInstancesResponse> expectations() {
+            return ScriptedSubscriber.<ListUserProvidedServiceInstancesResponse>create()
+                .expectValue(ListUserProvidedServiceInstancesResponse.builder()
+                    .totalPages(1)
+                    .totalResults(1)
+                    .resource(UserProvidedServiceInstanceResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2015-07-27T22:43:34Z")
+                            .id("8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866")
+                            .url("/v2/user_provided_service_instances/8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866")
+                            .build())
+                        .entity(UserProvidedServiceInstanceEntity.builder()
+                            .name("name-2365")
+                            .credential("creds-key-665", "creds-val-665")
+                            .spaceId("2fff6e71-d329-4991-9c89-7fa8abca70df")
+                            .type("user_provided_service_instance")
+                            .syslogDrainUrl("https://foo.com/url-90")
+                            .spaceUrl("/v2/spaces/2fff6e71-d329-4991-9c89-7fa8abca70df")
+                            .serviceBindingsUrl("/v2/user_provided_service_instances/8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866/service_bindings")
+                            .routesUrl("/v2/user_provided_service_instances/8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866/routes")
+                            .build())
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -212,28 +243,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListUserProvidedServiceInstancesResponse> expectations() {
-            return ListUserProvidedServiceInstancesResponse.builder()
-                .totalPages(1)
-                .totalResults(1)
-                .resource(UserProvidedServiceInstanceResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2015-07-27T22:43:34Z")
-                        .id("8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866")
-                        .url("/v2/user_provided_service_instances/8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866")
-                        .build())
-                    .entity(UserProvidedServiceInstanceEntity.builder()
-                        .name("name-2365")
-                        .credential("creds-key-665", "creds-val-665")
-                        .spaceId("2fff6e71-d329-4991-9c89-7fa8abca70df")
-                        .type("user_provided_service_instance")
-                        .syslogDrainUrl("https://foo.com/url-90")
-                        .spaceUrl("/v2/spaces/2fff6e71-d329-4991-9c89-7fa8abca70df")
-                        .serviceBindingsUrl("/v2/user_provided_service_instances/8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866/service_bindings")
-                        .routesUrl("/v2/user_provided_service_instances/8db6d37b-1ca8-4d0a-b1d3-2a6aaceae866/routes")
-                        .build())
-                    .build())
-                .build();
+        protected Mono<ListUserProvidedServiceInstancesResponse> invoke(ListUserProvidedServiceInstancesRequest request) {
+            return this.userProvidedServiceInstances.list(request);
         }
 
         @Override
@@ -242,16 +253,38 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .page(-1)
                 .build();
         }
-
-        @Override
-        protected Mono<ListUserProvidedServiceInstancesResponse> invoke(ListUserProvidedServiceInstancesRequest request) {
-            return this.userProvidedServiceInstances.list(request);
-        }
     }
 
     public static final class ListServiceBindings extends AbstractClientApiTest<ListUserProvidedServiceInstanceServiceBindingsRequest, ListUserProvidedServiceInstanceServiceBindingsResponse> {
 
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListUserProvidedServiceInstanceServiceBindingsResponse> expectations() {
+            return ScriptedSubscriber.<ListUserProvidedServiceInstanceServiceBindingsResponse>create()
+                .expectValue(ListUserProvidedServiceInstanceServiceBindingsResponse.builder()
+                    .totalPages(1)
+                    .totalResults(1)
+                    .resource(ServiceBindingResource.builder()
+                        .metadata(Metadata.builder()
+                            .createdAt("2016-01-26T22:20:16Z")
+                            .id("e6b8d548-e009-47d4-ab79-675e3da6bb52")
+                            .url("/v2/service_bindings/e6b8d548-e009-47d4-ab79-675e3da6bb52")
+                            .build()
+                        )
+                        .entity(ServiceBindingEntity.builder()
+                            .applicationId("a9bbd896-7500-45be-a75a-25e3d254f67c")
+                            .serviceInstanceId("16c81612-6a63-4faa-8cd5-acc80771b562")
+                            .credential("creds-key-29", "creds-val-29")
+                            .bindingOptions(Collections.emptyMap())
+                            .gatewayName("")
+                            .applicationUrl("/v2/apps/a9bbd896-7500-45be-a75a-25e3d254f67c")
+                            .serviceInstanceUrl("/v2/user_provided_service_instances/16c81612-6a63-4faa-8cd5-acc80771b562")
+                            .build())
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -267,28 +300,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListUserProvidedServiceInstanceServiceBindingsResponse> expectations() {
-            return ListUserProvidedServiceInstanceServiceBindingsResponse.builder()
-                .totalPages(1)
-                .totalResults(1)
-                .resource(ServiceBindingResource.builder()
-                    .metadata(Metadata.builder()
-                        .createdAt("2016-01-26T22:20:16Z")
-                        .id("e6b8d548-e009-47d4-ab79-675e3da6bb52")
-                        .url("/v2/service_bindings/e6b8d548-e009-47d4-ab79-675e3da6bb52")
-                        .build()
-                    )
-                    .entity(ServiceBindingEntity.builder()
-                        .applicationId("a9bbd896-7500-45be-a75a-25e3d254f67c")
-                        .serviceInstanceId("16c81612-6a63-4faa-8cd5-acc80771b562")
-                        .credential("creds-key-29", "creds-val-29")
-                        .bindingOptions(Collections.emptyMap())
-                        .gatewayName("")
-                        .applicationUrl("/v2/apps/a9bbd896-7500-45be-a75a-25e3d254f67c")
-                        .serviceInstanceUrl("/v2/user_provided_service_instances/16c81612-6a63-4faa-8cd5-acc80771b562")
-                        .build())
-                    .build())
-                .build();
+        protected Mono<ListUserProvidedServiceInstanceServiceBindingsResponse> invoke(ListUserProvidedServiceInstanceServiceBindingsRequest request) {
+            return this.userProvidedServiceInstances.listServiceBindings(request);
         }
 
         @Override
@@ -298,16 +311,35 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .page(-1)
                 .build();
         }
-
-        @Override
-        protected Mono<ListUserProvidedServiceInstanceServiceBindingsResponse> invoke(ListUserProvidedServiceInstanceServiceBindingsRequest request) {
-            return this.userProvidedServiceInstances.listServiceBindings(request);
-        }
     }
 
     public static final class Update extends AbstractClientApiTest<UpdateUserProvidedServiceInstanceRequest, UpdateUserProvidedServiceInstanceResponse> {
 
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateUserProvidedServiceInstanceResponse> expectations() {
+            return ScriptedSubscriber.<UpdateUserProvidedServiceInstanceResponse>create()
+                .expectValue(UpdateUserProvidedServiceInstanceResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2016-02-19T02:04:06Z")
+                        .id("e2c198b1-fa15-414e-a9a4-31537996b39d")
+                        .updatedAt("2016-02-19T02:04:06Z")
+                        .url("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d")
+                        .build())
+                    .entity(UserProvidedServiceInstanceEntity.builder()
+                        .name("name-2565")
+                        .credential("somekey", "somenewvalue")
+                        .spaceId("438b5923-fe7a-4459-bbcd-a7c27332bad3")
+                        .type("user_provided_service_instance")
+                        .syslogDrainUrl("https://foo.com/url-91")
+                        .spaceUrl("/v2/spaces/438b5923-fe7a-4459-bbcd-a7c27332bad3")
+                        .serviceBindingsUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/service_bindings")
+                        .routesUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/routes")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -324,25 +356,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateUserProvidedServiceInstanceResponse> expectations() {
-            return UpdateUserProvidedServiceInstanceResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2016-02-19T02:04:06Z")
-                    .id("e2c198b1-fa15-414e-a9a4-31537996b39d")
-                    .updatedAt("2016-02-19T02:04:06Z")
-                    .url("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d")
-                    .build())
-                .entity(UserProvidedServiceInstanceEntity.builder()
-                    .name("name-2565")
-                    .credential("somekey", "somenewvalue")
-                    .spaceId("438b5923-fe7a-4459-bbcd-a7c27332bad3")
-                    .type("user_provided_service_instance")
-                    .syslogDrainUrl("https://foo.com/url-91")
-                    .spaceUrl("/v2/spaces/438b5923-fe7a-4459-bbcd-a7c27332bad3")
-                    .serviceBindingsUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/service_bindings")
-                    .routesUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/routes")
-                    .build())
-                .build();
+        protected Mono<UpdateUserProvidedServiceInstanceResponse> invoke(UpdateUserProvidedServiceInstanceRequest request) {
+            return this.userProvidedServiceInstances.update(request);
         }
 
         @Override
@@ -352,16 +367,35 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .userProvidedServiceInstanceId("e2c198b1-fa15-414e-a9a4-31537996b39d")
                 .build();
         }
-
-        @Override
-        protected Mono<UpdateUserProvidedServiceInstanceResponse> invoke(UpdateUserProvidedServiceInstanceRequest request) {
-            return this.userProvidedServiceInstances.update(request);
-        }
     }
 
     public static final class UpdateWithEmptyCredentials extends AbstractClientApiTest<UpdateUserProvidedServiceInstanceRequest, UpdateUserProvidedServiceInstanceResponse> {
 
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateUserProvidedServiceInstanceResponse> expectations() {
+            return ScriptedSubscriber.<UpdateUserProvidedServiceInstanceResponse>create()
+                .expectValue(UpdateUserProvidedServiceInstanceResponse.builder()
+                    .metadata(Metadata.builder()
+                        .createdAt("2016-02-19T02:04:06Z")
+                        .id("e2c198b1-fa15-414e-a9a4-31537996b39d")
+                        .updatedAt("2016-02-19T02:04:06Z")
+                        .url("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d")
+                        .build())
+                    .entity(UserProvidedServiceInstanceEntity.builder()
+                        .credentials(Collections.emptyMap())
+                        .name("name-2565")
+                        .spaceId("438b5923-fe7a-4459-bbcd-a7c27332bad3")
+                        .type("user_provided_service_instance")
+                        .syslogDrainUrl("https://foo.com/url-91")
+                        .spaceUrl("/v2/spaces/438b5923-fe7a-4459-bbcd-a7c27332bad3")
+                        .serviceBindingsUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/service_bindings")
+                        .routesUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/routes")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -378,25 +412,8 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateUserProvidedServiceInstanceResponse> expectations() {
-            return UpdateUserProvidedServiceInstanceResponse.builder()
-                .metadata(Metadata.builder()
-                    .createdAt("2016-02-19T02:04:06Z")
-                    .id("e2c198b1-fa15-414e-a9a4-31537996b39d")
-                    .updatedAt("2016-02-19T02:04:06Z")
-                    .url("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d")
-                    .build())
-                .entity(UserProvidedServiceInstanceEntity.builder()
-                    .credentials(Collections.emptyMap())
-                    .name("name-2565")
-                    .spaceId("438b5923-fe7a-4459-bbcd-a7c27332bad3")
-                    .type("user_provided_service_instance")
-                    .syslogDrainUrl("https://foo.com/url-91")
-                    .spaceUrl("/v2/spaces/438b5923-fe7a-4459-bbcd-a7c27332bad3")
-                    .serviceBindingsUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/service_bindings")
-                    .routesUrl("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d/routes")
-                    .build())
-                .build();
+        protected Mono<UpdateUserProvidedServiceInstanceResponse> invoke(UpdateUserProvidedServiceInstanceRequest request) {
+            return this.userProvidedServiceInstances.update(request);
         }
 
         @Override
@@ -405,11 +422,6 @@ public final class ReactorUserProvidedServiceInstancesTest {
                 .credentials(Collections.emptyMap())
                 .userProvidedServiceInstanceId("e2c198b1-fa15-414e-a9a4-31537996b39d")
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateUserProvidedServiceInstanceResponse> invoke(UpdateUserProvidedServiceInstanceRequest request) {
-            return this.userProvidedServiceInstances.update(request);
         }
     }
 

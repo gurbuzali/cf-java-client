@@ -49,20 +49,6 @@ public final class ReactorPrivateDomainsTest {
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/private_domains")
-                    .payload("fixtures/client/v2/private_domains/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/private_domains/POST_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<CreatePrivateDomainResponse> expectations() {
             return CreatePrivateDomainResponse.builder()
                 .metadata(Metadata.builder()
@@ -80,10 +66,16 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected CreatePrivateDomainRequest validRequest() {
-            return CreatePrivateDomainRequest.builder()
-                .name("exmaple.com")
-                .owningOrganizationId("22bb8ae1-6324-40eb-b077-bd1bfad773f8")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/private_domains")
+                    .payload("fixtures/client/v2/private_domains/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/private_domains/POST_response.json")
+                    .build())
                 .build();
         }
 
@@ -91,11 +83,24 @@ public final class ReactorPrivateDomainsTest {
         protected Mono<CreatePrivateDomainResponse> invoke(CreatePrivateDomainRequest request) {
             return this.privateDomains.create(request);
         }
+
+        @Override
+        protected CreatePrivateDomainRequest validRequest() {
+            return CreatePrivateDomainRequest.builder()
+                .name("exmaple.com")
+                .owningOrganizationId("22bb8ae1-6324-40eb-b077-bd1bfad773f8")
+                .build();
+        }
     }
 
     public static final class Delete extends AbstractClientApiTest<DeletePrivateDomainRequest, DeletePrivateDomainResponse> {
 
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -110,8 +115,8 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
-            return null;
+        protected Mono<DeletePrivateDomainResponse> invoke(DeletePrivateDomainRequest request) {
+            return this.privateDomains.delete(request);
         }
 
         @Override
@@ -121,29 +126,11 @@ public final class ReactorPrivateDomainsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<DeletePrivateDomainResponse> invoke(DeletePrivateDomainRequest request) {
-            return this.privateDomains.delete(request);
-        }
-
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeletePrivateDomainRequest, DeletePrivateDomainResponse> {
 
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/private_domains/test-private-domain-id?async=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v2/private_domains/DELETE_{id}_async_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
@@ -161,10 +148,15 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected DeletePrivateDomainRequest validRequest() {
-            return DeletePrivateDomainRequest.builder()
-                .async(true)
-                .privateDomainId("test-private-domain-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/private_domains/test-private-domain-id?async=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v2/private_domains/DELETE_{id}_async_response.json")
+                    .build())
                 .build();
         }
 
@@ -173,24 +165,19 @@ public final class ReactorPrivateDomainsTest {
             return this.privateDomains.delete(request);
         }
 
+        @Override
+        protected DeletePrivateDomainRequest validRequest() {
+            return DeletePrivateDomainRequest.builder()
+                .async(true)
+                .privateDomainId("test-private-domain-id")
+                .build();
+        }
+
     }
 
     public static final class Get extends AbstractClientApiTest<GetPrivateDomainRequest, GetPrivateDomainResponse> {
 
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/private_domains/test-private-domain-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/private_domains/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetPrivateDomainResponse> expectations() {
@@ -210,9 +197,15 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected GetPrivateDomainRequest validRequest() {
-            return GetPrivateDomainRequest.builder()
-                .privateDomainId("test-private-domain-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/private_domains/test-private-domain-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/private_domains/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -221,24 +214,18 @@ public final class ReactorPrivateDomainsTest {
             return this.privateDomains.get(request);
         }
 
+        @Override
+        protected GetPrivateDomainRequest validRequest() {
+            return GetPrivateDomainRequest.builder()
+                .privateDomainId("test-private-domain-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListPrivateDomainsRequest, ListPrivateDomainsResponse> {
 
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/private_domains?q=name%20IN%20test-name.com&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/private_domains/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListPrivateDomainsResponse> expectations() {
@@ -262,16 +249,29 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected ListPrivateDomainsRequest validRequest() {
-            return ListPrivateDomainsRequest.builder()
-                .name("test-name.com")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/private_domains?q=name%20IN%20test-name.com&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/private_domains/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListPrivateDomainsResponse> invoke(ListPrivateDomainsRequest request) {
             return this.privateDomains.list(request);
+        }
+
+        @Override
+        protected ListPrivateDomainsRequest validRequest() {
+            return ListPrivateDomainsRequest.builder()
+                .name("test-name.com")
+                .page(-1)
+                .build();
         }
 
     }

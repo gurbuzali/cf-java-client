@@ -64,20 +64,6 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/oauth/clients/tx")
-                    .payload("fixtures/uaa/clients/POST_tx_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/clients/POST_tx_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<BatchCreateClientsResponse> expectations() {
             return BatchCreateClientsResponse.builder()
                 .client(Client.builder()
@@ -110,6 +96,25 @@ public final class ReactorClientsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/oauth/clients/tx")
+                    .payload("fixtures/uaa/clients/POST_tx_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/clients/POST_tx_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<BatchCreateClientsResponse> invoke(BatchCreateClientsRequest request) {
+            return this.clients.batchCreate(request);
+        }
+
+        @Override
         protected BatchCreateClientsRequest validRequest() {
             return BatchCreateClientsRequest.builder()
                 .client(CreateClient.builder()
@@ -138,30 +143,11 @@ public final class ReactorClientsTest {
                     .build())
                 .build();
         }
-
-        @Override
-        protected Mono<BatchCreateClientsResponse> invoke(BatchCreateClientsRequest request) {
-            return this.clients.batchCreate(request);
-        }
     }
 
     public static final class BatchDelete extends AbstractUaaApiTest<BatchDeleteClientsRequest, BatchDeleteClientsResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/oauth/clients/tx/delete")
-                    .payload("fixtures/uaa/clients/POST_tx_delete_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/POST_tx_delete_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<BatchDeleteClientsResponse> expectations() {
@@ -198,9 +184,16 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected BatchDeleteClientsRequest validRequest() {
-            return BatchDeleteClientsRequest.builder()
-                .clientId("14pnUs", "qECLyr")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/oauth/clients/tx/delete")
+                    .payload("fixtures/uaa/clients/POST_tx_delete_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/POST_tx_delete_response.json")
+                    .build())
                 .build();
         }
 
@@ -208,25 +201,18 @@ public final class ReactorClientsTest {
         protected Mono<BatchDeleteClientsResponse> invoke(BatchDeleteClientsRequest request) {
             return this.clients.batchDelete(request);
         }
+
+        @Override
+        protected BatchDeleteClientsRequest validRequest() {
+            return BatchDeleteClientsRequest.builder()
+                .clientId("14pnUs", "qECLyr")
+                .build();
+        }
     }
 
     public static final class Create extends AbstractUaaApiTest<CreateClientRequest, CreateClientResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/oauth/clients")
-                    .payload("fixtures/uaa/clients/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/clients/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateClientResponse> expectations() {
@@ -246,6 +232,25 @@ public final class ReactorClientsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/oauth/clients")
+                    .payload("fixtures/uaa/clients/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/clients/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateClientResponse> invoke(CreateClientRequest request) {
+            return this.clients.create(request);
+        }
+
+        @Override
         protected CreateClientRequest validRequest() {
             return CreateClientRequest.builder()
                 .allowedProvider("uaa", "ldap", "my-saml-provider")
@@ -260,29 +265,11 @@ public final class ReactorClientsTest {
                 .tokenSalt("hRZ21X")
                 .build();
         }
-
-        @Override
-        protected Mono<CreateClientResponse> invoke(CreateClientRequest request) {
-            return this.clients.create(request);
-        }
     }
 
     public static final class Delete extends AbstractUaaApiTest<DeleteClientRequest, DeleteClientResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/oauth/clients/test-client-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/DELETE_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteClientResponse> expectations() {
@@ -302,9 +289,15 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected DeleteClientRequest validRequest() {
-            return DeleteClientRequest.builder()
-                .clientId("test-client-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/oauth/clients/test-client-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/DELETE_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -312,24 +305,18 @@ public final class ReactorClientsTest {
         protected Mono<DeleteClientResponse> invoke(DeleteClientRequest request) {
             return this.clients.delete(request);
         }
+
+        @Override
+        protected DeleteClientRequest validRequest() {
+            return DeleteClientRequest.builder()
+                .clientId("test-client-id")
+                .build();
+        }
     }
 
     public static final class Deserialize extends AbstractUaaApiTest<ListClientsRequest, ListClientsResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/oauth/clients")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/GET_response_deserialize.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListClientsResponse> expectations() {
@@ -363,8 +350,15 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListClientsRequest validRequest() {
-            return ListClientsRequest.builder()
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/oauth/clients")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/GET_response_deserialize.json")
+                    .build())
                 .build();
         }
 
@@ -372,24 +366,17 @@ public final class ReactorClientsTest {
         protected Mono<ListClientsResponse> invoke(ListClientsRequest request) {
             return this.clients.list(request);
         }
+
+        @Override
+        protected ListClientsRequest validRequest() {
+            return ListClientsRequest.builder()
+                .build();
+        }
     }
 
     public static final class Get extends AbstractUaaApiTest<GetClientRequest, GetClientResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/oauth/clients/test-client-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetClientResponse> expectations() {
@@ -409,9 +396,15 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected GetClientRequest validRequest() {
-            return GetClientRequest.builder()
-                .clientId("test-client-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/oauth/clients/test-client-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -419,11 +412,28 @@ public final class ReactorClientsTest {
         protected Mono<GetClientResponse> invoke(GetClientRequest request) {
             return this.clients.get(request);
         }
+
+        @Override
+        protected GetClientRequest validRequest() {
+            return GetClientRequest.builder()
+                .clientId("test-client-id")
+                .build();
+        }
     }
 
     public static final class GetMetadata extends AbstractUaaApiTest<GetMetadataRequest, GetMetadataResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetMetadataResponse> expectations() {
+            return GetMetadataResponse.builder()
+                .appIcon("aWNvbiBmb3IgY2xpZW50IDQ=")
+                .appLaunchUrl("http://myloginpage.com")
+                .clientId("P4vuAaSe")
+                .showOnHomePage(true)
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -439,13 +449,8 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetMetadataResponse> expectations() {
-            return GetMetadataResponse.builder()
-                .appIcon("aWNvbiBmb3IgY2xpZW50IDQ=")
-                .appLaunchUrl("http://myloginpage.com")
-                .clientId("P4vuAaSe")
-                .showOnHomePage(true)
-                .build();
+        protected Mono<GetMetadataResponse> invoke(GetMetadataRequest request) {
+            return this.clients.getMetadata(request);
         }
 
         @Override
@@ -454,29 +459,11 @@ public final class ReactorClientsTest {
                 .clientId("P4vuAaSe")
                 .build();
         }
-
-        @Override
-        protected Mono<GetMetadataResponse> invoke(GetMetadataRequest request) {
-            return this.clients.getMetadata(request);
-        }
     }
 
     public static final class List extends AbstractUaaApiTest<ListClientsRequest, ListClientsResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/oauth/clients?count=10&filter=client_id%2Beq%2B%22EGgNW3%22&sortBy=client_id&sortOrder=descending&startIndex=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListClientsResponse> expectations() {
@@ -502,6 +489,24 @@ public final class ReactorClientsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/oauth/clients?count=10&filter=client_id%2Beq%2B%22EGgNW3%22&sortBy=client_id&sortOrder=descending&startIndex=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/GET_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<ListClientsResponse> invoke(ListClientsRequest request) {
+            return this.clients.list(request);
+        }
+
+        @Override
         protected ListClientsRequest validRequest() {
             return ListClientsRequest.builder()
                 .count(10)
@@ -511,29 +516,11 @@ public final class ReactorClientsTest {
                 .startIndex(1)
                 .build();
         }
-
-        @Override
-        protected Mono<ListClientsResponse> invoke(ListClientsRequest request) {
-            return this.clients.list(request);
-        }
     }
 
     public static final class ListMetadatas extends AbstractUaaApiTest<ListMetadatasRequest, ListMetadatasResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/oauth/clients/meta")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/GET_meta_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListMetadatasResponse> expectations() {
@@ -566,8 +553,15 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListMetadatasRequest validRequest() {
-            return ListMetadatasRequest.builder()
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/oauth/clients/meta")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/GET_meta_response.json")
+                    .build())
                 .build();
         }
 
@@ -575,25 +569,17 @@ public final class ReactorClientsTest {
         protected Mono<ListMetadatasResponse> invoke(ListMetadatasRequest request) {
             return this.clients.listMetadatas(request);
         }
+
+        @Override
+        protected ListMetadatasRequest validRequest() {
+            return ListMetadatasRequest.builder()
+                .build();
+        }
     }
 
     public static final class Update extends AbstractUaaApiTest<UpdateClientRequest, UpdateClientResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/oauth/clients/55pTMX")
-                    .payload("fixtures/uaa/clients/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/clients/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateClientResponse> expectations() {
@@ -613,6 +599,25 @@ public final class ReactorClientsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/oauth/clients/55pTMX")
+                    .payload("fixtures/uaa/clients/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/clients/PUT_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<UpdateClientResponse> invoke(UpdateClientRequest request) {
+            return this.clients.update(request);
+        }
+
+        @Override
         protected UpdateClientRequest validRequest() {
             return UpdateClientRequest.builder()
                 .authorizedGrantType(CLIENT_CREDENTIALS)
@@ -621,16 +626,21 @@ public final class ReactorClientsTest {
                 .scope("clients.new", "clients.autoapprove")
                 .build();
         }
-
-        @Override
-        protected Mono<UpdateClientResponse> invoke(UpdateClientRequest request) {
-            return this.clients.update(request);
-        }
     }
 
     public static final class UpdateMetadata extends AbstractUaaApiTest<UpdateMetadataRequest, UpdateMetadataResponse> {
 
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<UpdateMetadataResponse> expectations() {
+            return UpdateMetadataResponse.builder()
+                .appLaunchUrl("http://changed.app.launch/url")
+                .appIcon("")
+                .clientId("RpFRZpY3")
+                .showOnHomePage(false)
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -647,13 +657,8 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<UpdateMetadataResponse> expectations() {
-            return UpdateMetadataResponse.builder()
-                .appLaunchUrl("http://changed.app.launch/url")
-                .appIcon("")
-                .clientId("RpFRZpY3")
-                .showOnHomePage(false)
-                .build();
+        protected Mono<UpdateMetadataResponse> invoke(UpdateMetadataRequest request) {
+            return this.clients.updateMetadata(request);
         }
 
         @Override
@@ -663,11 +668,6 @@ public final class ReactorClientsTest {
                 .clientId("RpFRZpY3")
                 .showOnHomePage(false)
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateMetadataResponse> invoke(UpdateMetadataRequest request) {
-            return this.clients.updateMetadata(request);
         }
     }
 

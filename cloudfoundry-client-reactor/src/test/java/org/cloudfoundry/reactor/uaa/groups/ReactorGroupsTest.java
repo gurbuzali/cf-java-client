@@ -75,6 +75,15 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<AddMemberResponse> expectations() {
+            return AddMemberResponse.builder()
+                .origin("uaa")
+                .type(MemberType.USER)
+                .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
+                .build();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -89,12 +98,8 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<AddMemberResponse> expectations() {
-            return AddMemberResponse.builder()
-                .origin("uaa")
-                .type(MemberType.USER)
-                .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
-                .build();
+        protected Mono<AddMemberResponse> invoke(AddMemberRequest request) {
+            return this.groups.addMember(request);
         }
 
         @Override
@@ -106,16 +111,20 @@ public final class ReactorGroupsTest {
                 .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
                 .build();
         }
-
-        @Override
-        protected Mono<AddMemberResponse> invoke(AddMemberRequest request) {
-            return this.groups.addMember(request);
-        }
     }
 
     public static final class CheckMember extends AbstractUaaApiTest<CheckMembershipRequest, CheckMembershipResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<CheckMembershipResponse> expectations() {
+            return CheckMembershipResponse.builder()
+                .origin("uaa")
+                .type(MemberType.USER)
+                .memberId("test-member-id")
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -131,12 +140,8 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<CheckMembershipResponse> expectations() {
-            return CheckMembershipResponse.builder()
-                .origin("uaa")
-                .type(MemberType.USER)
-                .memberId("test-member-id")
-                .build();
+        protected Mono<CheckMembershipResponse> invoke(CheckMembershipRequest request) {
+            return this.groups.checkMembership(request);
         }
 
         @Override
@@ -146,31 +151,11 @@ public final class ReactorGroupsTest {
                 .memberId("test-member-id")
                 .build();
         }
-
-        @Override
-        protected Mono<CheckMembershipResponse> invoke(CheckMembershipRequest request) {
-            return this.groups.checkMembership(request);
-        }
     }
 
     public static final class Create extends AbstractUaaApiTest<CreateGroupRequest, CreateGroupResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .header("X-Identity-Zone-Id", "uaa")
-                    .method(POST).path("/Groups")
-                    .payload("fixtures/uaa/groups/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/groups/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateGroupResponse> expectations() {
@@ -194,6 +179,26 @@ public final class ReactorGroupsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .header("X-Identity-Zone-Id", "uaa")
+                    .method(POST).path("/Groups")
+                    .payload("fixtures/uaa/groups/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/groups/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateGroupResponse> invoke(CreateGroupRequest request) {
+            return this.groups.create(request);
+        }
+
+        @Override
         protected CreateGroupRequest validRequest() {
             return CreateGroupRequest.builder()
                 .description("the cool group")
@@ -206,30 +211,11 @@ public final class ReactorGroupsTest {
                     .build())
                 .build();
         }
-
-        @Override
-        protected Mono<CreateGroupResponse> invoke(CreateGroupRequest request) {
-            return this.groups.create(request);
-        }
     }
 
     public static final class Delete extends AbstractUaaApiTest<DeleteGroupRequest, DeleteGroupResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .header("If-Match", "*")
-                    .method(DELETE).path("/Groups/test-group-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/DELETE_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteGroupResponse> expectations() {
@@ -253,10 +239,16 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected DeleteGroupRequest validRequest() {
-            return DeleteGroupRequest.builder()
-                .groupId("test-group-id")
-                .version("*")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .header("If-Match", "*")
+                    .method(DELETE).path("/Groups/test-group-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/DELETE_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -264,24 +256,19 @@ public final class ReactorGroupsTest {
         protected Mono<DeleteGroupResponse> invoke(DeleteGroupRequest request) {
             return this.groups.delete(request);
         }
+
+        @Override
+        protected DeleteGroupRequest validRequest() {
+            return DeleteGroupRequest.builder()
+                .groupId("test-group-id")
+                .version("*")
+                .build();
+        }
     }
 
     public static final class Get extends AbstractUaaApiTest<GetGroupRequest, GetGroupResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/Groups/test-group-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetGroupResponse> expectations() {
@@ -305,9 +292,15 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected GetGroupRequest validRequest() {
-            return GetGroupRequest.builder()
-                .groupId("test-group-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/Groups/test-group-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -315,26 +308,18 @@ public final class ReactorGroupsTest {
         protected Mono<GetGroupResponse> invoke(GetGroupRequest request) {
             return this.groups.get(request);
         }
+
+        @Override
+        protected GetGroupRequest validRequest() {
+            return GetGroupRequest.builder()
+                .groupId("test-group-id")
+                .build();
+        }
     }
 
     public static final class List extends AbstractUaaApiTest<ListGroupsRequest, ListGroupsResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET)
-                    .path("/Groups?count=50&filter=id%2Beq%2B%22f87c557a-8ddc-43d3-98fb-e420ebc7f0f1%22%2Bor%2BdisplayName%2Beq%2B%22Cooler%20Group%20Name%20for%20List%22" +
-                        "&sortBy=email&sortOrder=ascending&startIndex=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListGroupsResponse> expectations() {
@@ -365,6 +350,26 @@ public final class ReactorGroupsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET)
+                    .path("/Groups?count=50&filter=id%2Beq%2B%22f87c557a-8ddc-43d3-98fb-e420ebc7f0f1%22%2Bor%2BdisplayName%2Beq%2B%22Cooler%20Group%20Name%20for%20List%22" +
+                        "&sortBy=email&sortOrder=ascending&startIndex=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/GET_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<ListGroupsResponse> invoke(ListGroupsRequest request) {
+            return this.groups.list(request);
+        }
+
+        @Override
         protected ListGroupsRequest validRequest() {
             return ListGroupsRequest.builder()
                 .filter("id+eq+\"f87c557a-8ddc-43d3-98fb-e420ebc7f0f1\"+or+displayName+eq+\"Cooler Group Name for List\"")
@@ -374,30 +379,11 @@ public final class ReactorGroupsTest {
                 .sortOrder(ASCENDING)
                 .build();
         }
-
-        @Override
-        protected Mono<ListGroupsResponse> invoke(ListGroupsRequest request) {
-            return this.groups.list(request);
-        }
     }
 
     public static final class ListExternalGroupMappings extends AbstractUaaApiTest<ListExternalGroupMappingsRequest, ListExternalGroupMappingsResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET)
-                    .path("/Groups/External?count=50&filter=group_id%2Beq%2B%220480db7f-d1bc-4d2b-b723-febc684c0ee9%22&startIndex=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/GET_external_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListExternalGroupMappingsResponse> expectations() {
@@ -417,11 +403,16 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListExternalGroupMappingsRequest validRequest() {
-            return ListExternalGroupMappingsRequest.builder()
-                .filter("group_id+eq+\"0480db7f-d1bc-4d2b-b723-febc684c0ee9\"")
-                .count(50)
-                .startIndex(1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET)
+                    .path("/Groups/External?count=50&filter=group_id%2Beq%2B%220480db7f-d1bc-4d2b-b723-febc684c0ee9%22&startIndex=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/GET_external_response.json")
+                    .build())
                 .build();
         }
 
@@ -429,25 +420,20 @@ public final class ReactorGroupsTest {
         protected Mono<ListExternalGroupMappingsResponse> invoke(ListExternalGroupMappingsRequest request) {
             return this.groups.listExternalGroupMappings(request);
         }
+
+        @Override
+        protected ListExternalGroupMappingsRequest validRequest() {
+            return ListExternalGroupMappingsRequest.builder()
+                .filter("group_id+eq+\"0480db7f-d1bc-4d2b-b723-febc684c0ee9\"")
+                .count(50)
+                .startIndex(1)
+                .build();
+        }
     }
 
     public static final class ListMembers extends AbstractUaaApiTest<ListMembersRequest, ListMembersResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET)
-                    .path("/Groups/f87c557a-8ddc-43d3-98fb-e420ebc7f0f1/members?returnEntities=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/GET_members_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListMembersResponse> expectations() {
@@ -486,10 +472,16 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListMembersRequest validRequest() {
-            return ListMembersRequest.builder()
-                .groupId("f87c557a-8ddc-43d3-98fb-e420ebc7f0f1")
-                .returnEntities(true)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET)
+                    .path("/Groups/f87c557a-8ddc-43d3-98fb-e420ebc7f0f1/members?returnEntities=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/GET_members_response.json")
+                    .build())
                 .build();
         }
 
@@ -497,11 +489,30 @@ public final class ReactorGroupsTest {
         protected Mono<ListMembersResponse> invoke(ListMembersRequest request) {
             return this.groups.listMembers(request);
         }
+
+        @Override
+        protected ListMembersRequest validRequest() {
+            return ListMembersRequest.builder()
+                .groupId("f87c557a-8ddc-43d3-98fb-e420ebc7f0f1")
+                .returnEntities(true)
+                .build();
+        }
     }
 
     public static final class ListMembersNoEntity extends AbstractUaaApiTest<ListMembersRequest, ListMembersResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListMembersResponse> expectations() {
+            return ListMembersResponse.builder()
+                .member(Member.builder()
+                    .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
+                    .type(MemberType.USER)
+                    .origin("uaa")
+                    .build())
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -518,14 +529,8 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListMembersResponse> expectations() {
-            return ListMembersResponse.builder()
-                .member(Member.builder()
-                    .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
-                    .type(MemberType.USER)
-                    .origin("uaa")
-                    .build())
-                .build();
+        protected Mono<ListMembersResponse> invoke(ListMembersRequest request) {
+            return this.groups.listMembers(request);
         }
 
         @Override
@@ -535,30 +540,11 @@ public final class ReactorGroupsTest {
                 .returnEntities(false)
                 .build();
         }
-
-        @Override
-        protected Mono<ListMembersResponse> invoke(ListMembersRequest request) {
-            return this.groups.listMembers(request);
-        }
     }
 
     public static final class MapExternalGroup extends AbstractUaaApiTest<MapExternalGroupRequest, MapExternalGroupResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/Groups/External")
-                    .payload("fixtures/uaa/groups/POST_external_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/groups/POST_external_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<MapExternalGroupResponse> expectations() {
@@ -577,10 +563,16 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected MapExternalGroupRequest validRequest() {
-            return MapExternalGroupRequest.builder()
-                .groupId("76937b62-346c-4848-953c-d790b87ec80a")
-                .externalGroup("External group")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/Groups/External")
+                    .payload("fixtures/uaa/groups/POST_external_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/groups/POST_external_response.json")
+                    .build())
                 .build();
         }
 
@@ -588,11 +580,28 @@ public final class ReactorGroupsTest {
         protected Mono<MapExternalGroupResponse> invoke(MapExternalGroupRequest request) {
             return this.groups.mapExternalGroup(request);
         }
+
+        @Override
+        protected MapExternalGroupRequest validRequest() {
+            return MapExternalGroupRequest.builder()
+                .groupId("76937b62-346c-4848-953c-d790b87ec80a")
+                .externalGroup("External group")
+                .build();
+        }
     }
 
     public static final class RemoveMember extends AbstractUaaApiTest<RemoveMemberRequest, RemoveMemberResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<RemoveMemberResponse> expectations() {
+            return RemoveMemberResponse.builder()
+                .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
+                .type(MemberType.USER)
+                .origin("uaa")
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -608,12 +617,8 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<RemoveMemberResponse> expectations() {
-            return RemoveMemberResponse.builder()
-                .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
-                .type(MemberType.USER)
-                .origin("uaa")
-                .build();
+        protected Mono<RemoveMemberResponse> invoke(RemoveMemberRequest request) {
+            return this.groups.removeMember(request);
         }
 
         @Override
@@ -623,29 +628,11 @@ public final class ReactorGroupsTest {
                 .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
                 .build();
         }
-
-        @Override
-        protected Mono<RemoveMemberResponse> invoke(RemoveMemberRequest request) {
-            return this.groups.removeMember(request);
-        }
     }
 
     public static final class UnmapExternalGroupByGroupDisplayName extends AbstractUaaApiTest<UnmapExternalGroupByGroupDisplayNameRequest, UnmapExternalGroupByGroupDisplayNameResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/Groups/External/displayName/Group For Testing Deleting External Group Mapping By Name/externalGroup/external group/origin/ldap")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/DELETE_external_displayname_{displayName}_externalgroup_{externalGroup}_origin_{origin}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UnmapExternalGroupByGroupDisplayNameResponse> expectations() {
@@ -664,11 +651,15 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UnmapExternalGroupByGroupDisplayNameRequest validRequest() {
-            return UnmapExternalGroupByGroupDisplayNameRequest.builder()
-                .groupDisplayName("Group For Testing Deleting External Group Mapping By Name")
-                .externalGroup("external group")
-                .origin("ldap")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/Groups/External/displayName/Group For Testing Deleting External Group Mapping By Name/externalGroup/external group/origin/ldap")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/DELETE_external_displayname_{displayName}_externalgroup_{externalGroup}_origin_{origin}_response.json")
+                    .build())
                 .build();
         }
 
@@ -676,24 +667,20 @@ public final class ReactorGroupsTest {
         protected Mono<UnmapExternalGroupByGroupDisplayNameResponse> invoke(UnmapExternalGroupByGroupDisplayNameRequest request) {
             return this.groups.unmapExternalGroupByGroupDisplayName(request);
         }
+
+        @Override
+        protected UnmapExternalGroupByGroupDisplayNameRequest validRequest() {
+            return UnmapExternalGroupByGroupDisplayNameRequest.builder()
+                .groupDisplayName("Group For Testing Deleting External Group Mapping By Name")
+                .externalGroup("external group")
+                .origin("ldap")
+                .build();
+        }
     }
 
     public static final class UnmapExternalGroupByGroupId extends AbstractUaaApiTest<UnmapExternalGroupByGroupIdRequest, UnmapExternalGroupByGroupIdResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/Groups/External/groupId/d68167b4-81b3-490d-9838-94092d5c89f6/externalGroup/external group/origin/ldap")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/DELETE_external_groupid_{groupId}_externalgroup_{externalGroup}_origin_{origin}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UnmapExternalGroupByGroupIdResponse> expectations() {
@@ -712,11 +699,15 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UnmapExternalGroupByGroupIdRequest validRequest() {
-            return UnmapExternalGroupByGroupIdRequest.builder()
-                .groupId("d68167b4-81b3-490d-9838-94092d5c89f6")
-                .externalGroup("external group")
-                .origin("ldap")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/Groups/External/groupId/d68167b4-81b3-490d-9838-94092d5c89f6/externalGroup/external group/origin/ldap")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/DELETE_external_groupid_{groupId}_externalgroup_{externalGroup}_origin_{origin}_response.json")
+                    .build())
                 .build();
         }
 
@@ -724,27 +715,20 @@ public final class ReactorGroupsTest {
         protected Mono<UnmapExternalGroupByGroupIdResponse> invoke(UnmapExternalGroupByGroupIdRequest request) {
             return this.groups.unmapExternalGroupByGroupId(request);
         }
+
+        @Override
+        protected UnmapExternalGroupByGroupIdRequest validRequest() {
+            return UnmapExternalGroupByGroupIdRequest.builder()
+                .groupId("d68167b4-81b3-490d-9838-94092d5c89f6")
+                .externalGroup("external group")
+                .origin("ldap")
+                .build();
+        }
     }
 
     public static final class Update extends AbstractUaaApiTest<UpdateGroupRequest, UpdateGroupResponse> {
 
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/Groups/test-group-id")
-                    .header("If-Match", "0")
-                    .header("X-Identity-Zone-Id", "uaa")
-                    .payload("fixtures/uaa/groups/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/groups/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateGroupResponse> expectations() {
@@ -768,6 +752,27 @@ public final class ReactorGroupsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/Groups/test-group-id")
+                    .header("If-Match", "0")
+                    .header("X-Identity-Zone-Id", "uaa")
+                    .payload("fixtures/uaa/groups/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/groups/PUT_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<UpdateGroupResponse> invoke(UpdateGroupRequest request) {
+            return this.groups.update(request);
+        }
+
+        @Override
         protected UpdateGroupRequest validRequest() {
             return UpdateGroupRequest.builder()
                 .identityZoneId("uaa")
@@ -781,11 +786,6 @@ public final class ReactorGroupsTest {
                     .memberId("f0e6a061-6e3a-4be9-ace5-142ee24e20b7")
                     .build())
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateGroupResponse> invoke(UpdateGroupRequest request) {
-            return this.groups.update(request);
         }
     }
 

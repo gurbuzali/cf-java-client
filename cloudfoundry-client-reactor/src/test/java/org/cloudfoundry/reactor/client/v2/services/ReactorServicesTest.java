@@ -53,6 +53,11 @@ public final class ReactorServicesTest {
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
+            return null;
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -65,8 +70,8 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
-            return null;
+        protected Mono<DeleteServiceResponse> invoke(DeleteServiceRequest request) {
+            return this.services.delete(request);
         }
 
         @Override
@@ -77,29 +82,11 @@ public final class ReactorServicesTest {
                 .build();
         }
 
-        @Override
-        protected Mono<DeleteServiceResponse> invoke(DeleteServiceRequest request) {
-            return this.services.delete(request);
-        }
-
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeleteServiceRequest, DeleteServiceResponse> {
 
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/services/test-service-id?async=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v2/services/DELETE_{id}_async_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
@@ -117,10 +104,15 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected DeleteServiceRequest validRequest() {
-            return DeleteServiceRequest.builder()
-                .async(true)
-                .serviceId("test-service-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/services/test-service-id?async=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v2/services/DELETE_{id}_async_response.json")
+                    .build())
                 .build();
         }
 
@@ -129,24 +121,19 @@ public final class ReactorServicesTest {
             return this.services.delete(request);
         }
 
+        @Override
+        protected DeleteServiceRequest validRequest() {
+            return DeleteServiceRequest.builder()
+                .async(true)
+                .serviceId("test-service-id")
+                .build();
+        }
+
     }
 
     public static final class Get extends AbstractClientApiTest<GetServiceRequest, GetServiceResponse> {
 
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/services/test-service-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/services/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetServiceResponse> expectations() {
@@ -170,9 +157,15 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected GetServiceRequest validRequest() {
-            return GetServiceRequest.builder()
-                .serviceId("test-service-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/services/test-service-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/services/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -181,24 +174,18 @@ public final class ReactorServicesTest {
             return this.services.get(request);
         }
 
+        @Override
+        protected GetServiceRequest validRequest() {
+            return GetServiceRequest.builder()
+                .serviceId("test-service-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListServicesRequest, ListServicesResponse> {
 
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/services?q=label%20IN%20test-label&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/services/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListServicesResponse> expectations() {
@@ -228,10 +215,15 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ListServicesRequest validRequest() {
-            return ListServicesRequest.builder()
-                .label("test-label")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/services?q=label%20IN%20test-label&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/services/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -240,24 +232,19 @@ public final class ReactorServicesTest {
             return this.services.list(request);
         }
 
+        @Override
+        protected ListServicesRequest validRequest() {
+            return ListServicesRequest.builder()
+                .label("test-label")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListServicePlans extends AbstractClientApiTest<ListServiceServicePlansRequest, ListServiceServicePlansResponse> {
 
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/services/f1b0edbe-fac4-4512-9071-8b26045413bb/service_plans?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/services/GET_{id}_service_plans_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListServiceServicePlansResponse> expectations() {
@@ -286,16 +273,29 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ListServiceServicePlansRequest validRequest() {
-            return ListServiceServicePlansRequest.builder()
-                .serviceId("f1b0edbe-fac4-4512-9071-8b26045413bb")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/services/f1b0edbe-fac4-4512-9071-8b26045413bb/service_plans?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/services/GET_{id}_service_plans_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListServiceServicePlansResponse> invoke(ListServiceServicePlansRequest request) {
             return this.services.listServicePlans(request);
+        }
+
+        @Override
+        protected ListServiceServicePlansRequest validRequest() {
+            return ListServiceServicePlansRequest.builder()
+                .serviceId("f1b0edbe-fac4-4512-9071-8b26045413bb")
+                .page(-1)
+                .build();
         }
     }
 

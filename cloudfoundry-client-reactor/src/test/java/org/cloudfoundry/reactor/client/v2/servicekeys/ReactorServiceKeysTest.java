@@ -47,20 +47,6 @@ public final class ReactorServiceKeysTest {
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/service_keys")
-                    .payload("fixtures/client/v2/service_keys/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v2/service_keys/POST_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<CreateServiceKeyResponse> expectations() {
             return CreateServiceKeyResponse.builder()
                 .metadata(Metadata.builder()
@@ -78,10 +64,16 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected CreateServiceKeyRequest validRequest() {
-            return CreateServiceKeyRequest.builder()
-                .name("name-960")
-                .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/service_keys")
+                    .payload("fixtures/client/v2/service_keys/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v2/service_keys/POST_response.json")
+                    .build())
                 .build();
         }
 
@@ -89,11 +81,24 @@ public final class ReactorServiceKeysTest {
         protected Mono<CreateServiceKeyResponse> invoke(CreateServiceKeyRequest request) {
             return this.serviceKeys.create(request);
         }
+
+        @Override
+        protected CreateServiceKeyRequest validRequest() {
+            return CreateServiceKeyRequest.builder()
+                .name("name-960")
+                .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
+                .build();
+        }
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteServiceKeyRequest, Void> {
 
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -108,8 +113,8 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(DeleteServiceKeyRequest request) {
+            return this.serviceKeys.delete(request);
         }
 
         @Override
@@ -118,29 +123,11 @@ public final class ReactorServiceKeysTest {
                 .serviceKeyId("test-service-key-id")
                 .build();
         }
-
-        @Override
-        protected Mono<Void> invoke(DeleteServiceKeyRequest request) {
-            return this.serviceKeys.delete(request);
-        }
     }
 
     public static final class Get extends AbstractClientApiTest<GetServiceKeyRequest, GetServiceKeyResponse> {
 
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/service_keys/test-service-key-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/service_keys/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetServiceKeyResponse> expectations() {
@@ -160,9 +147,15 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected GetServiceKeyRequest validRequest() {
-            return GetServiceKeyRequest.builder()
-                .serviceKeyId("test-service-key-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/service_keys/test-service-key-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/service_keys/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -170,24 +163,18 @@ public final class ReactorServiceKeysTest {
         protected Mono<GetServiceKeyResponse> invoke(GetServiceKeyRequest request) {
             return this.serviceKeys.get(request);
         }
+
+        @Override
+        protected GetServiceKeyRequest validRequest() {
+            return GetServiceKeyRequest.builder()
+                .serviceKeyId("test-service-key-id")
+                .build();
+        }
     }
 
     public static final class List extends AbstractClientApiTest<ListServiceKeysRequest, ListServiceKeysResponse> {
 
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/service_keys?q=name%20IN%20test-name&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/service_keys/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListServiceKeysResponse> expectations() {
@@ -211,16 +198,29 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected ListServiceKeysRequest validRequest() {
-            return ListServiceKeysRequest.builder()
-                .name("test-name")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/service_keys?q=name%20IN%20test-name&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/service_keys/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListServiceKeysResponse> invoke(ListServiceKeysRequest request) {
             return this.serviceKeys.list(request);
+        }
+
+        @Override
+        protected ListServiceKeysRequest validRequest() {
+            return ListServiceKeysRequest.builder()
+                .name("test-name")
+                .page(-1)
+                .build();
         }
     }
 

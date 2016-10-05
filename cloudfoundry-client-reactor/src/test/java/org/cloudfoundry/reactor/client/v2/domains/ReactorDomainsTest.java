@@ -55,20 +55,6 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/domains")
-                    .payload("fixtures/client/v2/domains/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/domains/POST_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<CreateDomainResponse> expectations() {
             return CreateDomainResponse.builder()
                 .metadata(Metadata.builder()
@@ -87,11 +73,16 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected CreateDomainRequest validRequest() {
-            return CreateDomainRequest.builder()
-                .name("exmaple.com")
-                .owningOrganizationId("09e0d56f-4e50-4bff-af83-9bd87a7d7f00")
-                .wildcard(true)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/domains")
+                    .payload("fixtures/client/v2/domains/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/domains/POST_response.json")
+                    .build())
                 .build();
         }
 
@@ -99,11 +90,25 @@ public final class ReactorDomainsTest {
         protected Mono<CreateDomainResponse> invoke(CreateDomainRequest request) {
             return this.domains.create(request);
         }
+
+        @Override
+        protected CreateDomainRequest validRequest() {
+            return CreateDomainRequest.builder()
+                .name("exmaple.com")
+                .owningOrganizationId("09e0d56f-4e50-4bff-af83-9bd87a7d7f00")
+                .wildcard(true)
+                .build();
+        }
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteDomainRequest, DeleteDomainResponse> {
 
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteDomainResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -118,8 +123,8 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteDomainResponse> expectations() {
-            return null;
+        protected Mono<DeleteDomainResponse> invoke(DeleteDomainRequest request) {
+            return this.domains.delete(request);
         }
 
         @Override
@@ -128,29 +133,11 @@ public final class ReactorDomainsTest {
                 .domainId("test-domain-id")
                 .build();
         }
-
-        @Override
-        protected Mono<DeleteDomainResponse> invoke(DeleteDomainRequest request) {
-            return this.domains.delete(request);
-        }
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeleteDomainRequest, DeleteDomainResponse> {
 
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/domains/test-domain-id?async=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v2/domains/DELETE_{id}_async_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteDomainResponse> expectations() {
@@ -168,10 +155,15 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected DeleteDomainRequest validRequest() {
-            return DeleteDomainRequest.builder()
-                .async(true)
-                .domainId("test-domain-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/domains/test-domain-id?async=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v2/domains/DELETE_{id}_async_response.json")
+                    .build())
                 .build();
         }
 
@@ -179,24 +171,19 @@ public final class ReactorDomainsTest {
         protected Mono<DeleteDomainResponse> invoke(DeleteDomainRequest request) {
             return this.domains.delete(request);
         }
+
+        @Override
+        protected DeleteDomainRequest validRequest() {
+            return DeleteDomainRequest.builder()
+                .async(true)
+                .domainId("test-domain-id")
+                .build();
+        }
     }
 
     public static final class Get extends AbstractClientApiTest<GetDomainRequest, GetDomainResponse> {
 
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/domains/test-domain-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/domains/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetDomainResponse> expectations() {
@@ -213,9 +200,15 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected GetDomainRequest validRequest() {
-            return GetDomainRequest.builder()
-                .domainId("test-domain-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/domains/test-domain-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/domains/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -224,24 +217,18 @@ public final class ReactorDomainsTest {
             return this.domains.get(request);
         }
 
+        @Override
+        protected GetDomainRequest validRequest() {
+            return GetDomainRequest.builder()
+                .domainId("test-domain-id")
+                .build();
+        }
+
     }
 
     public static final class ListDomains extends AbstractClientApiTest<ListDomainsRequest, ListDomainsResponse> {
 
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/domains?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/domains/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListDomainsResponse> expectations() {
@@ -295,9 +282,15 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ListDomainsRequest validRequest() {
-            return ListDomainsRequest.builder()
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/domains?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/domains/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -305,24 +298,18 @@ public final class ReactorDomainsTest {
         protected Mono<ListDomainsResponse> invoke(ListDomainsRequest request) {
             return this.domains.list(request);
         }
+
+        @Override
+        protected ListDomainsRequest validRequest() {
+            return ListDomainsRequest.builder()
+                .page(-1)
+                .build();
+        }
     }
 
     public static final class ListSpaces extends AbstractClientApiTest<ListDomainSpacesRequest, ListDomainSpacesResponse> {
 
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/domains/test-domain-id/spaces?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/domains/GET_{id}_spaces_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListDomainSpacesResponse> expectations() {
@@ -356,16 +343,29 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ListDomainSpacesRequest validRequest() {
-            return ListDomainSpacesRequest.builder()
-                .domainId("test-domain-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/domains/test-domain-id/spaces?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/domains/GET_{id}_spaces_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListDomainSpacesResponse> invoke(ListDomainSpacesRequest request) {
             return this.domains.listSpaces(request);
+        }
+
+        @Override
+        protected ListDomainSpacesRequest validRequest() {
+            return ListDomainSpacesRequest.builder()
+                .domainId("test-domain-id")
+                .page(-1)
+                .build();
         }
 
     }

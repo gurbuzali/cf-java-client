@@ -61,21 +61,6 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/identity-providers")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .payload("fixtures/uaa/identity-providers/POST_request_ldap.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/identity-providers/POST_response_ldap.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<CreateIdentityProviderResponse> expectations() {
             return CreateIdentityProviderResponse.builder()
                 .active(true)
@@ -107,6 +92,26 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/identity-providers")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .payload("fixtures/uaa/identity-providers/POST_request_ldap.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/identity-providers/POST_response_ldap.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateIdentityProviderResponse> invoke(CreateIdentityProviderRequest request) {
+            return this.identityProviders.create(request);
+        }
+
+        @Override
         protected CreateIdentityProviderRequest validRequest() {
             return CreateIdentityProviderRequest.builder()
                 .active(true)
@@ -126,31 +131,11 @@ public final class ReactorIdentityProvidersTest {
                 .identityZoneId("test-identity-zone-id")
                 .build();
         }
-
-        @Override
-        protected Mono<CreateIdentityProviderResponse> invoke(CreateIdentityProviderRequest request) {
-            return this.identityProviders.create(request);
-        }
     }
 
     public static final class CreateOauth extends AbstractUaaApiTest<CreateIdentityProviderRequest, CreateIdentityProviderResponse> {
 
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/identity-providers")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .payload("fixtures/uaa/identity-providers/POST_request_oauth.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/identity-providers/POST_response_oauth.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateIdentityProviderResponse> expectations() {
@@ -181,6 +166,26 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/identity-providers")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .payload("fixtures/uaa/identity-providers/POST_request_oauth.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/identity-providers/POST_response_oauth.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateIdentityProviderResponse> invoke(CreateIdentityProviderRequest request) {
+            return this.identityProviders.create(request);
+        }
+
+        @Override
         protected CreateIdentityProviderRequest validRequest() {
             return CreateIdentityProviderRequest.builder()
                 .active(true)
@@ -202,31 +207,11 @@ public final class ReactorIdentityProvidersTest {
                 .identityZoneId("test-identity-zone-id")
                 .build();
         }
-
-        @Override
-        protected Mono<CreateIdentityProviderResponse> invoke(CreateIdentityProviderRequest request) {
-            return this.identityProviders.create(request);
-        }
     }
 
     public static final class CreateSaml extends AbstractUaaApiTest<CreateIdentityProviderRequest, CreateIdentityProviderResponse> {
 
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/identity-providers")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .payload("fixtures/uaa/identity-providers/POST_request_saml.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/identity-providers/POST_response_saml.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateIdentityProviderResponse> expectations() {
@@ -273,6 +258,26 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/identity-providers")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .payload("fixtures/uaa/identity-providers/POST_request_saml.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/identity-providers/POST_response_saml.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateIdentityProviderResponse> invoke(CreateIdentityProviderRequest request) {
+            return this.identityProviders.create(request);
+        }
+
+        @Override
         protected CreateIdentityProviderRequest validRequest() {
             return CreateIdentityProviderRequest.builder()
                 .active(true)
@@ -308,30 +313,11 @@ public final class ReactorIdentityProvidersTest {
                 .identityZoneId("test-identity-zone-id")
                 .build();
         }
-
-        @Override
-        protected Mono<CreateIdentityProviderResponse> invoke(CreateIdentityProviderRequest request) {
-            return this.identityProviders.create(request);
-        }
     }
 
     public static final class Delete extends AbstractUaaApiTest<DeleteIdentityProviderRequest, DeleteIdentityProviderResponse> {
 
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/identity-providers/test-identity-provider-id")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-providers/DELETE_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteIdentityProviderResponse> expectations() {
@@ -378,10 +364,16 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected DeleteIdentityProviderRequest validRequest() {
-            return DeleteIdentityProviderRequest.builder()
-                .identityProviderId("test-identity-provider-id")
-                .identityZoneId("test-identity-zone-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/identity-providers/test-identity-provider-id")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-providers/DELETE_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -389,25 +381,19 @@ public final class ReactorIdentityProvidersTest {
         protected Mono<DeleteIdentityProviderResponse> invoke(DeleteIdentityProviderRequest request) {
             return this.identityProviders.delete(request);
         }
+
+        @Override
+        protected DeleteIdentityProviderRequest validRequest() {
+            return DeleteIdentityProviderRequest.builder()
+                .identityProviderId("test-identity-provider-id")
+                .identityZoneId("test-identity-zone-id")
+                .build();
+        }
     }
 
     public static final class Get extends AbstractUaaApiTest<GetIdentityProviderRequest, GetIdentityProviderResponse> {
 
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/identity-providers/test-identity-provider-id")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/uaa/identity-providers/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetIdentityProviderResponse> expectations() {
@@ -454,10 +440,16 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected GetIdentityProviderRequest validRequest() {
-            return GetIdentityProviderRequest.builder()
-                .identityProviderId("test-identity-provider-id")
-                .identityZoneId("test-identity-zone-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/identity-providers/test-identity-provider-id")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/uaa/identity-providers/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -465,25 +457,19 @@ public final class ReactorIdentityProvidersTest {
         protected Mono<GetIdentityProviderResponse> invoke(GetIdentityProviderRequest request) {
             return this.identityProviders.get(request);
         }
+
+        @Override
+        protected GetIdentityProviderRequest validRequest() {
+            return GetIdentityProviderRequest.builder()
+                .identityProviderId("test-identity-provider-id")
+                .identityZoneId("test-identity-zone-id")
+                .build();
+        }
     }
 
     public static final class List extends AbstractUaaApiTest<ListIdentityProvidersRequest, ListIdentityProvidersResponse> {
 
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/identity-providers")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-providers/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListIdentityProvidersResponse> expectations() {
@@ -589,9 +575,16 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected ListIdentityProvidersRequest validRequest() {
-            return ListIdentityProvidersRequest.builder()
-                .identityZoneId("test-identity-zone-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/identity-providers")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-providers/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -599,26 +592,18 @@ public final class ReactorIdentityProvidersTest {
         protected Mono<ListIdentityProvidersResponse> invoke(ListIdentityProvidersRequest request) {
             return this.identityProviders.list(request);
         }
+
+        @Override
+        protected ListIdentityProvidersRequest validRequest() {
+            return ListIdentityProvidersRequest.builder()
+                .identityZoneId("test-identity-zone-id")
+                .build();
+        }
     }
 
     public static final class Update extends AbstractUaaApiTest<UpdateIdentityProviderRequest, UpdateIdentityProviderResponse> {
 
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/identity-providers/test-identity-provider-id")
-                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
-                    .payload("fixtures/uaa/identity-providers/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/identity-providers/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateIdentityProviderResponse> expectations() {
@@ -644,6 +629,26 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/identity-providers/test-identity-provider-id")
+                    .header("X-Identity-Zone-Id", "test-identity-zone-id")
+                    .payload("fixtures/uaa/identity-providers/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/identity-providers/PUT_{id}_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<UpdateIdentityProviderResponse> invoke(UpdateIdentityProviderRequest request) {
+            return this.identityProviders.update(request);
+        }
+
+        @Override
         protected UpdateIdentityProviderRequest validRequest() {
             return UpdateIdentityProviderRequest.builder()
                 .active(true)
@@ -662,11 +667,6 @@ public final class ReactorIdentityProvidersTest {
                 .identityZoneId("test-identity-zone-id")
                 .identityProviderId("test-identity-provider-id")
                 .build();
-        }
-
-        @Override
-        protected Mono<UpdateIdentityProviderResponse> invoke(UpdateIdentityProviderRequest request) {
-            return this.identityProviders.update(request);
         }
     }
 

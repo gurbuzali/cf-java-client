@@ -123,19 +123,6 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/auditors/uaa-id-71")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_auditors_{auditor-id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<AssociateOrganizationAuditorResponse> expectations() {
             return AssociateOrganizationAuditorResponse.builder()
                 .metadata(Metadata.builder()
@@ -163,10 +150,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationAuditorRequest validRequest() {
-            return AssociateOrganizationAuditorRequest.builder()
-                .auditorId("uaa-id-71")
-                .organizationId("test-organization-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/auditors/uaa-id-71")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_auditors_{auditor-id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -175,25 +167,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateAuditor(request);
         }
 
+        @Override
+        protected AssociateOrganizationAuditorRequest validRequest() {
+            return AssociateOrganizationAuditorRequest.builder()
+                .auditorId("uaa-id-71")
+                .organizationId("test-organization-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationAuditorByUsername extends AbstractClientApiTest<AssociateOrganizationAuditorByUsernameRequest, AssociateOrganizationAuditorByUsernameResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/auditors")
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_auditors_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_auditors_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationAuditorByUsernameResponse> expectations() {
@@ -223,10 +209,16 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationAuditorByUsernameRequest validRequest() {
-            return AssociateOrganizationAuditorByUsernameRequest.builder()
-                .organizationId("test-organization-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/auditors")
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_auditors_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_auditors_response.json")
+                    .build())
                 .build();
         }
 
@@ -235,24 +227,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateAuditorByUsername(request);
         }
 
+        @Override
+        protected AssociateOrganizationAuditorByUsernameRequest validRequest() {
+            return AssociateOrganizationAuditorByUsernameRequest.builder()
+                .organizationId("test-organization-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationBillingManager extends AbstractClientApiTest<AssociateOrganizationBillingManagerRequest, AssociateOrganizationBillingManagerResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/billing_managers/test-billing-manager-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_billing_managers_{billing-manager-id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationBillingManagerResponse> expectations() {
@@ -282,10 +269,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationBillingManagerRequest validRequest() {
-            return AssociateOrganizationBillingManagerRequest.builder()
-                .billingManagerId("test-billing-manager-id")
-                .organizationId("test-organization-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/billing_managers/test-billing-manager-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_billing_managers_{billing-manager-id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -294,26 +286,20 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateBillingManager(request);
         }
 
+        @Override
+        protected AssociateOrganizationBillingManagerRequest validRequest() {
+            return AssociateOrganizationBillingManagerRequest.builder()
+                .billingManagerId("test-billing-manager-id")
+                .organizationId("test-organization-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationBillingManagerByUsername
         extends AbstractClientApiTest<AssociateOrganizationBillingManagerByUsernameRequest, AssociateOrganizationBillingManagerByUsernameResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/billing_managers")
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_billing_managers_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_billing_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationBillingManagerByUsernameResponse> expectations() {
@@ -343,10 +329,16 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationBillingManagerByUsernameRequest validRequest() {
-            return AssociateOrganizationBillingManagerByUsernameRequest.builder()
-                .organizationId("test-organization-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/billing_managers")
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_billing_managers_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_billing_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -355,24 +347,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateBillingManagerByUsername(request);
         }
 
+        @Override
+        protected AssociateOrganizationBillingManagerByUsernameRequest validRequest() {
+            return AssociateOrganizationBillingManagerByUsernameRequest.builder()
+                .organizationId("test-organization-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationManager extends AbstractClientApiTest<AssociateOrganizationManagerRequest, AssociateOrganizationManagerResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/managers/test-manager-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_managers_{manager-id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationManagerResponse> expectations() {
@@ -402,10 +389,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationManagerRequest validRequest() {
-            return AssociateOrganizationManagerRequest.builder()
-                .organizationId("test-organization-id")
-                .managerId("test-manager-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/managers/test-manager-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_managers_{manager-id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -414,25 +406,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateManager(request);
         }
 
+        @Override
+        protected AssociateOrganizationManagerRequest validRequest() {
+            return AssociateOrganizationManagerRequest.builder()
+                .organizationId("test-organization-id")
+                .managerId("test-manager-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationManagerByUsername extends AbstractClientApiTest<AssociateOrganizationManagerByUsernameRequest, AssociateOrganizationManagerByUsernameResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/managers")
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_managers_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationManagerByUsernameResponse> expectations() {
@@ -462,10 +448,16 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationManagerByUsernameRequest validRequest() {
-            return AssociateOrganizationManagerByUsernameRequest.builder()
-                .organizationId("test-organization-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/managers")
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_managers_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -474,24 +466,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateManagerByUsername(request);
         }
 
+        @Override
+        protected AssociateOrganizationManagerByUsernameRequest validRequest() {
+            return AssociateOrganizationManagerByUsernameRequest.builder()
+                .organizationId("test-organization-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationUser extends AbstractClientApiTest<AssociateOrganizationUserRequest, AssociateOrganizationUserResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/users/test-user-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_users_{user-id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationUserResponse> expectations() {
@@ -521,10 +508,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationUserRequest validRequest() {
-            return AssociateOrganizationUserRequest.builder()
-                .organizationId("test-organization-id")
-                .userId("test-user-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/users/test-user-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_users_{user-id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -533,25 +525,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateUser(request);
         }
 
+        @Override
+        protected AssociateOrganizationUserRequest validRequest() {
+            return AssociateOrganizationUserRequest.builder()
+                .organizationId("test-organization-id")
+                .userId("test-user-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateOrganizationUserByUsername extends AbstractClientApiTest<AssociateOrganizationUserByUsernameRequest, AssociateOrganizationUserByUsernameResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/users")
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_users_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_users_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationUserByUsernameResponse> expectations() {
@@ -581,10 +567,16 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationUserByUsernameRequest validRequest() {
-            return AssociateOrganizationUserByUsernameRequest.builder()
-                .organizationId("test-organization-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/users")
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_users_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_users_response.json")
+                    .build())
                 .build();
         }
 
@@ -593,24 +585,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associateUserByUsername(request);
         }
 
+        @Override
+        protected AssociateOrganizationUserByUsernameRequest validRequest() {
+            return AssociateOrganizationUserByUsernameRequest.builder()
+                .organizationId("test-organization-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class AssociatePrivateDomain extends AbstractClientApiTest<AssociateOrganizationPrivateDomainRequest, AssociateOrganizationPrivateDomainResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id/private_domains/test-private-domain-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_private_domains_{private-domain-id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateOrganizationPrivateDomainResponse> expectations() {
@@ -640,10 +627,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationPrivateDomainRequest validRequest() {
-            return AssociateOrganizationPrivateDomainRequest.builder()
-                .organizationId("test-organization-id")
-                .privateDomainId("test-private-domain-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id/private_domains/test-private-domain-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_private_domains_{private-domain-id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -652,25 +644,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.associatePrivateDomain(request);
         }
 
+        @Override
+        protected AssociateOrganizationPrivateDomainRequest validRequest() {
+            return AssociateOrganizationPrivateDomainRequest.builder()
+                .organizationId("test-organization-id")
+                .privateDomainId("test-private-domain-id")
+                .build();
+        }
+
     }
 
     public static final class Create extends AbstractClientApiTest<CreateOrganizationRequest, CreateOrganizationResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/organizations")
-                    .payload("fixtures/client/v2/organizations/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateOrganizationResponse> expectations() {
@@ -700,10 +686,16 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected CreateOrganizationRequest validRequest() {
-            return CreateOrganizationRequest.builder()
-                .name("my-org-name")
-                .quotaDefinitionId("ffc919cd-3e21-43a6-9e4e-62802d149cdb")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/organizations")
+                    .payload("fixtures/client/v2/organizations/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/POST_response.json")
+                    .build())
                 .build();
         }
 
@@ -712,11 +704,24 @@ public final class ReactorOrganizationsTest {
             return this.organizations.create(request);
         }
 
+        @Override
+        protected CreateOrganizationRequest validRequest() {
+            return CreateOrganizationRequest.builder()
+                .name("my-org-name")
+                .quotaDefinitionId("ffc919cd-3e21-43a6-9e4e-62802d149cdb")
+                .build();
+        }
+
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteOrganizationRequest, DeleteOrganizationResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteOrganizationResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -731,8 +736,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteOrganizationResponse> expectations() {
-            return null;
+        protected Mono<DeleteOrganizationResponse> invoke(DeleteOrganizationRequest request) {
+            return this.organizations.delete(request);
         }
 
         @Override
@@ -742,29 +747,11 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<DeleteOrganizationResponse> invoke(DeleteOrganizationRequest request) {
-            return this.organizations.delete(request);
-        }
-
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeleteOrganizationRequest, DeleteOrganizationResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/organizations/test-organization-id?async=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v2/organizations/DELETE_{id}_async_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteOrganizationResponse> expectations() {
@@ -782,10 +769,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected DeleteOrganizationRequest validRequest() {
-            return DeleteOrganizationRequest.builder()
-                .async(true)
-                .organizationId("test-organization-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/organizations/test-organization-id?async=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v2/organizations/DELETE_{id}_async_response.json")
+                    .build())
                 .build();
         }
 
@@ -794,24 +786,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.delete(request);
         }
 
+        @Override
+        protected DeleteOrganizationRequest validRequest() {
+            return DeleteOrganizationRequest.builder()
+                .async(true)
+                .organizationId("test-organization-id")
+                .build();
+        }
+
     }
 
     public static final class Get extends AbstractClientApiTest<GetOrganizationRequest, GetOrganizationResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetOrganizationResponse> expectations() {
@@ -841,9 +828,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationRequest validRequest() {
-            return GetOrganizationRequest.builder()
-                .organizationId("test-organization-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -852,11 +845,25 @@ public final class ReactorOrganizationsTest {
             return this.organizations.get(request);
         }
 
+        @Override
+        protected GetOrganizationRequest validRequest() {
+            return GetOrganizationRequest.builder()
+                .organizationId("test-organization-id")
+                .build();
+        }
+
     }
 
     public static final class GetInstanceUsage extends AbstractClientApiTest<GetOrganizationInstanceUsageRequest, GetOrganizationInstanceUsageResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetOrganizationInstanceUsageResponse> expectations() {
+            return GetOrganizationInstanceUsageResponse.builder()
+                .instanceUsage(3)
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -872,10 +879,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetOrganizationInstanceUsageResponse> expectations() {
-            return GetOrganizationInstanceUsageResponse.builder()
-                .instanceUsage(3)
-                .build();
+        protected Mono<GetOrganizationInstanceUsageResponse> invoke(GetOrganizationInstanceUsageRequest request) {
+            return this.organizations.getInstanceUsage(request);
         }
 
         @Override
@@ -885,16 +890,18 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<GetOrganizationInstanceUsageResponse> invoke(GetOrganizationInstanceUsageRequest request) {
-            return this.organizations.getInstanceUsage(request);
-        }
-
     }
 
     public static final class GetMemoryUsage extends AbstractClientApiTest<GetOrganizationMemoryUsageRequest, GetOrganizationMemoryUsageResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetOrganizationMemoryUsageResponse> expectations() {
+            return GetOrganizationMemoryUsageResponse.builder()
+                .memoryUsageInMb(0)
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -910,10 +917,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetOrganizationMemoryUsageResponse> expectations() {
-            return GetOrganizationMemoryUsageResponse.builder()
-                .memoryUsageInMb(0)
-                .build();
+        protected Mono<GetOrganizationMemoryUsageResponse> invoke(GetOrganizationMemoryUsageRequest request) {
+            return this.organizations.getMemoryUsage(request);
         }
 
         @Override
@@ -923,29 +928,11 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<GetOrganizationMemoryUsageResponse> invoke(GetOrganizationMemoryUsageRequest request) {
-            return this.organizations.getMemoryUsage(request);
-        }
-
     }
 
     public static final class GetUserRoles extends AbstractClientApiTest<GetOrganizationUserRolesRequest, GetOrganizationUserRolesResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/user_roles?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_user_roles_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetOrganizationUserRolesResponse> expectations() {
@@ -981,10 +968,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationUserRolesRequest validRequest() {
-            return GetOrganizationUserRolesRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/user_roles?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_user_roles_response.json")
+                    .build())
                 .build();
         }
 
@@ -993,24 +985,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.getUserRoles(request);
         }
 
+        @Override
+        protected GetOrganizationUserRolesRequest validRequest() {
+            return GetOrganizationUserRolesRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListOrganizationsRequest, ListOrganizationsResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations?q=name%20IN%20test-name&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationsResponse> expectations() {
@@ -1044,10 +1031,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationsRequest validRequest() {
-            return ListOrganizationsRequest.builder()
-                .name("test-name")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations?q=name%20IN%20test-name&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -1056,24 +1048,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.list(request);
         }
 
+        @Override
+        protected ListOrganizationsRequest validRequest() {
+            return ListOrganizationsRequest.builder()
+                .name("test-name")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListAuditors extends AbstractClientApiTest<ListOrganizationAuditorsRequest, ListOrganizationAuditorsResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/auditors?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_auditors_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationAuditorsResponse> expectations() {
@@ -1104,10 +1091,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationAuditorsRequest validRequest() {
-            return ListOrganizationAuditorsRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/auditors?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_auditors_response.json")
+                    .build())
                 .build();
         }
 
@@ -1116,24 +1108,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listAuditors(request);
         }
 
+        @Override
+        protected ListOrganizationAuditorsRequest validRequest() {
+            return ListOrganizationAuditorsRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListBillingManagers extends AbstractClientApiTest<ListOrganizationBillingManagersRequest, ListOrganizationBillingManagersResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/billing_managers?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_billing_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationBillingManagersResponse> expectations() {
@@ -1164,10 +1151,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationBillingManagersRequest validRequest() {
-            return ListOrganizationBillingManagersRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/billing_managers?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_billing_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -1176,24 +1168,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listBillingManagers(request);
         }
 
+        @Override
+        protected ListOrganizationBillingManagersRequest validRequest() {
+            return ListOrganizationBillingManagersRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListDomains extends AbstractClientApiTest<ListOrganizationDomainsRequest, ListOrganizationDomainsResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/domains?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_domains_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationDomainsResponse> expectations() {
@@ -1224,10 +1211,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationDomainsRequest validRequest() {
-            return ListOrganizationDomainsRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/domains?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_domains_response.json")
+                    .build())
                 .build();
         }
 
@@ -1236,24 +1228,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listDomains(request);
         }
 
+        @Override
+        protected ListOrganizationDomainsRequest validRequest() {
+            return ListOrganizationDomainsRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListManagers extends AbstractClientApiTest<ListOrganizationManagersRequest, ListOrganizationManagersResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/managers?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationManagersResponse> expectations() {
@@ -1303,10 +1290,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationManagersRequest validRequest() {
-            return ListOrganizationManagersRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/managers?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -1315,24 +1307,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listManagers(request);
         }
 
+        @Override
+        protected ListOrganizationManagersRequest validRequest() {
+            return ListOrganizationManagersRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListPrivateDomains extends AbstractClientApiTest<ListOrganizationPrivateDomainsRequest, ListOrganizationPrivateDomainsResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/private_domains?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_private_domains_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationPrivateDomainsResponse> expectations() {
@@ -1357,10 +1344,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationPrivateDomainsRequest validRequest() {
-            return ListOrganizationPrivateDomainsRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/private_domains?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_private_domains_response.json")
+                    .build())
                 .build();
         }
 
@@ -1369,24 +1361,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listPrivateDomains(request);
         }
 
+        @Override
+        protected ListOrganizationPrivateDomainsRequest validRequest() {
+            return ListOrganizationPrivateDomainsRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListServices extends AbstractClientApiTest<ListOrganizationServicesRequest, ListOrganizationServicesResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/services?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_services_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationServicesResponse> expectations() {
@@ -1416,10 +1403,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationServicesRequest validRequest() {
-            return ListOrganizationServicesRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/services?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_services_response.json")
+                    .build())
                 .build();
         }
 
@@ -1428,24 +1420,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listServices(request);
         }
 
+        @Override
+        protected ListOrganizationServicesRequest validRequest() {
+            return ListOrganizationServicesRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListSpaceQuotaDefinitions extends AbstractClientApiTest<ListOrganizationSpaceQuotaDefinitionsRequest, ListOrganizationSpaceQuotaDefinitionsResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/space_quota_definitions?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_space_quota_definitions_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationSpaceQuotaDefinitionsResponse> expectations() {
@@ -1474,10 +1461,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationSpaceQuotaDefinitionsRequest validRequest() {
-            return ListOrganizationSpaceQuotaDefinitionsRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/space_quota_definitions?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_space_quota_definitions_response.json")
+                    .build())
                 .build();
         }
 
@@ -1486,24 +1478,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listSpaceQuotaDefinitions(request);
         }
 
+        @Override
+        protected ListOrganizationSpaceQuotaDefinitionsRequest validRequest() {
+            return ListOrganizationSpaceQuotaDefinitionsRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListSpaces extends AbstractClientApiTest<ListOrganizationSpacesRequest, ListOrganizationSpacesResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/spaces?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_spaces_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationSpacesResponse> expectations() {
@@ -1538,10 +1525,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationSpacesRequest validRequest() {
-            return ListOrganizationSpacesRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/spaces?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_spaces_response.json")
+                    .build())
                 .build();
         }
 
@@ -1550,24 +1542,19 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listSpaces(request);
         }
 
+        @Override
+        protected ListOrganizationSpacesRequest validRequest() {
+            return ListOrganizationSpacesRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListUsers extends AbstractClientApiTest<ListOrganizationUsersRequest, ListOrganizationUsersResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/users?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_users_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListOrganizationUsersResponse> expectations() {
@@ -1598,10 +1585,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationUsersRequest validRequest() {
-            return ListOrganizationUsersRequest.builder()
-                .organizationId("test-organization-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/users?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_users_response.json")
+                    .build())
                 .build();
         }
 
@@ -1610,11 +1602,24 @@ public final class ReactorOrganizationsTest {
             return this.organizations.listUsers(request);
         }
 
+        @Override
+        protected ListOrganizationUsersRequest validRequest() {
+            return ListOrganizationUsersRequest.builder()
+                .organizationId("test-organization-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class RemoveAuditor extends AbstractClientApiTest<RemoveOrganizationAuditorRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1629,8 +1634,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationAuditorRequest request) {
+            return this.organizations.removeAuditor(request);
         }
 
         @Override
@@ -1641,16 +1646,16 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationAuditorRequest request) {
-            return this.organizations.removeAuditor(request);
-        }
-
     }
 
     public static final class RemoveAuditorByUsername extends AbstractClientApiTest<RemoveOrganizationAuditorByUsernameRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1666,8 +1671,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationAuditorByUsernameRequest request) {
+            return this.organizations.removeAuditorByUsername(request);
         }
 
         @Override
@@ -1678,16 +1683,16 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationAuditorByUsernameRequest request) {
-            return this.organizations.removeAuditorByUsername(request);
-        }
-
     }
 
     public static final class RemoveBillingManager extends AbstractClientApiTest<RemoveOrganizationBillingManagerRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1702,8 +1707,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationBillingManagerRequest request) {
+            return this.organizations.removeBillingManager(request);
         }
 
         @Override
@@ -1714,16 +1719,16 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationBillingManagerRequest request) {
-            return this.organizations.removeBillingManager(request);
-        }
-
     }
 
     public static final class RemoveManager extends AbstractClientApiTest<RemoveOrganizationManagerRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1738,8 +1743,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationManagerRequest request) {
+            return this.organizations.removeManager(request);
         }
 
         @Override
@@ -1750,16 +1755,16 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationManagerRequest request) {
-            return this.organizations.removeManager(request);
-        }
-
     }
 
     public static final class RemoveOrganizationBillingManagerByUsername extends AbstractClientApiTest<RemoveOrganizationBillingManagerByUsernameRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1775,8 +1780,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationBillingManagerByUsernameRequest request) {
+            return this.organizations.removeBillingManagerByUsername(request);
         }
 
         @Override
@@ -1787,16 +1792,16 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationBillingManagerByUsernameRequest request) {
-            return this.organizations.removeBillingManagerByUsername(request);
-        }
-
     }
 
     public static final class RemoveOrganizationManagerByUsername extends AbstractClientApiTest<RemoveOrganizationManagerByUsernameRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1812,8 +1817,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationManagerByUsernameRequest request) {
+            return this.organizations.removeManagerByUsername(request);
         }
 
         @Override
@@ -1824,16 +1829,16 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationManagerByUsernameRequest request) {
-            return this.organizations.removeManagerByUsername(request);
-        }
-
     }
 
     public static final class RemovePrivateDomain extends AbstractClientApiTest<RemoveOrganizationPrivateDomainRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1848,8 +1853,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationPrivateDomainRequest request) {
+            return this.organizations.removePrivateDomain(request);
         }
 
         @Override
@@ -1859,16 +1864,16 @@ public final class ReactorOrganizationsTest {
                 .privateDomainId("test-private-domain-id")
                 .build();
         }
-
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationPrivateDomainRequest request) {
-            return this.organizations.removePrivateDomain(request);
-        }
     }
 
     public static final class RemoveUser extends AbstractClientApiTest<RemoveOrganizationUserRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1883,8 +1888,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationUserRequest request) {
+            return this.organizations.removeUser(request);
         }
 
         @Override
@@ -1894,16 +1899,16 @@ public final class ReactorOrganizationsTest {
                 .userId("test-user-id")
                 .build();
         }
-
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationUserRequest request) {
-            return this.organizations.removeUser(request);
-        }
     }
 
     public static final class RemoveUserByUsername extends AbstractClientApiTest<RemoveOrganizationUserByUsernameRequest, Void> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1919,8 +1924,8 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveOrganizationUserByUsernameRequest request) {
+            return this.organizations.removeUserByUsername(request);
         }
 
         @Override
@@ -1931,29 +1936,11 @@ public final class ReactorOrganizationsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveOrganizationUserByUsernameRequest request) {
-            return this.organizations.removeUserByUsername(request);
-        }
-
     }
 
     public static final class Summary extends AbstractClientApiTest<SummaryOrganizationRequest, SummaryOrganizationResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/organizations/test-organization-id/summary")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/GET_{id}_summary_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<SummaryOrganizationResponse> expectations() {
@@ -1973,9 +1960,15 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected SummaryOrganizationRequest validRequest() {
-            return SummaryOrganizationRequest.builder()
-                .organizationId("test-organization-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/organizations/test-organization-id/summary")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/GET_{id}_summary_response.json")
+                    .build())
                 .build();
         }
 
@@ -1984,25 +1977,18 @@ public final class ReactorOrganizationsTest {
             return this.organizations.summary(request);
         }
 
+        @Override
+        protected SummaryOrganizationRequest validRequest() {
+            return SummaryOrganizationRequest.builder()
+                .organizationId("test-organization-id")
+                .build();
+        }
+
     }
 
     public static final class Update extends AbstractClientApiTest<UpdateOrganizationRequest, UpdateOrganizationResponse> {
 
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/organizations/test-organization-id")
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/organizations/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateOrganizationResponse> expectations() {
@@ -2033,17 +2019,31 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected UpdateOrganizationRequest validRequest() {
-            return UpdateOrganizationRequest.builder()
-                .organizationId("test-organization-id")
-                .name("New Organization Name")
-                .quotaDefinitionId("7df44b58-1834-486f-aed8-d5d97126e603")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/organizations/test-organization-id")
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/organizations/PUT_{id}_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<UpdateOrganizationResponse> invoke(UpdateOrganizationRequest request) {
             return this.organizations.update(request);
+        }
+
+        @Override
+        protected UpdateOrganizationRequest validRequest() {
+            return UpdateOrganizationRequest.builder()
+                .organizationId("test-organization-id")
+                .name("New Organization Name")
+                .quotaDefinitionId("7df44b58-1834-486f-aed8-d5d97126e603")
+                .build();
         }
 
     }

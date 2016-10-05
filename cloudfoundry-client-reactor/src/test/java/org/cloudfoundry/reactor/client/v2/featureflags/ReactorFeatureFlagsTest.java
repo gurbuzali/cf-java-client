@@ -41,6 +41,15 @@ public final class ReactorFeatureFlagsTest {
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<GetFeatureFlagResponse> expectations() {
+            return GetFeatureFlagResponse.builder()
+                .name("app_scaling")
+                .enabled(true)
+                .url("/v2/config/feature_flags/app_scaling")
+                .build();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -54,12 +63,8 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetFeatureFlagResponse> expectations() {
-            return GetFeatureFlagResponse.builder()
-                .name("app_scaling")
-                .enabled(true)
-                .url("/v2/config/feature_flags/app_scaling")
-                .build();
+        protected Mono<GetFeatureFlagResponse> invoke(GetFeatureFlagRequest request) {
+            return this.featureFlags.get(request);
         }
 
         @Override
@@ -69,16 +74,20 @@ public final class ReactorFeatureFlagsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<GetFeatureFlagResponse> invoke(GetFeatureFlagRequest request) {
-            return this.featureFlags.get(request);
-        }
-
     }
 
     public static final class GetUserRoles extends AbstractClientApiTest<GetFeatureFlagRequest, GetFeatureFlagResponse> {
 
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetFeatureFlagResponse> expectations() {
+            return GetFeatureFlagResponse.builder()
+                .name("set_roles_by_username")
+                .enabled(true)
+                .url("/v2/config/feature_flags/set_roles_by_username")
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -94,12 +103,8 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetFeatureFlagResponse> expectations() {
-            return GetFeatureFlagResponse.builder()
-                .name("set_roles_by_username")
-                .enabled(true)
-                .url("/v2/config/feature_flags/set_roles_by_username")
-                .build();
+        protected Mono<GetFeatureFlagResponse> invoke(GetFeatureFlagRequest request) {
+            return this.featureFlags.get(request);
         }
 
         @Override
@@ -109,29 +114,11 @@ public final class ReactorFeatureFlagsTest {
                 .build();
         }
 
-        @Override
-        protected Mono<GetFeatureFlagResponse> invoke(GetFeatureFlagRequest request) {
-            return this.featureFlags.get(request);
-        }
-
     }
 
     public static final class List extends AbstractClientApiTest<ListFeatureFlagsRequest, ListFeatureFlagsResponse> {
 
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/config/feature_flags")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/feature_flags/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListFeatureFlagsResponse> expectations() {
@@ -213,8 +200,16 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected ListFeatureFlagsRequest validRequest() {
-            return ListFeatureFlagsRequest.builder().build();
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/config/feature_flags")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/feature_flags/GET_response.json")
+                    .build())
+                .build();
         }
 
         @Override
@@ -222,11 +217,25 @@ public final class ReactorFeatureFlagsTest {
             return this.featureFlags.list(request);
         }
 
+        @Override
+        protected ListFeatureFlagsRequest validRequest() {
+            return ListFeatureFlagsRequest.builder().build();
+        }
+
     }
 
     public static final class Set extends AbstractClientApiTest<SetFeatureFlagRequest, SetFeatureFlagResponse> {
 
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<SetFeatureFlagResponse> expectations() {
+            return SetFeatureFlagResponse.builder()
+                .name("user_org_creation")
+                .enabled(true)
+                .url("/v2/config/feature_flags/user_org_creation")
+                .build();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -243,12 +252,8 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<SetFeatureFlagResponse> expectations() {
-            return SetFeatureFlagResponse.builder()
-                .name("user_org_creation")
-                .enabled(true)
-                .url("/v2/config/feature_flags/user_org_creation")
-                .build();
+        protected Mono<SetFeatureFlagResponse> invoke(SetFeatureFlagRequest request) {
+            return this.featureFlags.set(request);
         }
 
         @Override
@@ -257,11 +262,6 @@ public final class ReactorFeatureFlagsTest {
                 .enabled(true)
                 .name("user_org_creation")
                 .build();
-        }
-
-        @Override
-        protected Mono<SetFeatureFlagResponse> invoke(SetFeatureFlagRequest request) {
-            return this.featureFlags.set(request);
         }
 
     }

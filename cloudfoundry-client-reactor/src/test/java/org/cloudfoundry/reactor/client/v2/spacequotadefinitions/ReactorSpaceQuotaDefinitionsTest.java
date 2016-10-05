@@ -55,19 +55,6 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/space_quota_definitions/test-space-quota-definition-id/spaces/test-space-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/space_quota_definitions/PUT_{id}_spaces_{id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<AssociateSpaceQuotaDefinitionResponse> expectations() {
             return AssociateSpaceQuotaDefinitionResponse.builder()
                 .metadata(Metadata.builder()
@@ -91,10 +78,15 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
-        protected AssociateSpaceQuotaDefinitionRequest validRequest() {
-            return AssociateSpaceQuotaDefinitionRequest.builder()
-                .spaceId("test-space-id")
-                .spaceQuotaDefinitionId("test-space-quota-definition-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/space_quota_definitions/test-space-quota-definition-id/spaces/test-space-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/space_quota_definitions/PUT_{id}_spaces_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -102,25 +94,19 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         protected Publisher<AssociateSpaceQuotaDefinitionResponse> invoke(AssociateSpaceQuotaDefinitionRequest request) {
             return this.spaceQuotaDefinitions.associateSpace(request);
         }
+
+        @Override
+        protected AssociateSpaceQuotaDefinitionRequest validRequest() {
+            return AssociateSpaceQuotaDefinitionRequest.builder()
+                .spaceId("test-space-id")
+                .spaceQuotaDefinitionId("test-space-quota-definition-id")
+                .build();
+        }
     }
 
     public static final class Create extends AbstractClientApiTest<CreateSpaceQuotaDefinitionRequest, CreateSpaceQuotaDefinitionResponse> {
 
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/space_quota_definitions")
-                    .payload("fixtures/client/v2/space_quota_definitions/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v2/space_quota_definitions/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateSpaceQuotaDefinitionResponse> expectations() {
@@ -149,6 +135,25 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/space_quota_definitions")
+                    .payload("fixtures/client/v2/space_quota_definitions/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v2/space_quota_definitions/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Publisher<CreateSpaceQuotaDefinitionResponse> invoke(CreateSpaceQuotaDefinitionRequest request) {
+            return this.spaceQuotaDefinitions.create(request);
+        }
+
+        @Override
         protected CreateSpaceQuotaDefinitionRequest validRequest() {
             return CreateSpaceQuotaDefinitionRequest.builder()
                 .name("gold_quota")
@@ -160,16 +165,16 @@ public final class ReactorSpaceQuotaDefinitionsTest {
                 .totalReservedRoutePorts(5)
                 .build();
         }
-
-        @Override
-        protected Publisher<CreateSpaceQuotaDefinitionResponse> invoke(CreateSpaceQuotaDefinitionRequest request) {
-            return this.spaceQuotaDefinitions.create(request);
-        }
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteSpaceQuotaDefinitionRequest, DeleteSpaceQuotaDefinitionResponse> {
 
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteSpaceQuotaDefinitionResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -184,8 +189,8 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteSpaceQuotaDefinitionResponse> expectations() {
-            return null;
+        protected Publisher<DeleteSpaceQuotaDefinitionResponse> invoke(DeleteSpaceQuotaDefinitionRequest request) {
+            return this.spaceQuotaDefinitions.delete(request);
         }
 
         @Override
@@ -194,29 +199,11 @@ public final class ReactorSpaceQuotaDefinitionsTest {
                 .spaceQuotaDefinitionId("test-space-quota-definition-id")
                 .build();
         }
-
-        @Override
-        protected Publisher<DeleteSpaceQuotaDefinitionResponse> invoke(DeleteSpaceQuotaDefinitionRequest request) {
-            return this.spaceQuotaDefinitions.delete(request);
-        }
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeleteSpaceQuotaDefinitionRequest, DeleteSpaceQuotaDefinitionResponse> {
 
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/space_quota_definitions/test-space-quota-definition-id?async=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v2/space_quota_definitions/DELETE_{id}_async_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteSpaceQuotaDefinitionResponse> expectations() {
@@ -234,10 +221,15 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
-        protected DeleteSpaceQuotaDefinitionRequest validRequest() {
-            return DeleteSpaceQuotaDefinitionRequest.builder()
-                .spaceQuotaDefinitionId("test-space-quota-definition-id")
-                .async(true)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/space_quota_definitions/test-space-quota-definition-id?async=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v2/space_quota_definitions/DELETE_{id}_async_response.json")
+                    .build())
                 .build();
         }
 
@@ -245,24 +237,19 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         protected Publisher<DeleteSpaceQuotaDefinitionResponse> invoke(DeleteSpaceQuotaDefinitionRequest request) {
             return this.spaceQuotaDefinitions.delete(request);
         }
+
+        @Override
+        protected DeleteSpaceQuotaDefinitionRequest validRequest() {
+            return DeleteSpaceQuotaDefinitionRequest.builder()
+                .spaceQuotaDefinitionId("test-space-quota-definition-id")
+                .async(true)
+                .build();
+        }
     }
 
     public static final class GetSpaceQuotaDefinition extends AbstractClientApiTest<GetSpaceQuotaDefinitionRequest, GetSpaceQuotaDefinitionResponse> {
 
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/space_quota_definitions/test-space-quota-definition-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/space_quota_definitions/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetSpaceQuotaDefinitionResponse> expectations() {
@@ -288,9 +275,15 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
-        protected GetSpaceQuotaDefinitionRequest validRequest() {
-            return GetSpaceQuotaDefinitionRequest.builder()
-                .spaceQuotaDefinitionId("test-space-quota-definition-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/space_quota_definitions/test-space-quota-definition-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/space_quota_definitions/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -299,24 +292,18 @@ public final class ReactorSpaceQuotaDefinitionsTest {
             return this.spaceQuotaDefinitions.get(request);
         }
 
+        @Override
+        protected GetSpaceQuotaDefinitionRequest validRequest() {
+            return GetSpaceQuotaDefinitionRequest.builder()
+                .spaceQuotaDefinitionId("test-space-quota-definition-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListSpaceQuotaDefinitionsRequest, ListSpaceQuotaDefinitionsResponse> {
 
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/space_quota_definitions?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/space_quota_definitions/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceQuotaDefinitionsResponse> expectations() {
@@ -346,9 +333,15 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
-        protected ListSpaceQuotaDefinitionsRequest validRequest() {
-            return ListSpaceQuotaDefinitionsRequest.builder()
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/space_quota_definitions?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/space_quota_definitions/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -357,11 +350,23 @@ public final class ReactorSpaceQuotaDefinitionsTest {
             return this.spaceQuotaDefinitions.list(request);
         }
 
+        @Override
+        protected ListSpaceQuotaDefinitionsRequest validRequest() {
+            return ListSpaceQuotaDefinitionsRequest.builder()
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class RemoveSpace extends AbstractClientApiTest<RemoveSpaceQuotaDefinitionRequest, Void> {
 
         private final ReactorSpaceQuotaDefinitions spaceQuotaDefinitions = new ReactorSpaceQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -376,8 +381,8 @@ public final class ReactorSpaceQuotaDefinitionsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveSpaceQuotaDefinitionRequest request) {
+            return this.spaceQuotaDefinitions.removeSpace(request);
         }
 
         @Override
@@ -386,11 +391,6 @@ public final class ReactorSpaceQuotaDefinitionsTest {
                 .spaceId("test-space-id")
                 .spaceQuotaDefinitionId("test-space-quota-definition-id")
                 .build();
-        }
-
-        @Override
-        protected Mono<Void> invoke(RemoveSpaceQuotaDefinitionRequest request) {
-            return this.spaceQuotaDefinitions.removeSpace(request);
         }
 
     }

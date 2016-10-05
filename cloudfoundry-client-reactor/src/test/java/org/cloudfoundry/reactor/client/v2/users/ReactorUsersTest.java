@@ -38,19 +38,6 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/users?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/users/GET_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<ListUsersResponse> expectations() {
             return ListUsersResponse.builder()
                 .totalResults(2)
@@ -98,15 +85,28 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ListUsersRequest validRequest() {
-            return ListUsersRequest.builder()
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/users?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/users/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListUsersResponse> invoke(ListUsersRequest request) {
             return this.users.list(request);
+        }
+
+        @Override
+        protected ListUsersRequest validRequest() {
+            return ListUsersRequest.builder()
+                .page(-1)
+                .build();
         }
 
     }

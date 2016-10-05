@@ -130,19 +130,6 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/auditors/test-auditor-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_auditors_{id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<AssociateSpaceAuditorResponse> expectations() {
             return AssociateSpaceAuditorResponse.builder()
                 .metadata(Metadata.builder()
@@ -170,10 +157,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceAuditorRequest validRequest() {
-            return AssociateSpaceAuditorRequest.builder()
-                .spaceId("test-space-id")
-                .auditorId("test-auditor-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/auditors/test-auditor-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_auditors_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -182,25 +174,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateAuditor(request);
         }
 
+        @Override
+        protected AssociateSpaceAuditorRequest validRequest() {
+            return AssociateSpaceAuditorRequest.builder()
+                .spaceId("test-space-id")
+                .auditorId("test-auditor-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateAuditorByUsername extends AbstractClientApiTest<AssociateSpaceAuditorByUsernameRequest, AssociateSpaceAuditorByUsernameResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/auditors")
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_auditors_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_auditors_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceAuditorByUsernameResponse> expectations() {
@@ -230,10 +216,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceAuditorByUsernameRequest validRequest() {
-            return AssociateSpaceAuditorByUsernameRequest.builder()
-                .spaceId("test-space-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/auditors")
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_auditors_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_auditors_response.json")
+                    .build())
                 .build();
         }
 
@@ -242,24 +234,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateAuditorByUsername(request);
         }
 
+        @Override
+        protected AssociateSpaceAuditorByUsernameRequest validRequest() {
+            return AssociateSpaceAuditorByUsernameRequest.builder()
+                .spaceId("test-space-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class AssociateDeveloper extends AbstractClientApiTest<AssociateSpaceDeveloperRequest, AssociateSpaceDeveloperResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/developers/test-developer-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_developers_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceDeveloperResponse> expectations() {
@@ -289,10 +276,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceDeveloperRequest validRequest() {
-            return AssociateSpaceDeveloperRequest.builder()
-                .spaceId("test-space-id")
-                .developerId("test-developer-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/developers/test-developer-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_developers_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -301,24 +293,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateDeveloper(request);
         }
 
+        @Override
+        protected AssociateSpaceDeveloperRequest validRequest() {
+            return AssociateSpaceDeveloperRequest.builder()
+                .spaceId("test-space-id")
+                .developerId("test-developer-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateManager extends AbstractClientApiTest<AssociateSpaceManagerRequest, AssociateSpaceManagerResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/managers/test-manager-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_managers_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceManagerResponse> expectations() {
@@ -348,10 +335,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceManagerRequest validRequest() {
-            return AssociateSpaceManagerRequest.builder()
-                .spaceId("test-space-id")
-                .managerId("test-manager-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/managers/test-manager-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_managers_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -360,24 +352,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateManager(request);
         }
 
+        @Override
+        protected AssociateSpaceManagerRequest validRequest() {
+            return AssociateSpaceManagerRequest.builder()
+                .spaceId("test-space-id")
+                .managerId("test-manager-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateSecurityGroup extends AbstractClientApiTest<AssociateSpaceSecurityGroupRequest, AssociateSpaceSecurityGroupResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/security_groups/test-security-group-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_security_group_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceSecurityGroupResponse> expectations() {
@@ -407,10 +394,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceSecurityGroupRequest validRequest() {
-            return AssociateSpaceSecurityGroupRequest.builder()
-                .spaceId("test-space-id")
-                .securityGroupId("test-security-group-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/security_groups/test-security-group-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_security_group_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -419,25 +411,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateSecurityGroup(request);
         }
 
+        @Override
+        protected AssociateSpaceSecurityGroupRequest validRequest() {
+            return AssociateSpaceSecurityGroupRequest.builder()
+                .spaceId("test-space-id")
+                .securityGroupId("test-security-group-id")
+                .build();
+        }
+
     }
 
     public static final class AssociateSpaceDeveloperByUsername extends AbstractClientApiTest<AssociateSpaceDeveloperByUsernameRequest, AssociateSpaceDeveloperByUsernameResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/developers")
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_developers_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_developers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceDeveloperByUsernameResponse> expectations() {
@@ -467,10 +453,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceDeveloperByUsernameRequest validRequest() {
-            return AssociateSpaceDeveloperByUsernameRequest.builder()
-                .spaceId("test-space-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/developers")
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_developers_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_developers_response.json")
+                    .build())
                 .build();
         }
 
@@ -479,25 +471,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateDeveloperByUsername(request);
         }
 
+        @Override
+        protected AssociateSpaceDeveloperByUsernameRequest validRequest() {
+            return AssociateSpaceDeveloperByUsernameRequest.builder()
+                .spaceId("test-space-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class AssociateSpaceManagerByUsername extends AbstractClientApiTest<AssociateSpaceManagerByUsernameRequest, AssociateSpaceManagerByUsernameResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id/managers")
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_managers_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceManagerByUsernameResponse> expectations() {
@@ -527,10 +513,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceManagerByUsernameRequest validRequest() {
-            return AssociateSpaceManagerByUsernameRequest.builder()
-                .spaceId("test-space-id")
-                .username("user@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id/managers")
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_managers_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -539,25 +531,19 @@ public final class ReactorSpacesTest {
             return this.spaces.associateManagerByUsername(request);
         }
 
+        @Override
+        protected AssociateSpaceManagerByUsernameRequest validRequest() {
+            return AssociateSpaceManagerByUsernameRequest.builder()
+                .spaceId("test-space-id")
+                .username("user@example.com")
+                .build();
+        }
+
     }
 
     public static final class Create extends AbstractClientApiTest<CreateSpaceRequest, CreateSpaceResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v2/spaces")
-                    .payload("fixtures/client/v2/spaces/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/POST_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<CreateSpaceResponse> expectations() {
@@ -587,10 +573,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected CreateSpaceRequest validRequest() {
-            return CreateSpaceRequest.builder()
-                .name("development")
-                .organizationId("c523070c-3006-4715-86dd-414afaecd949")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v2/spaces")
+                    .payload("fixtures/client/v2/spaces/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/POST_response.json")
+                    .build())
                 .build();
         }
 
@@ -599,11 +591,24 @@ public final class ReactorSpacesTest {
             return this.spaces.create(request);
         }
 
+        @Override
+        protected CreateSpaceRequest validRequest() {
+            return CreateSpaceRequest.builder()
+                .name("development")
+                .organizationId("c523070c-3006-4715-86dd-414afaecd949")
+                .build();
+        }
+
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteSpaceRequest, DeleteSpaceResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<DeleteSpaceResponse> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -618,8 +623,8 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<DeleteSpaceResponse> expectations() {
-            return null;
+        protected Mono<DeleteSpaceResponse> invoke(DeleteSpaceRequest request) {
+            return this.spaces.delete(request);
         }
 
         @Override
@@ -629,29 +634,11 @@ public final class ReactorSpacesTest {
                 .build();
         }
 
-        @Override
-        protected Mono<DeleteSpaceResponse> invoke(DeleteSpaceRequest request) {
-            return this.spaces.delete(request);
-        }
-
     }
 
     public static final class DeleteAsync extends AbstractClientApiTest<DeleteSpaceRequest, DeleteSpaceResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/spaces/test-space-id?async=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(ACCEPTED)
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_async_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<DeleteSpaceResponse> expectations() {
@@ -669,10 +656,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected DeleteSpaceRequest validRequest() {
-            return DeleteSpaceRequest.builder()
-                .async(true)
-                .spaceId("test-space-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/spaces/test-space-id?async=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(ACCEPTED)
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_async_response.json")
+                    .build())
                 .build();
         }
 
@@ -681,24 +673,19 @@ public final class ReactorSpacesTest {
             return this.spaces.delete(request);
         }
 
+        @Override
+        protected DeleteSpaceRequest validRequest() {
+            return DeleteSpaceRequest.builder()
+                .async(true)
+                .spaceId("test-space-id")
+                .build();
+        }
+
     }
 
     public static final class Get extends AbstractClientApiTest<GetSpaceRequest, GetSpaceResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetSpaceResponse> expectations() {
@@ -728,9 +715,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected GetSpaceRequest validRequest() {
-            return GetSpaceRequest.builder()
-                .spaceId("test-space-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -739,24 +732,18 @@ public final class ReactorSpacesTest {
             return this.spaces.get(request);
         }
 
+        @Override
+        protected GetSpaceRequest validRequest() {
+            return GetSpaceRequest.builder()
+                .spaceId("test-space-id")
+                .build();
+        }
+
     }
 
     public static final class GetSummary extends AbstractClientApiTest<GetSpaceSummaryRequest, GetSpaceSummaryResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/summary")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_summary_response.json")
-                    .build())
-                .build();
-        }
 
         @SuppressWarnings("deprecation")
         @Override
@@ -823,9 +810,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected GetSpaceSummaryRequest validRequest() {
-            return GetSpaceSummaryRequest.builder()
-                .spaceId("test-space-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/summary")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_summary_response.json")
+                    .build())
                 .build();
         }
 
@@ -834,24 +827,18 @@ public final class ReactorSpacesTest {
             return this.spaces.getSummary(request);
         }
 
+        @Override
+        protected GetSpaceSummaryRequest validRequest() {
+            return GetSpaceSummaryRequest.builder()
+                .spaceId("test-space-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListSpacesRequest, ListSpacesResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces?q=name%20IN%20test-name&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpacesResponse> expectations() {
@@ -885,10 +872,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpacesRequest validRequest() {
-            return ListSpacesRequest.builder()
-                .name("test-name")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces?q=name%20IN%20test-name&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -897,24 +889,19 @@ public final class ReactorSpacesTest {
             return this.spaces.list(request);
         }
 
+        @Override
+        protected ListSpacesRequest validRequest() {
+            return ListSpacesRequest.builder()
+                .name("test-name")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListApplications extends AbstractClientApiTest<ListSpaceApplicationsRequest, ListSpaceApplicationsResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/apps?q=name%20IN%20test-name&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_apps_response.json")
-                    .build())
-                .build();
-        }
 
         @SuppressWarnings("deprecation")
         @Override
@@ -959,11 +946,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceApplicationsRequest validRequest() {
-            return ListSpaceApplicationsRequest.builder()
-                .spaceId("test-space-id")
-                .name("test-name")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/apps?q=name%20IN%20test-name&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_apps_response.json")
+                    .build())
                 .build();
         }
 
@@ -972,24 +963,20 @@ public final class ReactorSpacesTest {
             return this.spaces.listApplications(request);
         }
 
+        @Override
+        protected ListSpaceApplicationsRequest validRequest() {
+            return ListSpaceApplicationsRequest.builder()
+                .spaceId("test-space-id")
+                .name("test-name")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListAuditors extends AbstractClientApiTest<ListSpaceAuditorsRequest, ListSpaceAuditorsResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/auditors?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_auditors_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceAuditorsResponse> expectations() {
@@ -1020,10 +1007,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceAuditorsRequest validRequest() {
-            return ListSpaceAuditorsRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/auditors?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_auditors_response.json")
+                    .build())
                 .build();
         }
 
@@ -1031,24 +1023,19 @@ public final class ReactorSpacesTest {
         protected Mono<ListSpaceAuditorsResponse> invoke(ListSpaceAuditorsRequest request) {
             return this.spaces.listAuditors(request);
         }
+
+        @Override
+        protected ListSpaceAuditorsRequest validRequest() {
+            return ListSpaceAuditorsRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
     }
 
     public static final class ListDevelopers extends AbstractClientApiTest<ListSpaceDevelopersRequest, ListSpaceDevelopersResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/developers?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_developers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceDevelopersResponse> expectations() {
@@ -1079,10 +1066,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceDevelopersRequest validRequest() {
-            return ListSpaceDevelopersRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/developers?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_developers_response.json")
+                    .build())
                 .build();
         }
 
@@ -1091,24 +1083,19 @@ public final class ReactorSpacesTest {
             return this.spaces.listDevelopers(request);
         }
 
+        @Override
+        protected ListSpaceDevelopersRequest validRequest() {
+            return ListSpaceDevelopersRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListDomains extends AbstractClientApiTest<ListSpaceDomainsRequest, ListSpaceDomainsResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/domains?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_domains_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceDomainsResponse> expectations() {
@@ -1139,10 +1126,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceDomainsRequest validRequest() {
-            return ListSpaceDomainsRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/domains?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_domains_response.json")
+                    .build())
                 .build();
         }
 
@@ -1150,24 +1142,19 @@ public final class ReactorSpacesTest {
         protected Mono<ListSpaceDomainsResponse> invoke(ListSpaceDomainsRequest request) {
             return this.spaces.listDomains(request);
         }
+
+        @Override
+        protected ListSpaceDomainsRequest validRequest() {
+            return ListSpaceDomainsRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
     }
 
     public static final class ListEvents extends AbstractClientApiTest<ListSpaceEventsRequest, ListSpaceEventsResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/events?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_events_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceEventsResponse> expectations() {
@@ -1200,10 +1187,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceEventsRequest validRequest() {
-            return ListSpaceEventsRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/events?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_events_response.json")
+                    .build())
                 .build();
         }
 
@@ -1212,24 +1204,19 @@ public final class ReactorSpacesTest {
             return this.spaces.listEvents(request);
         }
 
+        @Override
+        protected ListSpaceEventsRequest validRequest() {
+            return ListSpaceEventsRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListManagers extends AbstractClientApiTest<ListSpaceManagersRequest, ListSpaceManagersResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/managers?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceManagersResponse> expectations() {
@@ -1260,10 +1247,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceManagersRequest validRequest() {
-            return ListSpaceManagersRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/managers?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -1272,24 +1264,19 @@ public final class ReactorSpacesTest {
             return this.spaces.listManagers(request);
         }
 
+        @Override
+        protected ListSpaceManagersRequest validRequest() {
+            return ListSpaceManagersRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListRoutes extends AbstractClientApiTest<ListSpaceRoutesRequest, ListSpaceRoutesResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/routes?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_routes_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceRoutesResponse> expectations() {
@@ -1318,10 +1305,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceRoutesRequest validRequest() {
-            return ListSpaceRoutesRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/routes?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_routes_response.json")
+                    .build())
                 .build();
         }
 
@@ -1330,24 +1322,19 @@ public final class ReactorSpacesTest {
             return this.spaces.listRoutes(request);
         }
 
+        @Override
+        protected ListSpaceRoutesRequest validRequest() {
+            return ListSpaceRoutesRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListSecurityGroups extends AbstractClientApiTest<ListSpaceSecurityGroupsRequest, ListSpaceSecurityGroupsResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/security_groups?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_security_groups_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceSecurityGroupsResponse> expectations() {
@@ -1376,10 +1363,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceSecurityGroupsRequest validRequest() {
-            return ListSpaceSecurityGroupsRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/security_groups?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_security_groups_response.json")
+                    .build())
                 .build();
         }
 
@@ -1388,24 +1380,19 @@ public final class ReactorSpacesTest {
             return this.spaces.listSecurityGroups(request);
         }
 
+        @Override
+        protected ListSpaceSecurityGroupsRequest validRequest() {
+            return ListSpaceSecurityGroupsRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListServiceInstances extends AbstractClientApiTest<ListSpaceServiceInstancesRequest, ListSpaceServiceInstancesResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/service_instances?page=-1&return_user_provided_service_instances=true")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_service_instances_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceServiceInstancesResponse> expectations() {
@@ -1437,11 +1424,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceServiceInstancesRequest validRequest() {
-            return ListSpaceServiceInstancesRequest.builder()
-                .spaceId("test-space-id")
-                .returnUserProvidedServiceInstances(true)
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/service_instances?page=-1&return_user_provided_service_instances=true")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_service_instances_response.json")
+                    .build())
                 .build();
         }
 
@@ -1450,24 +1441,20 @@ public final class ReactorSpacesTest {
             return this.spaces.listServiceInstances(request);
         }
 
+        @Override
+        protected ListSpaceServiceInstancesRequest validRequest() {
+            return ListSpaceServiceInstancesRequest.builder()
+                .spaceId("test-space-id")
+                .returnUserProvidedServiceInstances(true)
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListServices extends AbstractClientApiTest<ListSpaceServicesRequest, ListSpaceServicesResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/services?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_services_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceServicesResponse> expectations() {
@@ -1497,10 +1484,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceServicesRequest validRequest() {
-            return ListSpaceServicesRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/services?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_services_response.json")
+                    .build())
                 .build();
         }
 
@@ -1509,24 +1501,19 @@ public final class ReactorSpacesTest {
             return this.spaces.listServices(request);
         }
 
+        @Override
+        protected ListSpaceServicesRequest validRequest() {
+            return ListSpaceServicesRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class ListUserRoles extends AbstractClientApiTest<ListSpaceUserRolesRequest, ListSpaceUserRolesResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/spaces/test-space-id/user_roles?page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/GET_{id}_user_roles_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListSpaceUserRolesResponse> expectations() {
@@ -1560,10 +1547,15 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceUserRolesRequest validRequest() {
-            return ListSpaceUserRolesRequest.builder()
-                .spaceId("test-space-id")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/spaces/test-space-id/user_roles?page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/GET_{id}_user_roles_response.json")
+                    .build())
                 .build();
         }
 
@@ -1572,11 +1564,24 @@ public final class ReactorSpacesTest {
             return this.spaces.listUserRoles(request);
         }
 
+        @Override
+        protected ListSpaceUserRolesRequest validRequest() {
+            return ListSpaceUserRolesRequest.builder()
+                .spaceId("test-space-id")
+                .page(-1)
+                .build();
+        }
+
     }
 
     public static final class RemoveAuditor extends AbstractClientApiTest<RemoveSpaceAuditorRequest, Void> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1591,8 +1596,8 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveSpaceAuditorRequest request) {
+            return this.spaces.removeAuditor(request);
         }
 
         @Override
@@ -1603,30 +1608,11 @@ public final class ReactorSpacesTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveSpaceAuditorRequest request) {
-            return this.spaces.removeAuditor(request);
-        }
-
     }
 
     public static final class RemoveAuditorByUsername extends AbstractClientApiTest<RemoveSpaceAuditorByUsernameRequest, RemoveSpaceAuditorByUsernameResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/spaces/test-space-id/auditors")
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_auditors_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_auditors_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<RemoveSpaceAuditorByUsernameResponse> expectations() {
@@ -1656,10 +1642,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceAuditorByUsernameRequest validRequest() {
-            return RemoveSpaceAuditorByUsernameRequest.builder()
-                .spaceId("test-space-id")
-                .username("auditor@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/spaces/test-space-id/auditors")
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_auditors_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_auditors_response.json")
+                    .build())
                 .build();
         }
 
@@ -1668,11 +1660,24 @@ public final class ReactorSpacesTest {
             return this.spaces.removeAuditorByUsername(request);
         }
 
+        @Override
+        protected RemoveSpaceAuditorByUsernameRequest validRequest() {
+            return RemoveSpaceAuditorByUsernameRequest.builder()
+                .spaceId("test-space-id")
+                .username("auditor@example.com")
+                .build();
+        }
+
     }
 
     public static final class RemoveDeveloper extends AbstractClientApiTest<RemoveSpaceDeveloperRequest, Void> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1687,8 +1692,8 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveSpaceDeveloperRequest request) {
+            return this.spaces.removeDeveloper(request);
         }
 
         @Override
@@ -1698,30 +1703,11 @@ public final class ReactorSpacesTest {
                 .spaceId("test-space-id")
                 .build();
         }
-
-        @Override
-        protected Mono<Void> invoke(RemoveSpaceDeveloperRequest request) {
-            return this.spaces.removeDeveloper(request);
-        }
     }
 
     public static final class RemoveDeveloperByUsername extends AbstractClientApiTest<RemoveSpaceDeveloperByUsernameRequest, RemoveSpaceDeveloperByUsernameResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/spaces/test-space-id/developers")
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_developers_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_developers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<RemoveSpaceDeveloperByUsernameResponse> expectations() {
@@ -1751,10 +1737,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceDeveloperByUsernameRequest validRequest() {
-            return RemoveSpaceDeveloperByUsernameRequest.builder()
-                .spaceId("test-space-id")
-                .username("developer@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/spaces/test-space-id/developers")
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_developers_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_developers_response.json")
+                    .build())
                 .build();
         }
 
@@ -1763,11 +1755,24 @@ public final class ReactorSpacesTest {
             return this.spaces.removeDeveloperByUsername(request);
         }
 
+        @Override
+        protected RemoveSpaceDeveloperByUsernameRequest validRequest() {
+            return RemoveSpaceDeveloperByUsernameRequest.builder()
+                .spaceId("test-space-id")
+                .username("developer@example.com")
+                .build();
+        }
+
     }
 
     public static final class RemoveManager extends AbstractClientApiTest<RemoveSpaceManagerRequest, Void> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1782,8 +1787,8 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveSpaceManagerRequest request) {
+            return this.spaces.removeManager(request);
         }
 
         @Override
@@ -1794,30 +1799,11 @@ public final class ReactorSpacesTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveSpaceManagerRequest request) {
-            return this.spaces.removeManager(request);
-        }
-
     }
 
     public static final class RemoveManagerByUsername extends AbstractClientApiTest<RemoveSpaceManagerByUsernameRequest, RemoveSpaceManagerByUsernameResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/v2/spaces/test-space-id/managers")
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_managers_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/DELETE_{id}_managers_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<RemoveSpaceManagerByUsernameResponse> expectations() {
@@ -1847,10 +1833,16 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceManagerByUsernameRequest validRequest() {
-            return RemoveSpaceManagerByUsernameRequest.builder()
-                .spaceId("test-space-id")
-                .username("manager@example.com")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/v2/spaces/test-space-id/managers")
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_managers_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/DELETE_{id}_managers_response.json")
+                    .build())
                 .build();
         }
 
@@ -1859,11 +1851,24 @@ public final class ReactorSpacesTest {
             return this.spaces.removeManagerByUsername(request);
         }
 
+        @Override
+        protected RemoveSpaceManagerByUsernameRequest validRequest() {
+            return RemoveSpaceManagerByUsernameRequest.builder()
+                .spaceId("test-space-id")
+                .username("manager@example.com")
+                .build();
+        }
+
     }
 
     public static final class RemoveSecurityGroup extends AbstractClientApiTest<RemoveSpaceSecurityGroupRequest, Void> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -1878,8 +1883,8 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(RemoveSpaceSecurityGroupRequest request) {
+            return this.spaces.removeSecurityGroup(request);
         }
 
         @Override
@@ -1890,30 +1895,11 @@ public final class ReactorSpacesTest {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(RemoveSpaceSecurityGroupRequest request) {
-            return this.spaces.removeSecurityGroup(request);
-        }
-
     }
 
     public static final class Update extends AbstractClientApiTest<UpdateSpaceRequest, UpdateSpaceResponse> {
 
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(PUT).path("/v2/spaces/test-space-id")
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/spaces/PUT_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<UpdateSpaceResponse> expectations() {
@@ -1944,17 +1930,31 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected UpdateSpaceRequest validRequest() {
-            return UpdateSpaceRequest.builder()
-                .spaceId("test-space-id")
-                .name("New Space Name")
-                .auditorIds(Collections.emptyList())
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(PUT).path("/v2/spaces/test-space-id")
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/spaces/PUT_{id}_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<UpdateSpaceResponse> invoke(UpdateSpaceRequest request) {
             return this.spaces.update(request);
+        }
+
+        @Override
+        protected UpdateSpaceRequest validRequest() {
+            return UpdateSpaceRequest.builder()
+                .spaceId("test-space-id")
+                .name("New Space Name")
+                .auditorIds(Collections.emptyList())
+                .build();
         }
 
     }

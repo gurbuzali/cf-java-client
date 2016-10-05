@@ -52,20 +52,6 @@ public final class ReactorServiceBindingsV3Test {
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v3/service_bindings")
-                    .payload("fixtures/client/v3/servicebindings/POST_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v3/servicebindings/POST_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<CreateServiceBindingResponse> expectations() {
             return CreateServiceBindingResponse.builder()
                 .id("dde5ad2a-d8f4-44dc-a56f-0452d744f1c3")
@@ -88,6 +74,25 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v3/service_bindings")
+                    .payload("fixtures/client/v3/servicebindings/POST_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v3/servicebindings/POST_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<CreateServiceBindingResponse> invoke(CreateServiceBindingRequest request) {
+            return this.serviceBindings.create(request);
+        }
+
+        @Override
         protected CreateServiceBindingRequest validRequest() {
             return CreateServiceBindingRequest.builder()
                 .data(CreateServiceBindingData.builder()
@@ -105,16 +110,16 @@ public final class ReactorServiceBindingsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<CreateServiceBindingResponse> invoke(CreateServiceBindingRequest request) {
-            return this.serviceBindings.create(request);
-        }
-
     }
 
     public static final class Delete extends AbstractClientApiTest<DeleteServiceBindingRequest, Void> {
 
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -129,8 +134,8 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(DeleteServiceBindingRequest request) {
+            return this.serviceBindings.delete(request);
         }
 
         @Override
@@ -140,29 +145,11 @@ public final class ReactorServiceBindingsV3Test {
                 .build();
         }
 
-        @Override
-        protected Mono<Void> invoke(DeleteServiceBindingRequest request) {
-            return this.serviceBindings.delete(request);
-        }
-
     }
 
     public static final class Get extends AbstractClientApiTest<GetServiceBindingRequest, GetServiceBindingResponse> {
 
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/service_bindings/test-service-binding-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/servicebindings/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<GetServiceBindingResponse> expectations() {
@@ -187,9 +174,15 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected GetServiceBindingRequest validRequest() {
-            return GetServiceBindingRequest.builder()
-                .serviceBindingId("test-service-binding-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/service_bindings/test-service-binding-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/servicebindings/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -198,24 +191,18 @@ public final class ReactorServiceBindingsV3Test {
             return this.serviceBindings.get(request);
         }
 
+        @Override
+        protected GetServiceBindingRequest validRequest() {
+            return GetServiceBindingRequest.builder()
+                .serviceBindingId("test-service-binding-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListServiceBindingsRequest, ListServiceBindingsResponse> {
 
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/service_bindings?app_guids=test-application-id&order_by=%2Bcreated_at&page=1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/servicebindings/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListServiceBindingsResponse> expectations() {
@@ -272,17 +259,30 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected ListServiceBindingsRequest validRequest() {
-            return ListServiceBindingsRequest.builder()
-                .page(1)
-                .orderBy("+created_at")
-                .applicationId("test-application-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/service_bindings?app_guids=test-application-id&order_by=%2Bcreated_at&page=1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/servicebindings/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListServiceBindingsResponse> invoke(ListServiceBindingsRequest request) {
             return this.serviceBindings.list(request);
+        }
+
+        @Override
+        protected ListServiceBindingsRequest validRequest() {
+            return ListServiceBindingsRequest.builder()
+                .page(1)
+                .orderBy("+created_at")
+                .applicationId("test-application-id")
+                .build();
         }
 
     }

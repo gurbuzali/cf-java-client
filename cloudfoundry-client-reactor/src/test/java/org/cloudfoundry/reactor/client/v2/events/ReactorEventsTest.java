@@ -42,19 +42,6 @@ public final class ReactorEventsTest {
         private final ReactorEvents events = new ReactorEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/events/test-event-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/events/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<GetEventResponse> expectations() {
             return GetEventResponse.builder()
                 .metadata(Metadata.builder()
@@ -79,9 +66,15 @@ public final class ReactorEventsTest {
         }
 
         @Override
-        protected GetEventRequest validRequest() {
-            return GetEventRequest.builder()
-                .eventId("test-event-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/events/test-event-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/events/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -90,24 +83,18 @@ public final class ReactorEventsTest {
             return this.events.get(request);
         }
 
+        @Override
+        protected GetEventRequest validRequest() {
+            return GetEventRequest.builder()
+                .eventId("test-event-id")
+                .build();
+        }
+
     }
 
     public static final class List extends AbstractClientApiTest<ListEventsRequest, ListEventsResponse> {
 
         private final ReactorEvents events = new ReactorEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/events?q=actee%20IN%20test-actee&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/events/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListEventsResponse> expectations() {
@@ -178,16 +165,29 @@ public final class ReactorEventsTest {
         }
 
         @Override
-        protected ListEventsRequest validRequest() {
-            return ListEventsRequest.builder()
-                .actee("test-actee")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/events?q=actee%20IN%20test-actee&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/events/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListEventsResponse> invoke(ListEventsRequest request) {
             return this.events.list(request);
+        }
+
+        @Override
+        protected ListEventsRequest validRequest() {
+            return ListEventsRequest.builder()
+                .actee("test-actee")
+                .page(-1)
+                .build();
         }
 
     }

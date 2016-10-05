@@ -24,7 +24,6 @@ import org.cloudfoundry.reactor.TokenProvider;
 import org.cloudfoundry.uaa.tokens.GetTokenKeyRequest;
 import org.cloudfoundry.uaa.tokens.GetTokenKeyResponse;
 import org.cloudfoundry.uaa.tokens.Tokens;
-import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.ScriptedSubscriber;

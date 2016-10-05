@@ -36,19 +36,6 @@ public final class ReactorInfoTest {
         private final ReactorInfo info = new ReactorInfo(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/info")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/info/GET_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<GetInfoResponse> expectations() {
             return GetInfoResponse.builder()
                 .name("vcap")
@@ -67,14 +54,27 @@ public final class ReactorInfoTest {
         }
 
         @Override
-        protected GetInfoRequest validRequest() {
-            return GetInfoRequest.builder()
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/info")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/info/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<GetInfoResponse> invoke(GetInfoRequest request) {
             return this.info.get(request);
+        }
+
+        @Override
+        protected GetInfoRequest validRequest() {
+            return GetInfoRequest.builder()
+                .build();
         }
 
     }

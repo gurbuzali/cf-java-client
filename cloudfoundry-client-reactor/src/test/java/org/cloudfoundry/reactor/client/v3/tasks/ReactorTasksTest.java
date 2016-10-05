@@ -51,6 +51,31 @@ public final class ReactorTasksTest {
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<CancelTaskResponse> expectations() {
+            return ScriptedSubscriber.<CancelTaskResponse>create()
+                .expectValue(CancelTaskResponse.builder()
+                    .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                    .name("migrate")
+                    .command("rake db:migrate")
+                    .state(State.CANCELING_STATE)
+                    .memoryInMb(512)
+                    .environmentVariables(Collections.emptyMap())
+                    .result(Result.builder()
+                        .build())
+                    .link("self", Link.builder()
+                        .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                        .build())
+                    .link("app", Link.builder()
+                        .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                        .build())
+                    .link("droplet", Link.builder()
+                        .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -64,26 +89,8 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected ScriptedSubscriber<CancelTaskResponse> expectations() {
-            return CancelTaskResponse.builder()
-                .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                .name("migrate")
-                .command("rake db:migrate")
-                .state(State.CANCELING_STATE)
-                .memoryInMb(512)
-                .environmentVariables(Collections.emptyMap())
-                .result(Result.builder()
-                    .build())
-                .link("self", Link.builder()
-                    .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                    .build())
-                .link("droplet", Link.builder()
-                    .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
-                    .build())
-                .build();
+        protected Mono<CancelTaskResponse> invoke(CancelTaskRequest request) {
+            return this.tasks.cancel(request);
         }
 
         @Override
@@ -93,16 +100,36 @@ public final class ReactorTasksTest {
                 .build();
         }
 
-        @Override
-        protected Mono<CancelTaskResponse> invoke(CancelTaskRequest request) {
-            return this.tasks.cancel(request);
-        }
-
     }
 
     public static final class Create extends AbstractClientApiTest<CreateTaskRequest, CreateTaskResponse> {
 
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<CreateTaskResponse> expectations() {
+            return ScriptedSubscriber.<CreateTaskResponse>create()
+                .expectValue(CreateTaskResponse.builder()
+                    .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                    .name("migrate")
+                    .command("rake db:migrate")
+                    .state(State.RUNNING_STATE)
+                    .memoryInMb(256)
+                    .environmentVariables(Collections.emptyMap())
+                    .result(Result.builder()
+                        .build())
+                    .link("self", Link.builder()
+                        .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                        .build())
+                    .link("app", Link.builder()
+                        .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                        .build())
+                    .link("droplet", Link.builder()
+                        .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -119,26 +146,8 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected ScriptedSubscriber<CreateTaskResponse> expectations() {
-            return CreateTaskResponse.builder()
-                .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                .name("migrate")
-                .command("rake db:migrate")
-                .state(State.RUNNING_STATE)
-                .memoryInMb(256)
-                .environmentVariables(Collections.emptyMap())
-                .result(Result.builder()
-                    .build())
-                .link("self", Link.builder()
-                    .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                    .build())
-                .link("droplet", Link.builder()
-                    .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
-                    .build())
-                .build();
+        protected Mono<CreateTaskResponse> invoke(CreateTaskRequest request) {
+            return this.tasks.create(request);
         }
 
         @Override
@@ -151,16 +160,36 @@ public final class ReactorTasksTest {
                 .build();
         }
 
-        @Override
-        protected Mono<CreateTaskResponse> invoke(CreateTaskRequest request) {
-            return this.tasks.create(request);
-        }
-
     }
 
     public static final class Get extends AbstractClientApiTest<GetTaskRequest, GetTaskResponse> {
 
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetTaskResponse> expectations() {
+            return ScriptedSubscriber.<GetTaskResponse>create()
+                .expectValue(GetTaskResponse.builder()
+                    .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                    .name("migrate")
+                    .command("rake db:migrate")
+                    .state(State.RUNNING_STATE)
+                    .memoryInMb(256)
+                    .environmentVariables(Collections.emptyMap())
+                    .result(Result.builder()
+                        .build())
+                    .link("self", Link.builder()
+                        .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                        .build())
+                    .link("app", Link.builder()
+                        .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                        .build())
+                    .link("droplet", Link.builder()
+                        .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -176,26 +205,8 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected ScriptedSubscriber<GetTaskResponse> expectations() {
-            return GetTaskResponse.builder()
-                .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                .name("migrate")
-                .command("rake db:migrate")
-                .state(State.RUNNING_STATE)
-                .memoryInMb(256)
-                .environmentVariables(Collections.emptyMap())
-                .result(Result.builder()
-                    .build())
-                .link("self", Link.builder()
-                    .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                    .build())
-                .link("droplet", Link.builder()
-                    .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
-                    .build())
-                .build();
+        protected Mono<GetTaskResponse> invoke(GetTaskRequest request) {
+            return this.tasks.get(request);
         }
 
         @Override
@@ -205,16 +216,70 @@ public final class ReactorTasksTest {
                 .build();
         }
 
-        @Override
-        protected Mono<GetTaskResponse> invoke(GetTaskRequest request) {
-            return this.tasks.get(request);
-        }
-
     }
 
     public static final class List extends AbstractClientApiTest<ListTasksRequest, ListTasksResponse> {
 
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListTasksResponse> expectations() {
+            return ScriptedSubscriber.<ListTasksResponse>create()
+                .expectValue(ListTasksResponse.builder()
+                    .pagination(Pagination.builder()
+                        .totalResults(3)
+                        .first(Link.builder()
+                            .href("/v3/tasks?page=1&per_page=2")
+                            .build())
+                        .last(Link.builder()
+                            .href("/v3/tasks?page=2&per_page=2")
+                            .build())
+                        .next(Link.builder()
+                            .href("/v3/tasks?page=2&per_page=2")
+                            .build())
+                        .build())
+                    .resource(TaskResource.builder()
+                        .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                        .name("hello")
+                        .command("echo \"hello world\"")
+                        .state(State.SUCCEEDED_STATE)
+                        .memoryInMb(256)
+                        .environmentVariables(Collections.emptyMap())
+                        .result(Result.builder()
+                            .build())
+                        .link("self", Link.builder()
+                            .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
+                            .build())
+                        .link("app", Link.builder()
+                            .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                            .build())
+                        .link("droplet", Link.builder()
+                            .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
+                            .build())
+                        .build())
+                    .resource(TaskResource.builder()
+                        .id("63b4cd89-fd8b-4bf1-a311-7174fcc907d6")
+                        .name("migrate")
+                        .command("rake db:migrate")
+                        .state(State.FAILED_STATE)
+                        .memoryInMb(256)
+                        .environmentVariables(Collections.emptyMap())
+                        .result(Result.builder()
+                            .failureReason("Exited with status 1")
+                            .build())
+                        .link("self", Link.builder()
+                            .href("/v3/tasks/63b4cd89-fd8b-4bf1-a311-7174fcc907d6")
+                            .build())
+                        .link("app", Link.builder()
+                            .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
+                            .build())
+                        .link("droplet", Link.builder()
+                            .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
+                            .build())
+                        .build())
+                    .build())
+                .expectComplete();
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -230,60 +295,8 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListTasksResponse> expectations() {
-            return ListTasksResponse.builder()
-                .pagination(Pagination.builder()
-                    .totalResults(3)
-                    .first(Link.builder()
-                        .href("/v3/tasks?page=1&per_page=2")
-                        .build())
-                    .last(Link.builder()
-                        .href("/v3/tasks?page=2&per_page=2")
-                        .build())
-                    .next(Link.builder()
-                        .href("/v3/tasks?page=2&per_page=2")
-                        .build())
-                    .build())
-                .resource(TaskResource.builder()
-                    .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                    .name("hello")
-                    .command("echo \"hello world\"")
-                    .state(State.SUCCEEDED_STATE)
-                    .memoryInMb(256)
-                    .environmentVariables(Collections.emptyMap())
-                    .result(Result.builder()
-                        .build())
-                    .link("self", Link.builder()
-                        .href("/v3/tasks/d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
-                        .build())
-                    .link("app", Link.builder()
-                        .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                        .build())
-                    .link("droplet", Link.builder()
-                        .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
-                        .build())
-                    .build())
-                .resource(TaskResource.builder()
-                    .id("63b4cd89-fd8b-4bf1-a311-7174fcc907d6")
-                    .name("migrate")
-                    .command("rake db:migrate")
-                    .state(State.FAILED_STATE)
-                    .memoryInMb(256)
-                    .environmentVariables(Collections.emptyMap())
-                    .result(Result.builder()
-                        .failureReason("Exited with status 1")
-                        .build())
-                    .link("self", Link.builder()
-                        .href("/v3/tasks/63b4cd89-fd8b-4bf1-a311-7174fcc907d6")
-                        .build())
-                    .link("app", Link.builder()
-                        .href("/v3/apps/ccc25a0f-c8f4-4b39-9f1b-de9f328d0ee5")
-                        .build())
-                    .link("droplet", Link.builder()
-                        .href("/v3/droplets/740ebd2b-162b-469a-bd72-3edb96fabd9a")
-                        .build())
-                    .build())
-                .build();
+        protected Mono<ListTasksResponse> invoke(ListTasksRequest request) {
+            return this.tasks.list(request);
         }
 
         @Override
@@ -291,11 +304,6 @@ public final class ReactorTasksTest {
             return ListTasksRequest.builder()
                 .page(1)
                 .build();
-        }
-
-        @Override
-        protected Mono<ListTasksResponse> invoke(ListTasksRequest request) {
-            return this.tasks.list(request);
         }
 
     }

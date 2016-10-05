@@ -36,6 +36,18 @@ public final class ReactorResourceMatchTest {
         private final ReactorResourceMatch resourceMatch = new ReactorResourceMatch(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
+        protected ScriptedSubscriber<ListMatchingResourcesResponse> expectations() {
+            return ScriptedSubscriber.<ListMatchingResourcesResponse>create()
+                .expectValue(ListMatchingResourcesResponse.builder()
+                    .resource(Resource.builder()
+                        .hash("002d760bea1be268e27077412e11a320d0f164d3")
+                        .size(36)
+                        .build())
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
         protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
@@ -50,13 +62,8 @@ public final class ReactorResourceMatchTest {
         }
 
         @Override
-        protected ScriptedSubscriber<ListMatchingResourcesResponse> expectations() {
-            return ListMatchingResourcesResponse.builder()
-                .resource(Resource.builder()
-                    .hash("002d760bea1be268e27077412e11a320d0f164d3")
-                    .size(36)
-                    .build())
-                .build();
+        protected Mono<ListMatchingResourcesResponse> invoke(ListMatchingResourcesRequest request) {
+            return this.resourceMatch.list(request);
         }
 
         @Override
@@ -71,11 +78,6 @@ public final class ReactorResourceMatchTest {
                     .size(1)
                     .build())
                 .build();
-        }
-
-        @Override
-        protected Mono<ListMatchingResourcesResponse> invoke(ListMatchingResourcesRequest request) {
-            return this.resourceMatch.list(request);
         }
     }
 

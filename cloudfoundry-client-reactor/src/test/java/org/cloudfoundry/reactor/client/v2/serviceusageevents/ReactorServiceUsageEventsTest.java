@@ -43,19 +43,6 @@ public final class ReactorServiceUsageEventsTest {
         private final ReactorServiceUsageEvents serviceUsageEvents = new ReactorServiceUsageEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/service_usage_events/9470627d-0488-4d9a-8564-f97571487893")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/service_usage_events/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
         protected ScriptedSubscriber<GetServiceUsageEventResponse> expectations() {
             return GetServiceUsageEventResponse.builder()
                 .metadata(Metadata.builder()
@@ -80,9 +67,15 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected GetServiceUsageEventRequest validRequest() {
-            return GetServiceUsageEventRequest.builder()
-                .serviceUsageEventId("9470627d-0488-4d9a-8564-f97571487893")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/service_usage_events/9470627d-0488-4d9a-8564-f97571487893")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/service_usage_events/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
@@ -90,24 +83,18 @@ public final class ReactorServiceUsageEventsTest {
         protected Mono<GetServiceUsageEventResponse> invoke(GetServiceUsageEventRequest request) {
             return this.serviceUsageEvents.get(request);
         }
+
+        @Override
+        protected GetServiceUsageEventRequest validRequest() {
+            return GetServiceUsageEventRequest.builder()
+                .serviceUsageEventId("9470627d-0488-4d9a-8564-f97571487893")
+                .build();
+        }
     }
 
     public static final class List extends AbstractClientApiTest<ListServiceUsageEventsRequest, ListServiceUsageEventsResponse> {
 
         private final ReactorServiceUsageEvents serviceUsageEvents = new ReactorServiceUsageEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v2/service_usage_events?after_guid=e5defac2-4ae1-44ac-a3d0-1684ae657453&page=-1")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v2/service_usage_events/GET_response.json")
-                    .build())
-                .build();
-        }
 
         @Override
         protected ScriptedSubscriber<ListServiceUsageEventsResponse> expectations() {
@@ -139,10 +126,15 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected ListServiceUsageEventsRequest validRequest() {
-            return ListServiceUsageEventsRequest.builder()
-                .afterServiceUsageEventId("e5defac2-4ae1-44ac-a3d0-1684ae657453")
-                .page(-1)
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v2/service_usage_events?after_guid=e5defac2-4ae1-44ac-a3d0-1684ae657453&page=-1")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v2/service_usage_events/GET_response.json")
+                    .build())
                 .build();
         }
 
@@ -150,11 +142,24 @@ public final class ReactorServiceUsageEventsTest {
         protected Mono<ListServiceUsageEventsResponse> invoke(ListServiceUsageEventsRequest request) {
             return this.serviceUsageEvents.list(request);
         }
+
+        @Override
+        protected ListServiceUsageEventsRequest validRequest() {
+            return ListServiceUsageEventsRequest.builder()
+                .afterServiceUsageEventId("e5defac2-4ae1-44ac-a3d0-1684ae657453")
+                .page(-1)
+                .build();
+        }
     }
 
     public static final class PurgeAndReseed extends AbstractClientApiTest<PurgeAndReseedServiceUsageEventsRequest, Void> {
 
         private final ReactorServiceUsageEvents serviceUsageEvents = new ReactorServiceUsageEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
 
         @Override
         protected InteractionContext interactionContext() {
@@ -169,18 +174,13 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            return null;
+        protected Mono<Void> invoke(PurgeAndReseedServiceUsageEventsRequest request) {
+            return this.serviceUsageEvents.purgeAndReseed(request);
         }
 
         @Override
         protected PurgeAndReseedServiceUsageEventsRequest validRequest() {
             return PurgeAndReseedServiceUsageEventsRequest.builder().build();
-        }
-
-        @Override
-        protected Mono<Void> invoke(PurgeAndReseedServiceUsageEventsRequest request) {
-            return this.serviceUsageEvents.purgeAndReseed(request);
         }
     }
 
