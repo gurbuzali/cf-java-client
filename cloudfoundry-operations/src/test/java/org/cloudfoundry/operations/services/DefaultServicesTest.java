@@ -75,10 +75,11 @@ import org.cloudfoundry.client.v2.userprovidedserviceinstances.DeleteUserProvide
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.UpdateUserProvidedServiceInstanceResponse;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.UserProvidedServiceInstanceEntity;
 import org.cloudfoundry.operations.AbstractOperationsApiTest;
-import org.cloudfoundry.util.test.TestSubscriber;
+import org.cloudfoundry.util.test.ErrorExpectation;
 import org.junit.Before;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -817,8 +818,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -848,8 +850,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -875,9 +878,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-application-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-application-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -903,9 +908,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -932,10 +939,10 @@ public final class DefaultServicesTest {
             requestGetServiceInstance(this.cloudFoundryClient, "test-service-instance-id", "successful");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -962,10 +969,10 @@ public final class DefaultServicesTest {
                 Collections.singletonList("test-tag"), "test-service-instance-id", "successful");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -987,9 +994,11 @@ public final class DefaultServicesTest {
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_SPACE_ID");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1017,10 +1026,10 @@ public final class DefaultServicesTest {
                 Collections.singletonMap("test-parameter-key", "test-parameter-value"));
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1044,11 +1053,12 @@ public final class DefaultServicesTest {
             requestListServiceInstancesEmpty(this.cloudFoundryClient, "test-service-instance-does-not-exist", TEST_SPACE_ID);
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber.expectError(IllegalArgumentException.class,
-                String.format("Service instance %s does not exist", "test-service-instance-does-not-exist"));
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance-does-not-exist does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1078,10 +1088,10 @@ public final class DefaultServicesTest {
                 "test-user-provided-service-instance-id");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1109,8 +1119,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1128,9 +1139,11 @@ public final class DefaultServicesTest {
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_SPACE_ID");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1150,13 +1163,14 @@ public final class DefaultServicesTest {
         @Before
         public void setUp() throws Exception {
             requestListServiceInstancesEmpty(this.cloudFoundryClient, "test-invalid-name", TEST_SPACE_ID);
-
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1180,8 +1194,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1205,9 +1220,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber.expectError(IllegalArgumentException.class,
-                String.format("Service instance %s does not exist", "test-service-instance"));
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1232,9 +1249,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber.expectError(IllegalArgumentException.class,
-                String.format("Service key %s does not exist", "test-service-key-not-found"));
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1259,8 +1278,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1287,9 +1307,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ServiceInstance.builder())
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectValue(fill(ServiceInstance.builder())
                     .application("test-application")
                     .documentationUrl("test-documentation-url")
                     .id("test-service-instance-id")
@@ -1298,7 +1318,8 @@ public final class DefaultServicesTest {
                     .name("test-service-instance-name")
                     .tag("test-tag")
                     .type(ServiceInstanceType.MANAGED)
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1321,9 +1342,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
+
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1341,9 +1364,11 @@ public final class DefaultServicesTest {
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_SPACE_ID");
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
+
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1368,14 +1393,15 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            testSubscriber
-                .expectEquals(ServiceInstance.builder()
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectValue(ServiceInstance.builder()
                     .application("test-application")
                     .id("test-service-instance-id")
                     .name("test-service-instance-name")
                     .type(ServiceInstanceType.USER_PROVIDED)
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1399,13 +1425,14 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceKey> testSubscriber) {
-            testSubscriber
-                .expectEquals(ServiceKey.builder()
+        protected ScriptedSubscriber<ServiceKey> expectations() {
+            return ScriptedSubscriber.<ServiceKey>create()
+                .expectValue(ServiceKey.builder()
                     .credential("key", "val")
                     .id("test-service-key-id")
                     .name("test-service-key-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1430,9 +1457,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceKey> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
+        protected ScriptedSubscriber<ServiceKey> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
+
+            return ScriptedSubscriber.<ServiceKey>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1462,23 +1491,24 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            testSubscriber
-                .expectEquals(ServiceInstance.builder()
-                    .name("test-service-instance1")
-                    .id("test-service-instance1-id")
-                    .type(ServiceInstanceType.USER_PROVIDED)
-                    .build())
-                .expectEquals(fill(ServiceInstance.builder())
-                    .application("test-application")
-                    .documentationUrl("test-documentation-url")
-                    .id("test-service-instance2-id")
-                    .lastOperation("test-type")
-                    .plan("test-service-plan")
-                    .name("test-service-instance2")
-                    .tag("test-tag")
-                    .type(ServiceInstanceType.MANAGED)
-                    .build());
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectValues(ServiceInstance.builder()
+                        .name("test-service-instance1")
+                        .id("test-service-instance1-id")
+                        .type(ServiceInstanceType.USER_PROVIDED)
+                        .build(),
+                    fill(ServiceInstance.builder())
+                        .application("test-application")
+                        .documentationUrl("test-documentation-url")
+                        .id("test-service-instance2-id")
+                        .lastOperation("test-type")
+                        .plan("test-service-plan")
+                        .name("test-service-instance2")
+                        .tag("test-tag")
+                        .type(ServiceInstanceType.MANAGED)
+                        .build())
+                .expectComplete();
         }
 
         @Override
@@ -1499,8 +1529,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectComplete();
         }
 
         @Override
@@ -1516,9 +1547,11 @@ public final class DefaultServicesTest {
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
 
         @Override
-        protected void assertions(TestSubscriber<ServiceInstance> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_SPACE_ID");
+        protected ScriptedSubscriber<ServiceInstance> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
+
+            return ScriptedSubscriber.<ServiceInstance>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1540,13 +1573,14 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceKey> testSubscriber) {
-            testSubscriber
-                .expectEquals(ServiceKey.builder()
+        protected ScriptedSubscriber<ServiceKey> expectations() {
+            return ScriptedSubscriber.<ServiceKey>create()
+                .expectValue(ServiceKey.builder()
                     .credential("key", "val")
                     .id("test-service-key-id")
                     .name("test-service-key-entity-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1570,8 +1604,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceKey> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<ServiceKey> expectations() {
+            return ScriptedSubscriber.<ServiceKey>create()
+                .expectComplete();
         }
 
         @Override
@@ -1594,10 +1629,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceKey> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class,
-                    String.format("Service instance %s does not exist", "test-service-instance-name"));
+        protected ScriptedSubscriber<ServiceKey> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
+
+            return ScriptedSubscriber.<ServiceKey>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1622,30 +1658,31 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceOffering> testSubscriber) {
-            testSubscriber
-                .expectEquals(ServiceOffering.builder()
-                    .description("test-service1-description")
-                    .id("test-service1-id")
-                    .label("test-service1")
-                    .servicePlan(ServicePlan.builder()
-                        .description("test-description")
-                        .free(true)
-                        .id("test-service1-plan-id")
-                        .name("test-service1-plan")
+        protected ScriptedSubscriber<ServiceOffering> expectations() {
+            return ScriptedSubscriber.<ServiceOffering>create()
+                .expectValues(ServiceOffering.builder()
+                        .description("test-service1-description")
+                        .id("test-service1-id")
+                        .label("test-service1")
+                        .servicePlan(ServicePlan.builder()
+                            .description("test-description")
+                            .free(true)
+                            .id("test-service1-plan-id")
+                            .name("test-service1-plan")
+                            .build())
+                        .build(),
+                    ServiceOffering.builder()
+                        .description("test-service2-description")
+                        .id("test-service2-id")
+                        .label("test-service2")
+                        .servicePlan(ServicePlan.builder()
+                            .description("test-description")
+                            .free(true)
+                            .id("test-service2-plan-id")
+                            .name("test-service2-plan")
+                            .build())
                         .build())
-                    .build())
-                .expectEquals(ServiceOffering.builder()
-                    .description("test-service2-description")
-                    .id("test-service2-id")
-                    .label("test-service2")
-                    .servicePlan(ServicePlan.builder()
-                        .description("test-description")
-                        .free(true)
-                        .id("test-service2-plan-id")
-                        .name("test-service2-plan")
-                        .build())
-                    .build());
+                .expectComplete();
         }
 
         @Override
@@ -1667,9 +1704,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ServiceOffering> testSubscriber) {
-            testSubscriber
-                .expectEquals(ServiceOffering.builder()
+        protected ScriptedSubscriber<ServiceOffering> expectations() {
+            return ScriptedSubscriber.<ServiceOffering>create()
+                .expectValue(ServiceOffering.builder()
                     .description("test-service-description")
                     .id("test-service-id")
                     .label("test-service")
@@ -1679,7 +1716,8 @@ public final class DefaultServicesTest {
                         .id("test-service-plan-id")
                         .name("test-service-plan")
                         .build())
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1703,7 +1741,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1731,8 +1771,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1760,9 +1801,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1781,9 +1824,11 @@ public final class DefaultServicesTest {
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_SPACE_ID");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1812,8 +1857,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1842,9 +1888,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "New service plan test-plan not found");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "New service plan test-plan not found");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1874,8 +1922,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1902,8 +1951,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1928,9 +1978,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Plan does not exist for the test-name service");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Plan does not exist for the test-name service");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1960,8 +2012,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1992,8 +2045,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2023,9 +2077,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Service Plan test-plan is not visible to your organization");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service Plan test-plan is not visible to your organization");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -2053,9 +2109,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Plan for the test-name service cannot be updated");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Plan for the test-name service cannot be updated");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -2083,8 +2141,9 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2109,9 +2168,11 @@ public final class DefaultServicesTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "User provided service instance test-service does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "User provided service instance test-service does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override

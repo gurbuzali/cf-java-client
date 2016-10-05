@@ -94,6 +94,7 @@ import org.cloudfoundry.client.v2.stacks.GetStackResponse;
 import org.cloudfoundry.client.v2.stacks.ListStacksRequest;
 import org.cloudfoundry.client.v2.stacks.ListStacksResponse;
 import org.cloudfoundry.client.v2.stacks.StackEntity;
+import org.cloudfoundry.client.v3.applications.Application;
 import org.cloudfoundry.doppler.DopplerClient;
 import org.cloudfoundry.doppler.Envelope;
 import org.cloudfoundry.doppler.EventType;
@@ -103,11 +104,13 @@ import org.cloudfoundry.doppler.StreamRequest;
 import org.cloudfoundry.operations.AbstractOperationsApiTest;
 import org.cloudfoundry.util.DateUtils;
 import org.cloudfoundry.util.FluentMap;
+import org.cloudfoundry.util.test.ErrorExpectation;
 import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Before;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -1173,8 +1176,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1205,8 +1209,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1233,9 +1238,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Organization test-target-organization not found");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Organization test-target-organization not found");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1269,8 +1276,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1297,9 +1305,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Space test-target-space not found");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Space test-target-space not found");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1329,8 +1339,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1358,9 +1369,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1387,8 +1400,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1417,8 +1431,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1443,8 +1458,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1467,8 +1483,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1491,9 +1508,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1517,8 +1536,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1541,8 +1561,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1565,9 +1586,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1594,9 +1617,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(fill(InstanceDetail.builder())
@@ -1608,7 +1631,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1633,21 +1657,23 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationManifest> testSubscriber) {
-            testSubscriber.expectEquals(ApplicationManifest.builder()
-                .buildpack("test-application-summary-buildpack")
-                .command("test-application-summary-command")
-                .disk(1)
-                .domain("test-domain-name")
-                .environmentVariables(Collections.emptyMap())
-                .host("test-route-host")
-                .instances(1)
-                .memory(1)
-                .name("test-application-summary-name")
-                .service("test-service-instance-name")
-                .stack("test-stack-entity-name")
-                .timeout(1)
-                .build());
+        protected ScriptedSubscriber<ApplicationManifest> expectations() {
+            return ScriptedSubscriber.<ApplicationManifest>create()
+                .expectValue(ApplicationManifest.builder()
+                    .buildpack("test-application-summary-buildpack")
+                    .command("test-application-summary-command")
+                    .disk(1)
+                    .domain("test-domain-name")
+                    .environmentVariables(Collections.emptyMap())
+                    .host("test-route-host")
+                    .instances(1)
+                    .memory(1)
+                    .name("test-application-summary-name")
+                    .service("test-service-instance-name")
+                    .stack("test-stack-entity-name")
+                    .timeout(1)
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1672,18 +1698,20 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationManifest> testSubscriber) {
-            testSubscriber.expectEquals(ApplicationManifest.builder()
-                .buildpack("test-application-summary-buildpack")
-                .command("test-application-summary-command")
-                .disk(1)
-                .environmentVariables(Collections.emptyMap())
-                .instances(1)
-                .memory(1)
-                .name("test-application-summary-name")
-                .stack("test-stack-entity-name")
-                .timeout(1)
-                .build());
+        protected ScriptedSubscriber<ApplicationManifest> expectations() {
+            return ScriptedSubscriber.<ApplicationManifest>create()
+                .expectValue(ApplicationManifest.builder()
+                    .buildpack("test-application-summary-buildpack")
+                    .command("test-application-summary-command")
+                    .disk(1)
+                    .environmentVariables(Collections.emptyMap())
+                    .instances(1)
+                    .memory(1)
+                    .name("test-application-summary-name")
+                    .stack("test-stack-entity-name")
+                    .timeout(1)
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1710,9 +1738,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-detectedBuildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(fill(InstanceDetail.builder())
@@ -1724,7 +1752,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1748,9 +1777,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEnvironments> testSubscriber) {
-            testSubscriber
-                .expectEquals(ApplicationEnvironments.builder()
+        protected ScriptedSubscriber<ApplicationEnvironments> expectations() {
+            return ScriptedSubscriber.<ApplicationEnvironments>create()
+                .expectValue(ApplicationEnvironments.builder()
                     .running(FluentMap.<String, Object>builder()
                         .entry("running-env-name", "running-env-value")
                         .build())
@@ -1763,7 +1792,8 @@ public final class DefaultApplicationsTest {
                     .userProvided(FluentMap.<String, Object>builder()
                         .entry("env-name", "env-value")
                         .build())
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1786,9 +1816,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEnvironments> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app does not exist");
+        protected ScriptedSubscriber<ApplicationEnvironments> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<ApplicationEnvironments>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1821,15 +1853,16 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEvent> testSubscriber) {
-            testSubscriber
-                .expectEquals(ApplicationEvent.builder()
+        protected ScriptedSubscriber<ApplicationEvent> expectations() {
+            return ScriptedSubscriber.<ApplicationEvent>create()
+                .expectValue(ApplicationEvent.builder()
                     .actor("test-event-actorName")
                     .description("instances: 1, memory: 2, state: test-state, environment_json: test-data")
                     .event("test-event-type")
                     .id("test-event-id")
                     .time(DateUtils.parseFromIso8601("2016-02-08T15:45:59Z"))
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1861,14 +1894,15 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEvent> testSubscriber) {
-            testSubscriber
-                .expectEquals(ApplicationEvent.builder()
+        protected ScriptedSubscriber<ApplicationEvent> expectations() {
+            return ScriptedSubscriber.<ApplicationEvent>create()
+                .expectValue(ApplicationEvent.builder()
                     .actor("test-event-actorName")
                     .description("memory: 2, state: test-state, environment_json: test-data")
                     .event("test-event-type")
                     .id("test-event-id")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -1892,8 +1926,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEvent> testSubscriber) {
-            // expect successful empty result
+        protected ScriptedSubscriber<ApplicationEvent> expectations() {
+            return ScriptedSubscriber.<ApplicationEvent>create()
+                .expectComplete();
         }
 
         @Override
@@ -1926,8 +1961,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEvent> testSubscriber) {
-            // expect successful empty result
+        protected ScriptedSubscriber<ApplicationEvent> expectations() {
+            return ScriptedSubscriber.<ApplicationEvent>create()
+                .expectComplete();
         }
 
         @Override
@@ -1968,23 +2004,23 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationEvent> testSubscriber) {
-            testSubscriber
-                .expectEquals(ApplicationEvent.builder()
-                    .actor("test-event-actorName")
-                    .description("instances: 1, memory: 2, state: test-state, environment_json: test-data")
-                    .event("test-event-type")
-                    .id("test-event-id")
-                    .time(DateUtils.parseFromIso8601("2016-02-08T15:45:59Z"))
-                    .build())
-                .expectEquals(ApplicationEvent.builder()
-                    .actor("test-event-actorName")
-                    .description("state: test-state-two")
-                    .event("test-event-type")
-                    .id("test-event-id")
-                    .time(DateUtils.parseFromIso8601("2016-02-08T15:49:07Z"))
-                    .build())
-            ;
+        protected ScriptedSubscriber<ApplicationEvent> expectations() {
+            return ScriptedSubscriber.<ApplicationEvent>create()
+                .expectValues(ApplicationEvent.builder()
+                        .actor("test-event-actorName")
+                        .description("instances: 1, memory: 2, state: test-state, environment_json: test-data")
+                        .event("test-event-type")
+                        .id("test-event-id")
+                        .time(DateUtils.parseFromIso8601("2016-02-08T15:45:59Z"))
+                        .build(),
+                    ApplicationEvent.builder()
+                        .actor("test-event-actorName")
+                        .description("state: test-state-two")
+                        .event("test-event-type")
+                        .id("test-event-id")
+                        .time(DateUtils.parseFromIso8601("2016-02-08T15:49:07Z"))
+                        .build())
+                .expectComplete();
         }
 
         @Override
@@ -2007,9 +2043,10 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationHealthCheck> testSubscriber) {
-            testSubscriber
-                .expectEquals(ApplicationHealthCheck.PORT);
+        protected ScriptedSubscriber<ApplicationHealthCheck> expectations() {
+            return ScriptedSubscriber.<ApplicationHealthCheck>create()
+                .expectValue(ApplicationHealthCheck.PORT)
+                .expectComplete();
         }
 
         @Override
@@ -2038,9 +2075,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .lastUploaded(new Date(0))
@@ -2048,7 +2085,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2075,9 +2113,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack(null)
                     .id("test-application-summary-id")
                     .instanceDetail(fill(InstanceDetail.builder())
@@ -2089,7 +2127,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2118,9 +2157,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .lastUploaded(new Date(0))
@@ -2128,7 +2167,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2157,9 +2197,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(InstanceDetail.builder()
@@ -2171,7 +2211,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2198,9 +2239,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(fill(InstanceDetail.builder())
@@ -2212,7 +2253,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2239,9 +2281,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(InstanceDetail.builder()
@@ -2253,7 +2295,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2280,9 +2323,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .lastUploaded(new Date(0))
@@ -2290,7 +2333,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2317,9 +2361,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(InstanceDetail.builder()
@@ -2331,7 +2375,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2358,9 +2403,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationDetail.builder())
+        protected ScriptedSubscriber<ApplicationDetail> expectations() {
+            return ScriptedSubscriber.<ApplicationDetail>create()
+                .expectValue(fill(ApplicationDetail.builder())
                     .buildpack("test-application-summary-buildpack")
                     .id("test-application-summary-id")
                     .instanceDetail(InstanceDetail.builder()
@@ -2374,7 +2419,8 @@ public final class DefaultApplicationsTest {
                     .requestedState("test-application-summary-state")
                     .stack("test-stack-entity-name")
                     .url("test-route-host.test-domain-name")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2397,13 +2443,14 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<ApplicationSummary> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(ApplicationSummary.builder())
+        protected ScriptedSubscriber<ApplicationSummary> expectations() {
+            return ScriptedSubscriber.<ApplicationSummary>create()
+                .expectValue(fill(ApplicationSummary.builder())
                     .id("test-application-summary-id")
                     .name("test-application-summary-name")
                     .requestedState("test-application-summary-state")
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2424,10 +2471,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<LogMessage> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(LogMessage.builder(), "log-message-")
-                    .build());
+        protected ScriptedSubscriber<LogMessage> expectations() {
+            return ScriptedSubscriber.<LogMessage>create()
+                .expectValue(fill(LogMessage.builder(), "log-message-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2451,9 +2499,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<LogMessage> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-application-name does not exist");
+        protected ScriptedSubscriber<LogMessage> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<LogMessage>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -2477,10 +2527,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<LogMessage> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(LogMessage.builder(), "log-message-")
-                    .build());
+        protected ScriptedSubscriber<LogMessage> expectations() {
+            return ScriptedSubscriber.<LogMessage>create()
+                .expectValue(fill(LogMessage.builder(), "log-message-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2505,10 +2556,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<LogMessage> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(LogMessage.builder(), "log-message-")
-                    .build());
+        protected ScriptedSubscriber<LogMessage> expectations() {
+            return ScriptedSubscriber.<LogMessage>create()
+                .expectValue(fill(LogMessage.builder(), "log-message-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -2550,8 +2602,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2585,9 +2638,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Domain test-domain not found");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Domain test-domain not found");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -2629,8 +2684,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2672,8 +2728,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2715,8 +2772,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2740,9 +2798,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Stack invalid-stack does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Stack invalid-stack does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -2788,8 +2848,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2832,8 +2893,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2876,8 +2938,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2909,11 +2972,12 @@ public final class DefaultApplicationsTest {
             requestPrivateDomainsEmpty(this.cloudFoundryClient, TEST_ORGANIZATION_ID);
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Domain not found");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Domain not found");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -2954,10 +3018,10 @@ public final class DefaultApplicationsTest {
             requestApplicationInstancesRunning(this.cloudFoundryClient, "test-application-id");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -2997,10 +3061,10 @@ public final class DefaultApplicationsTest {
             requestApplicationInstancesRunning(this.cloudFoundryClient, "test-application-id");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3038,10 +3102,10 @@ public final class DefaultApplicationsTest {
             requestApplicationInstancesRunning(this.cloudFoundryClient, "test-application-id");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3079,10 +3143,10 @@ public final class DefaultApplicationsTest {
             requestUpdateApplicationState(this.cloudFoundryClient, "test-application-id", "STOPPED");
         }
 
-
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3128,8 +3192,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3172,8 +3237,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3215,9 +3281,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-name failed during start");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-name failed during start");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3258,9 +3326,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-name failed during staging");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-name failed during staging");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3298,9 +3368,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3322,8 +3394,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3347,9 +3420,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3376,8 +3451,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3400,9 +3476,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-application-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3427,9 +3505,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-application-name failed during staging");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-application-name failed during staging");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3455,8 +3535,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3482,9 +3563,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-application-name failed during start");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-application-name failed during start");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3509,9 +3592,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-application-name timed out during staging");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-application-name timed out during staging");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3539,8 +3624,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3567,9 +3653,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-app-name failed during start");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-app-name failed during start");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3593,8 +3681,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3618,9 +3707,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-non-existent-app-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-non-existent-app-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3647,8 +3738,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3675,8 +3767,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3702,8 +3795,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3727,8 +3821,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3756,8 +3851,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3783,8 +3879,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3808,9 +3905,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3834,8 +3933,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3869,8 +3969,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3895,9 +3996,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -3923,8 +4026,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -3948,9 +4052,10 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Boolean> testSubscriber) {
-            testSubscriber
-                .expectEquals(true);
+        protected ScriptedSubscriber<Boolean> expectations() {
+            return ScriptedSubscriber.<Boolean>create()
+                .expectValue(true)
+                .expectComplete();
         }
 
         @Override
@@ -3973,9 +4078,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Boolean> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app-name does not exist");
+        protected ScriptedSubscriber<Boolean> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+
+            return ScriptedSubscriber.<Boolean>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -4001,8 +4108,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -4028,9 +4136,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-application-name failed during start");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-application-name failed during start");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -4056,9 +4166,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "Application test-application-name timed out during start");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "Application test-application-name timed out during start");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -4082,9 +4194,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-application-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-application-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -4107,8 +4221,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -4134,8 +4249,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -4158,9 +4274,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-application-name does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-application-name does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -4184,8 +4302,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -4208,8 +4327,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -4242,8 +4362,9 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Nothing returned on success
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -4267,9 +4388,11 @@ public final class DefaultApplicationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Application test-app does not exist");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app does not exist");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
