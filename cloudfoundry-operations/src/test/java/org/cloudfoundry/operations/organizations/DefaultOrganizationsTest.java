@@ -53,10 +53,12 @@ import org.cloudfoundry.client.v2.spacequotadefinitions.SpaceQuotaDefinitionReso
 import org.cloudfoundry.client.v2.spaces.SpaceResource;
 import org.cloudfoundry.operations.AbstractOperationsApiTest;
 import org.cloudfoundry.operations.spaceadmin.SpaceQuota;
+import org.cloudfoundry.util.test.ErrorExpectation;
 import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Before;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -312,8 +314,9 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -337,8 +340,9 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -365,8 +369,9 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -391,8 +396,9 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // onComplete and no onNext
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -417,9 +423,11 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            testSubscriber
-                .expectError(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+        protected ScriptedSubscriber<Void> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
+
+            return ScriptedSubscriber.<Void>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -446,9 +454,9 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<OrganizationDetail> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(OrganizationDetail.builder())
+        protected ScriptedSubscriber<OrganizationDetail> expectations() {
+            return ScriptedSubscriber.<OrganizationDetail>create()
+                .expectValue(fill(OrganizationDetail.builder())
                     .domain("test-name")
                     .id("test-organization-id")
                     .name("test-organization-name")
@@ -458,7 +466,8 @@ public final class DefaultOrganizationsTest {
                     .space("test-name")
                     .spaceQuota(fill(SpaceQuota.builder())
                         .build())
-                    .build());
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -481,10 +490,11 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<OrganizationSummary> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(OrganizationSummary.builder(), "organization-")
-                    .build());
+        protected ScriptedSubscriber<OrganizationSummary> expectations() {
+            return ScriptedSubscriber.<OrganizationSummary>create()
+                .expectValue(fill(OrganizationSummary.builder(), "organization-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -506,8 +516,9 @@ public final class DefaultOrganizationsTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) {
-            // Expects onComplete() with no onNext()
+        protected ScriptedSubscriber<Void> expectations() {
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

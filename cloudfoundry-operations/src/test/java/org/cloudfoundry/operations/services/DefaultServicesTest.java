@@ -989,32 +989,6 @@ public final class DefaultServicesTest {
 
     }
 
-    public static final class CreateServiceInstanceNoSpace extends AbstractOperationsApiTest<Void> {
-
-        private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
-
-        @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
-        }
-
-        @Override
-        protected Mono<Void> invoke() {
-            return this.services
-                .createInstance(CreateServiceInstanceRequest.builder()
-                    .serviceInstanceName("test-service-instance")
-                    .serviceName("test-service")
-                    .planName("test-plan")
-                    .parameter("test-parameter-key", "test-parameter-value")
-                    .tag("test-tag")
-                    .build());
-        }
-
-    }
-
     public static final class CreateServiceKey extends AbstractOperationsApiTest<Void> {
 
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), Mono.just(TEST_SPACE_ID));
@@ -1129,28 +1103,6 @@ public final class DefaultServicesTest {
             return this.services
                 .deleteInstance(DeleteServiceInstanceRequest.builder()
                     .name("test-service-instance-name")
-                    .build());
-        }
-
-    }
-
-    public static final class DeleteServiceInstanceNoSpace extends AbstractOperationsApiTest<Void> {
-
-        private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
-
-        @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
-        }
-
-        @Override
-        protected Mono<Void> invoke() {
-            return this.services
-                .deleteInstance(DeleteServiceInstanceRequest.builder()
-                    .name("test-invalid-name")
                     .build());
         }
 
@@ -1359,28 +1311,6 @@ public final class DefaultServicesTest {
 
     }
 
-    public static final class GetServiceInstanceNoSpace extends AbstractOperationsApiTest<ServiceInstance> {
-
-        private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
-
-        @Override
-        protected ScriptedSubscriber<ServiceInstance> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
-
-            return ScriptedSubscriber.<ServiceInstance>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
-        }
-
-        @Override
-        protected Publisher<ServiceInstance> invoke() {
-            return this.services
-                .getInstance(GetServiceInstanceRequest.builder()
-                    .name("test-service-instance-name")
-                    .build());
-        }
-
-    }
-
     public static final class GetServiceInstanceUserProvided extends AbstractOperationsApiTest<ServiceInstance> {
 
         private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), Mono.just(TEST_SPACE_ID));
@@ -1532,26 +1462,6 @@ public final class DefaultServicesTest {
         protected ScriptedSubscriber<ServiceInstance> expectations() {
             return ScriptedSubscriber.<ServiceInstance>create()
                 .expectComplete();
-        }
-
-        @Override
-        protected Publisher<ServiceInstance> invoke() {
-            return this.services
-                .listInstances();
-        }
-
-    }
-
-    public static final class ListInstancesNoSpace extends AbstractOperationsApiTest<ServiceInstance> {
-
-        private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
-
-        @Override
-        protected ScriptedSubscriber<ServiceInstance> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
-
-            return ScriptedSubscriber.<ServiceInstance>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -1803,29 +1713,6 @@ public final class DefaultServicesTest {
         @Override
         protected ScriptedSubscriber<Void> expectations() {
             ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
-        }
-
-        @Override
-        protected Mono<Void> invoke() {
-            return this.services
-                .unbind(UnbindServiceInstanceRequest.builder()
-                    .applicationName("test-application-name")
-                    .serviceInstanceName("test-service-instance-name")
-                    .build());
-        }
-
-    }
-
-    public static final class UnbindServiceNoSpace extends AbstractOperationsApiTest<Void> {
-
-        private final DefaultServices services = new DefaultServices(Mono.just(this.cloudFoundryClient), Mono.just(TEST_ORGANIZATION_ID), MISSING_SPACE_ID);
-
-        @Override
-        protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_SPACE_ID");
 
             return ScriptedSubscriber.<Void>create()
                 .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
