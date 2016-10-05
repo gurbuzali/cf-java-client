@@ -1817,7 +1817,7 @@ public final class DefaultApplicationsTest {
 
         @Override
         protected ScriptedSubscriber<ApplicationEnvironments> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app does not exist");
 
             return ScriptedSubscriber.<ApplicationEnvironments>create()
                 .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
@@ -2500,7 +2500,7 @@ public final class DefaultApplicationsTest {
 
         @Override
         protected ScriptedSubscriber<LogMessage> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-application-name does not exist");
 
             return ScriptedSubscriber.<LogMessage>create()
                 .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
@@ -3477,7 +3477,7 @@ public final class DefaultApplicationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-app-name does not exist");
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-application-name does not exist");
 
             return ScriptedSubscriber.<Void>create()
                 .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
