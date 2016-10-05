@@ -45,6 +45,7 @@ import org.cloudfoundry.uaa.clients.UpdateClientResponse;
 import org.cloudfoundry.uaa.clients.UpdateMetadataRequest;
 import org.cloudfoundry.uaa.clients.UpdateMetadataResponse;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -63,7 +64,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/clients/tx")
@@ -77,7 +78,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected BatchCreateClientsResponse getResponse() {
+        protected ScriptedSubscriber<BatchCreateClientsResponse> expectations() {
             return BatchCreateClientsResponse.builder()
                 .client(Client.builder()
                     .allowedProvider("uaa", "ldap", "my-saml-provider")
@@ -109,7 +110,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected BatchCreateClientsRequest getValidRequest() throws Exception {
+        protected BatchCreateClientsRequest validRequest() {
             return BatchCreateClientsRequest.builder()
                 .client(CreateClient.builder()
                     .allowedProvider("uaa", "ldap", "my-saml-provider")
@@ -149,7 +150,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/clients/tx/delete")
@@ -163,7 +164,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected BatchDeleteClientsResponse getResponse() {
+        protected ScriptedSubscriber<BatchDeleteClientsResponse> expectations() {
             return BatchDeleteClientsResponse.builder()
                 .client(Client.builder()
                     .approvalsDeleted(true)
@@ -197,7 +198,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected BatchDeleteClientsRequest getValidRequest() throws Exception {
+        protected BatchDeleteClientsRequest validRequest() {
             return BatchDeleteClientsRequest.builder()
                 .clientId("14pnUs", "qECLyr")
                 .build();
@@ -214,7 +215,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/clients")
@@ -228,7 +229,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected CreateClientResponse getResponse() {
+        protected ScriptedSubscriber<CreateClientResponse> expectations() {
             return CreateClientResponse.builder()
                 .allowedProvider("uaa", "ldap", "my-saml-provider")
                 .authority("clients.read", "clients.write")
@@ -245,7 +246,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected CreateClientRequest getValidRequest() throws Exception {
+        protected CreateClientRequest validRequest() {
             return CreateClientRequest.builder()
                 .allowedProvider("uaa", "ldap", "my-saml-provider")
                 .authority("clients.read", "clients.write")
@@ -271,7 +272,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/oauth/clients/test-client-id")
@@ -284,7 +285,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected DeleteClientResponse getResponse() {
+        protected ScriptedSubscriber<DeleteClientResponse> expectations() {
             return DeleteClientResponse.builder()
                 .allowedProvider("uaa", "ldap", "my-saml-provider")
                 .authority("clients.read", "clients.write")
@@ -301,7 +302,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected DeleteClientRequest getValidRequest() throws Exception {
+        protected DeleteClientRequest validRequest() {
             return DeleteClientRequest.builder()
                 .clientId("test-client-id")
                 .build();
@@ -318,7 +319,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/oauth/clients")
@@ -331,7 +332,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListClientsResponse getResponse() {
+        protected ScriptedSubscriber<ListClientsResponse> expectations() {
             return ListClientsResponse.builder()
                 .resource(Client.builder()
                     .action("none")
@@ -362,7 +363,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListClientsRequest getValidRequest() throws Exception {
+        protected ListClientsRequest validRequest() {
             return ListClientsRequest.builder()
                 .build();
         }
@@ -378,7 +379,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/oauth/clients/test-client-id")
@@ -391,7 +392,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected GetClientResponse getResponse() {
+        protected ScriptedSubscriber<GetClientResponse> expectations() {
             return GetClientResponse.builder()
                 .allowedProvider("uaa", "ldap", "my-saml-provider")
                 .authority("clients.read", "clients.write")
@@ -408,7 +409,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected GetClientRequest getValidRequest() throws Exception {
+        protected GetClientRequest validRequest() {
             return GetClientRequest.builder()
                 .clientId("test-client-id")
                 .build();
@@ -425,7 +426,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/oauth/clients/P4vuAaSe/meta")
@@ -438,7 +439,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected GetMetadataResponse getResponse() {
+        protected ScriptedSubscriber<GetMetadataResponse> expectations() {
             return GetMetadataResponse.builder()
                 .appIcon("aWNvbiBmb3IgY2xpZW50IDQ=")
                 .appLaunchUrl("http://myloginpage.com")
@@ -448,7 +449,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected GetMetadataRequest getValidRequest() throws Exception {
+        protected GetMetadataRequest validRequest() {
             return GetMetadataRequest.builder()
                 .clientId("P4vuAaSe")
                 .build();
@@ -465,7 +466,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/oauth/clients?count=10&filter=client_id%2Beq%2B%22EGgNW3%22&sortBy=client_id&sortOrder=descending&startIndex=1")
@@ -478,7 +479,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListClientsResponse getResponse() {
+        protected ScriptedSubscriber<ListClientsResponse> expectations() {
             return ListClientsResponse.builder()
                 .resource(Client.builder()
                     .allowedProvider("uaa", "ldap", "my-saml-provider")
@@ -501,7 +502,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListClientsRequest getValidRequest() throws Exception {
+        protected ListClientsRequest validRequest() {
             return ListClientsRequest.builder()
                 .count(10)
                 .filter("client_id+eq+\"EGgNW3\"")
@@ -522,7 +523,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/oauth/clients/meta")
@@ -535,7 +536,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListMetadatasResponse getResponse() {
+        protected ScriptedSubscriber<ListMetadatasResponse> expectations() {
             return ListMetadatasResponse.builder()
                 .metadata(Metadata.builder()
                     .appIcon("Y2xpZW50IDMgaWNvbg==")
@@ -565,7 +566,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected ListMetadatasRequest getValidRequest() throws Exception {
+        protected ListMetadatasRequest validRequest() {
             return ListMetadatasRequest.builder()
                 .build();
         }
@@ -581,7 +582,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/oauth/clients/55pTMX")
@@ -595,7 +596,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected UpdateClientResponse getResponse() {
+        protected ScriptedSubscriber<UpdateClientResponse> expectations() {
             return UpdateClientResponse.builder()
                 .allowedProvider("uaa", "ldap", "my-saml-provider")
                 .authority("clients.read", "clients.write")
@@ -612,7 +613,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected UpdateClientRequest getValidRequest() throws Exception {
+        protected UpdateClientRequest validRequest() {
             return UpdateClientRequest.builder()
                 .authorizedGrantType(CLIENT_CREDENTIALS)
                 .autoApprove("clients.autoapprove")
@@ -632,7 +633,7 @@ public final class ReactorClientsTest {
         private final ReactorClients clients = new ReactorClients(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/oauth/clients/RpFRZpY3/meta")
@@ -646,7 +647,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected UpdateMetadataResponse getResponse() {
+        protected ScriptedSubscriber<UpdateMetadataResponse> expectations() {
             return UpdateMetadataResponse.builder()
                 .appLaunchUrl("http://changed.app.launch/url")
                 .appIcon("")
@@ -656,7 +657,7 @@ public final class ReactorClientsTest {
         }
 
         @Override
-        protected UpdateMetadataRequest getValidRequest() throws Exception {
+        protected UpdateMetadataRequest validRequest() {
             return UpdateMetadataRequest.builder()
                 .appLaunchUrl("http://changed.app.launch/url")
                 .clientId("RpFRZpY3")

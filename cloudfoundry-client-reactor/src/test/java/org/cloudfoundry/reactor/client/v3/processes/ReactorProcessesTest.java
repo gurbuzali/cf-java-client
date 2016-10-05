@@ -41,6 +41,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -58,7 +59,7 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v3/processes/test-process-id/instances/test-index")
@@ -70,12 +71,12 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected TerminateProcessInstanceRequest getValidRequest() {
+        protected TerminateProcessInstanceRequest validRequest() {
             return TerminateProcessInstanceRequest.builder()
                 .processId("test-process-id")
                 .index("test-index")
@@ -94,7 +95,7 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/processes/test-process-id")
@@ -107,7 +108,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected GetProcessResponse getResponse() {
+        protected ScriptedSubscriber<GetProcessResponse> expectations() {
             return GetProcessResponse.builder()
                 .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                 .type("web")
@@ -140,7 +141,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected GetProcessRequest getValidRequest() {
+        protected GetProcessRequest validRequest() {
             return GetProcessRequest.builder()
                 .processId("test-process-id")
                 .build();
@@ -158,7 +159,7 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/processes/test-id/stats")
@@ -171,7 +172,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected GetProcessStatisticsResponse getResponse() {
+        protected ScriptedSubscriber<GetProcessStatisticsResponse> expectations() {
             return GetProcessStatisticsResponse.builder()
                 .resource(ProcessStatisticsResource.builder()
                     .type("web")
@@ -197,7 +198,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected GetProcessStatisticsRequest getValidRequest() throws Exception {
+        protected GetProcessStatisticsRequest validRequest() {
             return GetProcessStatisticsRequest.builder()
                 .processId("test-id")
                 .build();
@@ -215,7 +216,7 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/processes?page=1&per_page=2")
@@ -228,7 +229,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ListProcessesResponse getResponse() {
+        protected ScriptedSubscriber<ListProcessesResponse> expectations() {
             return ListProcessesResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -304,7 +305,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ListProcessesRequest getValidRequest() {
+        protected ListProcessesRequest validRequest() {
             return ListProcessesRequest.builder()
                 .page(1)
                 .perPage(2)
@@ -323,7 +324,7 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/processes/test-process-id/scale")
@@ -337,7 +338,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ScaleProcessResponse getResponse() {
+        protected ScriptedSubscriber<ScaleProcessResponse> expectations() {
             return ScaleProcessResponse.builder()
                 .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                 .type("web")
@@ -370,7 +371,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected ScaleProcessRequest getValidRequest() {
+        protected ScaleProcessRequest validRequest() {
             return ScaleProcessRequest.builder()
                 .processId("test-process-id")
                 .instances(5)
@@ -390,7 +391,7 @@ public final class ReactorProcessesTest {
         private final ReactorProcesses processes = new ReactorProcesses(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PATCH).path("/v3/processes/test-process-id")
@@ -404,7 +405,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected UpdateProcessResponse getResponse() {
+        protected ScriptedSubscriber<UpdateProcessResponse> expectations() {
             return UpdateProcessResponse.builder()
                 .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                 .type("web")
@@ -437,7 +438,7 @@ public final class ReactorProcessesTest {
         }
 
         @Override
-        protected UpdateProcessRequest getValidRequest() {
+        protected UpdateProcessRequest validRequest() {
             return UpdateProcessRequest.builder()
                 .processId("test-process-id")
                 .command("rackup")

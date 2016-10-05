@@ -37,8 +37,11 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.springframework.core.io.ClassPathResource;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
@@ -57,7 +60,7 @@ public final class ReactorBuildpacksTest {
         private ReactorBuildpacks buildpacks = new ReactorBuildpacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/buildpacks")
@@ -71,7 +74,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected CreateBuildpackResponse getResponse() {
+        protected ScriptedSubscriber<CreateBuildpackResponse> expectations() {
             return CreateBuildpackResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-03-17T21:41:28Z")
@@ -89,7 +92,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected CreateBuildpackRequest getValidRequest() throws Exception {
+        protected CreateBuildpackRequest validRequest() {
             return CreateBuildpackRequest.builder()
                 .name("Golang_buildpack")
                 .build();
@@ -107,7 +110,7 @@ public final class ReactorBuildpacksTest {
         private ReactorBuildpacks buildpacks = new ReactorBuildpacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/buildpacks/test-buildpack-id?async=true")
@@ -120,7 +123,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected DeleteBuildpackResponse getResponse() {
+        protected ScriptedSubscriber<DeleteBuildpackResponse> expectations() {
             return DeleteBuildpackResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:34Z")
@@ -135,7 +138,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected DeleteBuildpackRequest getValidRequest() throws Exception {
+        protected DeleteBuildpackRequest validRequest() {
             return DeleteBuildpackRequest.builder()
                 .async(true)
                 .buildpackId("test-buildpack-id")
@@ -154,7 +157,7 @@ public final class ReactorBuildpacksTest {
         private ReactorBuildpacks buildpacks = new ReactorBuildpacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/buildpacks/test-buildpack-id")
@@ -167,7 +170,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected GetBuildpackResponse getResponse() {
+        protected ScriptedSubscriber<GetBuildpackResponse> expectations() {
             return GetBuildpackResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-03-17T21:41:28Z")
@@ -186,7 +189,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected GetBuildpackRequest getValidRequest() throws Exception {
+        protected GetBuildpackRequest validRequest() {
             return GetBuildpackRequest.builder()
                 .buildpackId("test-buildpack-id")
                 .build();
@@ -203,7 +206,7 @@ public final class ReactorBuildpacksTest {
         private ReactorBuildpacks buildpacks = new ReactorBuildpacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/buildpacks?q=name%20IN%20test-name&page=-1")
@@ -216,7 +219,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected ListBuildpacksResponse getResponse() {
+        protected ScriptedSubscriber<ListBuildpacksResponse> expectations() {
             return ListBuildpacksResponse.builder()
                 .totalResults(3)
                 .totalPages(1)
@@ -266,7 +269,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected ListBuildpacksRequest getValidRequest() throws Exception {
+        protected ListBuildpacksRequest validRequest() {
             return ListBuildpacksRequest.builder()
                 .name("test-name")
                 .page(-1)
@@ -285,7 +288,7 @@ public final class ReactorBuildpacksTest {
         private ReactorBuildpacks buildpacks = new ReactorBuildpacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/buildpacks/test-buildpack-id")
@@ -299,7 +302,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected UpdateBuildpackResponse getResponse() {
+        protected ScriptedSubscriber<UpdateBuildpackResponse> expectations() {
             return UpdateBuildpackResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-03-17T21:41:28Z")
@@ -318,7 +321,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected UpdateBuildpackRequest getValidRequest() throws Exception {
+        protected UpdateBuildpackRequest validRequest() {
             return UpdateBuildpackRequest.builder()
                 .buildpackId("test-buildpack-id")
                 .enabled(false)
@@ -336,7 +339,7 @@ public final class ReactorBuildpacksTest {
         private ReactorBuildpacks buildpacks = new ReactorBuildpacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/buildpacks/test-buildpack-id/bits")
@@ -360,7 +363,7 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected UploadBuildpackResponse getResponse() {
+        protected ScriptedSubscriber<UploadBuildpackResponse> expectations() {
             return UploadBuildpackResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-04-21T08:51:39Z")
@@ -379,12 +382,16 @@ public final class ReactorBuildpacksTest {
         }
 
         @Override
-        protected UploadBuildpackRequest getValidRequest() throws Exception {
-            return UploadBuildpackRequest.builder()
-                .buildpack(new ClassPathResource("fixtures/client/v2/buildpacks/test-buildpack.zip").getInputStream())
-                .buildpackId("test-buildpack-id")
-                .filename("test-filename")
-                .build();
+        protected UploadBuildpackRequest validRequest() {
+            try {
+                return UploadBuildpackRequest.builder()
+                    .buildpack(new ClassPathResource("fixtures/client/v2/buildpacks/test-buildpack.zip").getInputStream())
+                    .buildpackId("test-buildpack-id")
+                    .filename("test-filename")
+                    .build();
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            }
         }
 
         @Override

@@ -36,6 +36,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -51,7 +52,7 @@ public final class ReactorServiceBindingsV3Test {
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v3/service_bindings")
@@ -65,7 +66,7 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected CreateServiceBindingResponse getResponse() {
+        protected ScriptedSubscriber<CreateServiceBindingResponse> expectations() {
             return CreateServiceBindingResponse.builder()
                 .id("dde5ad2a-d8f4-44dc-a56f-0452d744f1c3")
                 .type("app")
@@ -87,7 +88,7 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected CreateServiceBindingRequest getValidRequest() throws Exception {
+        protected CreateServiceBindingRequest validRequest() {
             return CreateServiceBindingRequest.builder()
                 .data(CreateServiceBindingData.builder()
                     .parameter("some_object_id", "for_the_service_broker")
@@ -116,7 +117,7 @@ public final class ReactorServiceBindingsV3Test {
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v3/service_bindings/test-service-binding-id")
@@ -128,12 +129,12 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServiceBindingRequest getValidRequest() throws Exception {
+        protected DeleteServiceBindingRequest validRequest() {
             return DeleteServiceBindingRequest.builder()
                 .serviceBindingId("test-service-binding-id")
                 .build();
@@ -151,7 +152,7 @@ public final class ReactorServiceBindingsV3Test {
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/service_bindings/test-service-binding-id")
@@ -164,7 +165,7 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected GetServiceBindingResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceBindingResponse> expectations() {
             return GetServiceBindingResponse.builder()
                 .id("dde5ad2a-d8f4-44dc-a56f-0452d744f1c3")
                 .type("app")
@@ -186,7 +187,7 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected GetServiceBindingRequest getValidRequest() throws Exception {
+        protected GetServiceBindingRequest validRequest() {
             return GetServiceBindingRequest.builder()
                 .serviceBindingId("test-service-binding-id")
                 .build();
@@ -204,7 +205,7 @@ public final class ReactorServiceBindingsV3Test {
         private final ReactorServiceBindingsV3 serviceBindings = new ReactorServiceBindingsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/service_bindings?app_guids=test-application-id&order_by=%2Bcreated_at&page=1")
@@ -217,7 +218,7 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected ListServiceBindingsResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceBindingsResponse> expectations() {
             return ListServiceBindingsResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -271,7 +272,7 @@ public final class ReactorServiceBindingsV3Test {
         }
 
         @Override
-        protected ListServiceBindingsRequest getValidRequest() throws Exception {
+        protected ListServiceBindingsRequest validRequest() {
             return ListServiceBindingsRequest.builder()
                 .page(1)
                 .orderBy("+created_at")

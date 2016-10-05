@@ -34,6 +34,7 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -50,7 +51,7 @@ public final class ReactorServiceBrokersTest {
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/service_brokers")
@@ -64,7 +65,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected CreateServiceBrokerResponse getResponse() {
+        protected ScriptedSubscriber<CreateServiceBrokerResponse> expectations() {
             return CreateServiceBrokerResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:23Z")
@@ -80,7 +81,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected CreateServiceBrokerRequest getValidRequest() throws Exception {
+        protected CreateServiceBrokerRequest validRequest() {
             return CreateServiceBrokerRequest.builder()
                 .name("service-broker-name")
                 .authenticationPassword("secretpassw0rd")
@@ -101,7 +102,7 @@ public final class ReactorServiceBrokersTest {
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_brokers/test-service-broker-id")
@@ -113,12 +114,12 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServiceBrokerRequest getValidRequest() throws Exception {
+        protected DeleteServiceBrokerRequest validRequest() {
             return DeleteServiceBrokerRequest.builder()
                 .serviceBrokerId("test-service-broker-id")
                 .build();
@@ -135,7 +136,7 @@ public final class ReactorServiceBrokersTest {
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_brokers/test-service-broker-id")
@@ -148,7 +149,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected GetServiceBrokerResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceBrokerResponse> expectations() {
             return GetServiceBrokerResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:23Z")
@@ -166,7 +167,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected GetServiceBrokerRequest getValidRequest() throws Exception {
+        protected GetServiceBrokerRequest validRequest() {
             return GetServiceBrokerRequest.builder()
                 .serviceBrokerId("test-service-broker-id")
                 .build();
@@ -183,7 +184,7 @@ public final class ReactorServiceBrokersTest {
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_brokers?q=name%20IN%20test-name&page=-1")
@@ -196,7 +197,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ListServiceBrokersResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceBrokersResponse> expectations() {
             return ListServiceBrokersResponse.builder()
                 .totalResults(3)
                 .totalPages(1)
@@ -242,7 +243,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected ListServiceBrokersRequest getValidRequest() throws Exception {
+        protected ListServiceBrokersRequest validRequest() {
             return ListServiceBrokersRequest.builder()
                 .name("test-name")
                 .page(-1)
@@ -260,7 +261,7 @@ public final class ReactorServiceBrokersTest {
         private final ReactorServiceBrokers serviceBrokers = new ReactorServiceBrokers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/service_brokers/test-service-broker-id")
@@ -274,7 +275,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected UpdateServiceBrokerResponse getResponse() {
+        protected ScriptedSubscriber<UpdateServiceBrokerResponse> expectations() {
             return UpdateServiceBrokerResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:23Z")
@@ -292,7 +293,7 @@ public final class ReactorServiceBrokersTest {
         }
 
         @Override
-        protected UpdateServiceBrokerRequest getValidRequest() throws Exception {
+        protected UpdateServiceBrokerRequest validRequest() {
             return UpdateServiceBrokerRequest.builder()
                 .authenticationUsername("admin-user")
                 .authenticationPassword("some-secret")

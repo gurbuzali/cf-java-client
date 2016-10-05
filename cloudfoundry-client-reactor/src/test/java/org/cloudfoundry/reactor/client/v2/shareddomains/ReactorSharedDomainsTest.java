@@ -33,6 +33,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -48,7 +49,7 @@ public final class ReactorSharedDomainsTest {
         private final ReactorSharedDomains sharedDomains = new ReactorSharedDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/shared_domains")
@@ -62,7 +63,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected CreateSharedDomainResponse getResponse() {
+        protected ScriptedSubscriber<CreateSharedDomainResponse> expectations() {
             return CreateSharedDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("d6c7d452-70bb-4edd-bbf1-a925dd51732c")
@@ -78,7 +79,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected CreateSharedDomainRequest getValidRequest() throws Exception {
+        protected CreateSharedDomainRequest validRequest() {
             return CreateSharedDomainRequest.builder()
                 .name("shared-domain.com")
                 .routerGroupId("random-guid")
@@ -97,7 +98,7 @@ public final class ReactorSharedDomainsTest {
         private final ReactorSharedDomains sharedDomains = new ReactorSharedDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/shared_domains/fa1385de-55ba-41d3-beb2-f83919c634d6")
@@ -109,12 +110,12 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected DeleteSharedDomainResponse getResponse() {
+        protected ScriptedSubscriber<DeleteSharedDomainResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteSharedDomainRequest getValidRequest() throws Exception {
+        protected DeleteSharedDomainRequest validRequest() {
             return DeleteSharedDomainRequest.builder()
                 .sharedDomainId("fa1385de-55ba-41d3-beb2-f83919c634d6")
                 .build();
@@ -132,7 +133,7 @@ public final class ReactorSharedDomainsTest {
         private final ReactorSharedDomains sharedDomains = new ReactorSharedDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/shared_domains/fa1385de-55ba-41d3-beb2-f83919c634d6?async=true")
@@ -145,7 +146,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected DeleteSharedDomainResponse getResponse() {
+        protected ScriptedSubscriber<DeleteSharedDomainResponse> expectations() {
             return DeleteSharedDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -160,7 +161,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected DeleteSharedDomainRequest getValidRequest() throws Exception {
+        protected DeleteSharedDomainRequest validRequest() {
             return DeleteSharedDomainRequest.builder()
                 .async(true)
                 .sharedDomainId("fa1385de-55ba-41d3-beb2-f83919c634d6")
@@ -179,7 +180,7 @@ public final class ReactorSharedDomainsTest {
         private final ReactorSharedDomains sharedDomains = new ReactorSharedDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/shared_domains/fa1385de-55ba-41d3-beb2-f83919c634d6")
@@ -192,7 +193,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected GetSharedDomainResponse getResponse() {
+        protected ScriptedSubscriber<GetSharedDomainResponse> expectations() {
             return GetSharedDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("fa1385de-55ba-41d3-beb2-f83919c634d6")
@@ -206,7 +207,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected GetSharedDomainRequest getValidRequest() throws Exception {
+        protected GetSharedDomainRequest validRequest() {
             return GetSharedDomainRequest.builder()
                 .sharedDomainId("fa1385de-55ba-41d3-beb2-f83919c634d6")
                 .build();
@@ -224,7 +225,7 @@ public final class ReactorSharedDomainsTest {
         private final ReactorSharedDomains sharedDomains = new ReactorSharedDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/shared_domains?page=-1")
@@ -237,7 +238,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected ListSharedDomainsResponse getResponse() {
+        protected ScriptedSubscriber<ListSharedDomainsResponse> expectations() {
             return ListSharedDomainsResponse.builder()
                 .totalResults(5)
                 .totalPages(1)
@@ -295,7 +296,7 @@ public final class ReactorSharedDomainsTest {
         }
 
         @Override
-        protected ListSharedDomainsRequest getValidRequest() throws Exception {
+        protected ListSharedDomainsRequest validRequest() {
             return ListSharedDomainsRequest.builder()
                 .page(-1)
                 .build();

@@ -26,6 +26,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -37,7 +38,7 @@ public final class ReactorJobsTest {
         private final ReactorJobs jobs = new ReactorJobs(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/jobs/test-job-id")
@@ -50,7 +51,7 @@ public final class ReactorJobsTest {
         }
 
         @Override
-        protected GetJobResponse getResponse() {
+        protected ScriptedSubscriber<GetJobResponse> expectations() {
             return GetJobResponse.builder()
                 .metadata(Metadata.builder()
                     .id("e86ffe00-a243-48f7-be05-8f1f41bee864")
@@ -71,7 +72,7 @@ public final class ReactorJobsTest {
         }
 
         @Override
-        protected GetJobRequest getValidRequest() throws Exception {
+        protected GetJobRequest validRequest() {
             return GetJobRequest.builder()
                 .jobId("test-job-id")
                 .build();

@@ -34,6 +34,7 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -50,7 +51,7 @@ public final class ReactorRouteMappingsTest {
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/route_mappings")
@@ -64,7 +65,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected CreateRouteMappingResponse getResponse() {
+        protected ScriptedSubscriber<CreateRouteMappingResponse> expectations() {
             return CreateRouteMappingResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-01-19T19:40:59Z")
@@ -82,7 +83,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected CreateRouteMappingRequest getValidRequest() throws Exception {
+        protected CreateRouteMappingRequest validRequest() {
             return CreateRouteMappingRequest.builder()
                 .applicationId("d232b485-b035-4d65-9f77-6b867d859de5")
                 .routeId("c041e8a3-64d0-4beb-bac8-1900e3aedd07")
@@ -101,7 +102,7 @@ public final class ReactorRouteMappingsTest {
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/route_mappings/random-route-mapping-id")
@@ -113,12 +114,12 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected DeleteRouteMappingResponse getResponse() {
+        protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteRouteMappingRequest getValidRequest() throws Exception {
+        protected DeleteRouteMappingRequest validRequest() {
             return DeleteRouteMappingRequest.builder()
                 .routeMappingId("random-route-mapping-id")
                 .build();
@@ -135,7 +136,7 @@ public final class ReactorRouteMappingsTest {
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/route_mappings/random-route-mapping-id?async=true")
@@ -148,7 +149,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected DeleteRouteMappingResponse getResponse() {
+        protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
             return DeleteRouteMappingResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -163,7 +164,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected DeleteRouteMappingRequest getValidRequest() throws Exception {
+        protected DeleteRouteMappingRequest validRequest() {
             return DeleteRouteMappingRequest.builder()
                 .async(true)
                 .routeMappingId("random-route-mapping-id")
@@ -182,7 +183,7 @@ public final class ReactorRouteMappingsTest {
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/route_mappings/route-mapping-id")
@@ -195,7 +196,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected GetRouteMappingResponse getResponse() {
+        protected ScriptedSubscriber<GetRouteMappingResponse> expectations() {
             return GetRouteMappingResponse.builder()
                 .metadata(Metadata.builder()
                     .id("304bead7-ad5a-4f6e-a093-f2a85d30c54a")
@@ -213,7 +214,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected GetRouteMappingRequest getValidRequest() throws Exception {
+        protected GetRouteMappingRequest validRequest() {
             return GetRouteMappingRequest.builder()
                 .routeMappingId("route-mapping-id")
                 .build();
@@ -230,7 +231,7 @@ public final class ReactorRouteMappingsTest {
         private final ReactorRouteMappings routeMappings = new ReactorRouteMappings(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/route_mappings?page=-1")
@@ -243,7 +244,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ListRouteMappingsResponse getResponse() {
+        protected ScriptedSubscriber<ListRouteMappingsResponse> expectations() {
             return ListRouteMappingsResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -265,7 +266,7 @@ public final class ReactorRouteMappingsTest {
         }
 
         @Override
-        protected ListRouteMappingsRequest getValidRequest() throws Exception {
+        protected ListRouteMappingsRequest validRequest() {
             return ListRouteMappingsRequest.builder()
                 .page(-1)
                 .build();

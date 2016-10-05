@@ -28,6 +28,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -41,7 +42,7 @@ public final class ReactorEventsTest {
         private final ReactorEvents events = new ReactorEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/events/test-event-id")
@@ -54,7 +55,7 @@ public final class ReactorEventsTest {
         }
 
         @Override
-        protected GetEventResponse getResponse() {
+        protected ScriptedSubscriber<GetEventResponse> expectations() {
             return GetEventResponse.builder()
                 .metadata(Metadata.builder()
                     .id("8f1366e5-1fe2-418c-ae33-38bf29ad857a")
@@ -78,7 +79,7 @@ public final class ReactorEventsTest {
         }
 
         @Override
-        protected GetEventRequest getValidRequest() {
+        protected GetEventRequest validRequest() {
             return GetEventRequest.builder()
                 .eventId("test-event-id")
                 .build();
@@ -96,7 +97,7 @@ public final class ReactorEventsTest {
         private final ReactorEvents events = new ReactorEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/events?q=actee%20IN%20test-actee&page=-1")
@@ -109,7 +110,7 @@ public final class ReactorEventsTest {
         }
 
         @Override
-        protected ListEventsResponse getResponse() {
+        protected ScriptedSubscriber<ListEventsResponse> expectations() {
             return ListEventsResponse.builder()
                 .totalResults(3)
                 .totalPages(1)
@@ -177,7 +178,7 @@ public final class ReactorEventsTest {
         }
 
         @Override
-        protected ListEventsRequest getValidRequest() {
+        protected ListEventsRequest validRequest() {
             return ListEventsRequest.builder()
                 .actee("test-actee")
                 .page(-1)

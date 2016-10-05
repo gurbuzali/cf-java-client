@@ -43,6 +43,7 @@ import org.cloudfoundry.uaa.identityproviders.Type;
 import org.cloudfoundry.uaa.identityproviders.UpdateIdentityProviderRequest;
 import org.cloudfoundry.uaa.identityproviders.UpdateIdentityProviderResponse;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -60,7 +61,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/identity-providers")
@@ -75,7 +76,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected CreateIdentityProviderResponse getResponse() {
+        protected ScriptedSubscriber<CreateIdentityProviderResponse> expectations() {
             return CreateIdentityProviderResponse.builder()
                 .active(true)
                 .createdAt(1465001967988L)
@@ -106,7 +107,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected CreateIdentityProviderRequest getValidRequest() throws Exception {
+        protected CreateIdentityProviderRequest validRequest() {
             return CreateIdentityProviderRequest.builder()
                 .active(true)
                 .configuration(LdapConfiguration.builder()
@@ -137,7 +138,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/identity-providers")
@@ -152,7 +153,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected CreateIdentityProviderResponse getResponse() {
+        protected ScriptedSubscriber<CreateIdentityProviderResponse> expectations() {
             return CreateIdentityProviderResponse.builder()
                 .active(true)
                 .createdAt(1465001966855L)
@@ -180,7 +181,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected CreateIdentityProviderRequest getValidRequest() throws Exception {
+        protected CreateIdentityProviderRequest validRequest() {
             return CreateIdentityProviderRequest.builder()
                 .active(true)
                 .configuration(OAuth2Configuration.builder()
@@ -213,7 +214,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/identity-providers")
@@ -228,7 +229,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected CreateIdentityProviderResponse getResponse() {
+        protected ScriptedSubscriber<CreateIdentityProviderResponse> expectations() {
             return CreateIdentityProviderResponse.builder()
                 .active(true)
                 .createdAt(1465001965526L)
@@ -272,7 +273,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected CreateIdentityProviderRequest getValidRequest() throws Exception {
+        protected CreateIdentityProviderRequest validRequest() {
             return CreateIdentityProviderRequest.builder()
                 .active(true)
                 .configuration(SamlConfiguration.builder()
@@ -319,7 +320,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/identity-providers/test-identity-provider-id")
@@ -333,7 +334,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected DeleteIdentityProviderResponse getResponse() {
+        protected ScriptedSubscriber<DeleteIdentityProviderResponse> expectations() {
             return DeleteIdentityProviderResponse.builder()
                 .active(true)
                 .createdAt(1466035298319L)
@@ -377,7 +378,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected DeleteIdentityProviderRequest getValidRequest() throws Exception {
+        protected DeleteIdentityProviderRequest validRequest() {
             return DeleteIdentityProviderRequest.builder()
                 .identityProviderId("test-identity-provider-id")
                 .identityZoneId("test-identity-zone-id")
@@ -395,7 +396,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/identity-providers/test-identity-provider-id")
@@ -409,7 +410,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected GetIdentityProviderResponse getResponse() {
+        protected ScriptedSubscriber<GetIdentityProviderResponse> expectations() {
             return GetIdentityProviderResponse.builder()
                 .active(true)
                 .createdAt(1465001966715L)
@@ -453,7 +454,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected GetIdentityProviderRequest getValidRequest() throws Exception {
+        protected GetIdentityProviderRequest validRequest() {
             return GetIdentityProviderRequest.builder()
                 .identityProviderId("test-identity-provider-id")
                 .identityZoneId("test-identity-zone-id")
@@ -471,7 +472,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/identity-providers")
@@ -485,7 +486,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected ListIdentityProvidersResponse getResponse() {
+        protected ScriptedSubscriber<ListIdentityProvidersResponse> expectations() {
             return ListIdentityProvidersResponse.builder()
                 .identityProvider(IdentityProvider.builder()
                     .active(true)
@@ -588,7 +589,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected ListIdentityProvidersRequest getValidRequest() throws Exception {
+        protected ListIdentityProvidersRequest validRequest() {
             return ListIdentityProvidersRequest.builder()
                 .identityZoneId("test-identity-zone-id")
                 .build();
@@ -605,7 +606,7 @@ public final class ReactorIdentityProvidersTest {
         private final ReactorIdentityProviders identityProviders = new ReactorIdentityProviders(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/identity-providers/test-identity-provider-id")
@@ -620,7 +621,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected UpdateIdentityProviderResponse getResponse() {
+        protected ScriptedSubscriber<UpdateIdentityProviderResponse> expectations() {
             return UpdateIdentityProviderResponse.builder()
                 .active(true)
                 .createdAt(946713600000L)
@@ -643,7 +644,7 @@ public final class ReactorIdentityProvidersTest {
         }
 
         @Override
-        protected UpdateIdentityProviderRequest getValidRequest() throws Exception {
+        protected UpdateIdentityProviderRequest validRequest() {
             return UpdateIdentityProviderRequest.builder()
                 .active(true)
                 .configuration(InternalConfiguration.builder()

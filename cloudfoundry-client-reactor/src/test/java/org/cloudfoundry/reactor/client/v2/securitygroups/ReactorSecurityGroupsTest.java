@@ -42,6 +42,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -58,7 +59,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/security_groups")
@@ -72,7 +73,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected CreateSecurityGroupResponse getResponse() {
+        protected ScriptedSubscriber<CreateSecurityGroupResponse> expectations() {
             return CreateSecurityGroupResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-05-12T00:45:26Z")
@@ -110,7 +111,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected CreateSecurityGroupRequest getValidRequest() throws Exception {
+        protected CreateSecurityGroupRequest validRequest() {
             return CreateSecurityGroupRequest.builder()
                 .name("my_super_sec_group")
                 .rule(RuleEntity.builder()
@@ -149,7 +150,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/security_groups/test-id")
@@ -161,12 +162,12 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected DeleteSecurityGroupResponse getResponse() {
+        protected ScriptedSubscriber<DeleteSecurityGroupResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteSecurityGroupRequest getValidRequest() throws Exception {
+        protected DeleteSecurityGroupRequest validRequest() {
             return DeleteSecurityGroupRequest.builder()
                 .securityGroupId("test-id")
                 .build();
@@ -184,7 +185,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/security_groups/test-id?async=true")
@@ -197,7 +198,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected DeleteSecurityGroupResponse getResponse() {
+        protected ScriptedSubscriber<DeleteSecurityGroupResponse> expectations() {
             return DeleteSecurityGroupResponse.builder()
                 .metadata(Metadata.builder()
                     .id("260ba675-47b6-4094-be7a-349d58e3d36a")
@@ -212,7 +213,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected DeleteSecurityGroupRequest getValidRequest() throws Exception {
+        protected DeleteSecurityGroupRequest validRequest() {
             return DeleteSecurityGroupRequest.builder()
                 .async(true)
                 .securityGroupId("test-id")
@@ -231,7 +232,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/config/running_security_groups/test-id")
@@ -243,12 +244,12 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteSecurityGroupRunningDefaultRequest getValidRequest() throws Exception {
+        protected DeleteSecurityGroupRunningDefaultRequest validRequest() {
             return DeleteSecurityGroupRunningDefaultRequest.builder()
                 .securityGroupRunningDefaultId("test-id")
                 .build();
@@ -266,7 +267,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/config/staging_security_groups/test-id")
@@ -278,12 +279,12 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteSecurityGroupStagingDefaultRequest getValidRequest() throws Exception {
+        protected DeleteSecurityGroupStagingDefaultRequest validRequest() {
             return DeleteSecurityGroupStagingDefaultRequest.builder()
                 .securityGroupStagingDefaultId("test-id")
                 .build();
@@ -301,7 +302,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/security_groups")
@@ -314,7 +315,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected ListSecurityGroupsResponse getResponse() {
+        protected ScriptedSubscriber<ListSecurityGroupsResponse> expectations() {
             return ListSecurityGroupsResponse.builder()
                 .totalResults(5)
                 .totalPages(1)
@@ -404,7 +405,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected ListSecurityGroupsRequest getValidRequest() throws Exception {
+        protected ListSecurityGroupsRequest validRequest() {
             return ListSecurityGroupsRequest.builder().build();
         }
 
@@ -420,7 +421,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/config/running_security_groups")
@@ -433,7 +434,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected ListSecurityGroupRunningDefaultsResponse getResponse() {
+        protected ScriptedSubscriber<ListSecurityGroupRunningDefaultsResponse> expectations() {
             return ListSecurityGroupRunningDefaultsResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -458,7 +459,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected ListSecurityGroupRunningDefaultsRequest getValidRequest() throws Exception {
+        protected ListSecurityGroupRunningDefaultsRequest validRequest() {
             return ListSecurityGroupRunningDefaultsRequest.builder().build();
         }
 
@@ -474,7 +475,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/config/staging_security_groups")
@@ -487,7 +488,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected ListSecurityGroupStagingDefaultsResponse getResponse() {
+        protected ScriptedSubscriber<ListSecurityGroupStagingDefaultsResponse> expectations() {
             return ListSecurityGroupStagingDefaultsResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -512,7 +513,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected ListSecurityGroupStagingDefaultsRequest getValidRequest() throws Exception {
+        protected ListSecurityGroupStagingDefaultsRequest validRequest() {
             return ListSecurityGroupStagingDefaultsRequest.builder().build();
         }
 
@@ -528,7 +529,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/config/running_security_groups/test-security-group-default-id")
@@ -541,7 +542,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected SetSecurityGroupRunningDefaultResponse getResponse() {
+        protected ScriptedSubscriber<SetSecurityGroupRunningDefaultResponse> expectations() {
             return SetSecurityGroupRunningDefaultResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-04-06T00:17:17Z")
@@ -563,7 +564,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected SetSecurityGroupRunningDefaultRequest getValidRequest() throws Exception {
+        protected SetSecurityGroupRunningDefaultRequest validRequest() {
             return SetSecurityGroupRunningDefaultRequest.builder()
                 .securityGroupRunningDefaultId("test-security-group-default-id")
                 .build();
@@ -581,7 +582,7 @@ public final class ReactorSecurityGroupsTest {
         private final ReactorSecurityGroups securityGroups = new ReactorSecurityGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/config/staging_security_groups/test-security-group-default-id")
@@ -594,7 +595,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected SetSecurityGroupStagingDefaultResponse getResponse() {
+        protected ScriptedSubscriber<SetSecurityGroupStagingDefaultResponse> expectations() {
             return SetSecurityGroupStagingDefaultResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-04-16T01:23:52Z")
@@ -616,7 +617,7 @@ public final class ReactorSecurityGroupsTest {
         }
 
         @Override
-        protected SetSecurityGroupStagingDefaultRequest getValidRequest() throws Exception {
+        protected SetSecurityGroupStagingDefaultRequest validRequest() {
             return SetSecurityGroupStagingDefaultRequest.builder()
                 .securityGroupStagingDefaultId("test-security-group-default-id")
                 .build();

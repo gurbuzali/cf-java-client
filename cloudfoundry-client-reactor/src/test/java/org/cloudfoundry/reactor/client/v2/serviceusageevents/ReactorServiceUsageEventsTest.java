@@ -29,6 +29,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpMethod.POST;
@@ -42,7 +43,7 @@ public final class ReactorServiceUsageEventsTest {
         private final ReactorServiceUsageEvents serviceUsageEvents = new ReactorServiceUsageEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_usage_events/9470627d-0488-4d9a-8564-f97571487893")
@@ -55,7 +56,7 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected GetServiceUsageEventResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceUsageEventResponse> expectations() {
             return GetServiceUsageEventResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:30Z")
@@ -79,7 +80,7 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected GetServiceUsageEventRequest getValidRequest() throws Exception {
+        protected GetServiceUsageEventRequest validRequest() {
             return GetServiceUsageEventRequest.builder()
                 .serviceUsageEventId("9470627d-0488-4d9a-8564-f97571487893")
                 .build();
@@ -96,7 +97,7 @@ public final class ReactorServiceUsageEventsTest {
         private final ReactorServiceUsageEvents serviceUsageEvents = new ReactorServiceUsageEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_usage_events?after_guid=e5defac2-4ae1-44ac-a3d0-1684ae657453&page=-1")
@@ -109,7 +110,7 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected ListServiceUsageEventsResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceUsageEventsResponse> expectations() {
             return ListServiceUsageEventsResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -138,7 +139,7 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected ListServiceUsageEventsRequest getValidRequest() throws Exception {
+        protected ListServiceUsageEventsRequest validRequest() {
             return ListServiceUsageEventsRequest.builder()
                 .afterServiceUsageEventId("e5defac2-4ae1-44ac-a3d0-1684ae657453")
                 .page(-1)
@@ -156,7 +157,7 @@ public final class ReactorServiceUsageEventsTest {
         private final ReactorServiceUsageEvents serviceUsageEvents = new ReactorServiceUsageEvents(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/service_usage_events/destructively_purge_all_and_reseed_existing_instances")
@@ -168,12 +169,12 @@ public final class ReactorServiceUsageEventsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected PurgeAndReseedServiceUsageEventsRequest getValidRequest() throws Exception {
+        protected PurgeAndReseedServiceUsageEventsRequest validRequest() {
             return PurgeAndReseedServiceUsageEventsRequest.builder().build();
         }
 

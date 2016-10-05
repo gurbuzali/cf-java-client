@@ -37,6 +37,7 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.cloudfoundry.util.FluentMap;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -52,7 +53,7 @@ public final class ReactorDropletsTest {
         private final ReactorDroplets droplets = new ReactorDroplets(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v3/droplets/test-droplet-id")
@@ -64,12 +65,12 @@ public final class ReactorDropletsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteDropletRequest getValidRequest() throws Exception {
+        protected DeleteDropletRequest validRequest() {
             return DeleteDropletRequest.builder()
                 .dropletId("test-droplet-id")
                 .build();
@@ -87,7 +88,7 @@ public final class ReactorDropletsTest {
         private final ReactorDroplets droplets = new ReactorDroplets(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/droplets/test-droplet-id")
@@ -100,7 +101,7 @@ public final class ReactorDropletsTest {
         }
 
         @Override
-        protected GetDropletResponse getResponse() {
+        protected ScriptedSubscriber<GetDropletResponse> expectations() {
             return GetDropletResponse.builder()
                 .id("585bc3c1-3743-497d-88b0-403ad6b56d16")
                 .state(State.STAGED)
@@ -161,7 +162,7 @@ public final class ReactorDropletsTest {
         }
 
         @Override
-        protected GetDropletRequest getValidRequest() throws Exception {
+        protected GetDropletRequest validRequest() {
             return GetDropletRequest.builder()
                 .dropletId("test-droplet-id")
                 .build();
@@ -179,7 +180,7 @@ public final class ReactorDropletsTest {
         private final ReactorDroplets droplets = new ReactorDroplets(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/droplets")
@@ -192,7 +193,7 @@ public final class ReactorDropletsTest {
         }
 
         @Override
-        protected ListDropletsResponse getResponse() {
+        protected ScriptedSubscriber<ListDropletsResponse> expectations() {
             return ListDropletsResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(2)
@@ -272,7 +273,7 @@ public final class ReactorDropletsTest {
         }
 
         @Override
-        protected ListDropletsRequest getValidRequest() throws Exception {
+        protected ListDropletsRequest validRequest() {
             return ListDropletsRequest.builder()
                 .build();
         }

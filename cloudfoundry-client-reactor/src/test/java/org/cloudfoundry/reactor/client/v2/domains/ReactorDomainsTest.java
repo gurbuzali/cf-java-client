@@ -37,6 +37,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -54,7 +55,7 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/domains")
@@ -68,7 +69,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected CreateDomainResponse getResponse() {
+        protected ScriptedSubscriber<CreateDomainResponse> expectations() {
             return CreateDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("abb8338f-eaea-4149-85c0-61888bac0737")
@@ -86,7 +87,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected CreateDomainRequest getValidRequest() throws Exception {
+        protected CreateDomainRequest validRequest() {
             return CreateDomainRequest.builder()
                 .name("exmaple.com")
                 .owningOrganizationId("09e0d56f-4e50-4bff-af83-9bd87a7d7f00")
@@ -105,7 +106,7 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/domains/test-domain-id")
@@ -117,12 +118,12 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected DeleteDomainResponse getResponse() {
+        protected ScriptedSubscriber<DeleteDomainResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteDomainRequest getValidRequest() throws Exception {
+        protected DeleteDomainRequest validRequest() {
             return DeleteDomainRequest.builder()
                 .domainId("test-domain-id")
                 .build();
@@ -139,7 +140,7 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/domains/test-domain-id?async=true")
@@ -152,7 +153,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected DeleteDomainResponse getResponse() {
+        protected ScriptedSubscriber<DeleteDomainResponse> expectations() {
             return DeleteDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -167,7 +168,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected DeleteDomainRequest getValidRequest() throws Exception {
+        protected DeleteDomainRequest validRequest() {
             return DeleteDomainRequest.builder()
                 .async(true)
                 .domainId("test-domain-id")
@@ -185,7 +186,7 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/domains/test-domain-id")
@@ -198,7 +199,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected GetDomainResponse getResponse() {
+        protected ScriptedSubscriber<GetDomainResponse> expectations() {
             return GetDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("7cd249aa-197c-425c-8831-57cbc24e8e26")
@@ -212,7 +213,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected GetDomainRequest getValidRequest() {
+        protected GetDomainRequest validRequest() {
             return GetDomainRequest.builder()
                 .domainId("test-domain-id")
                 .build();
@@ -230,7 +231,7 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/domains?page=-1")
@@ -243,7 +244,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ListDomainsResponse getResponse() {
+        protected ScriptedSubscriber<ListDomainsResponse> expectations() {
             return ListDomainsResponse.builder()
                 .totalResults(4)
                 .totalPages(1)
@@ -294,7 +295,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ListDomainsRequest getValidRequest() throws Exception {
+        protected ListDomainsRequest validRequest() {
             return ListDomainsRequest.builder()
                 .page(-1)
                 .build();
@@ -311,7 +312,7 @@ public final class ReactorDomainsTest {
         private final ReactorDomains domains = new ReactorDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/domains/test-domain-id/spaces?page=-1")
@@ -324,7 +325,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ListDomainSpacesResponse getResponse() {
+        protected ScriptedSubscriber<ListDomainSpacesResponse> expectations() {
             return ListDomainSpacesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -355,7 +356,7 @@ public final class ReactorDomainsTest {
         }
 
         @Override
-        protected ListDomainSpacesRequest getValidRequest() throws Exception {
+        protected ListDomainSpacesRequest validRequest() {
             return ListDomainSpacesRequest.builder()
                 .domainId("test-domain-id")
                 .page(-1)

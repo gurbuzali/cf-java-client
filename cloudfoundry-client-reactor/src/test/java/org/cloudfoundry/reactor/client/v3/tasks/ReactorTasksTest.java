@@ -34,6 +34,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -50,7 +51,7 @@ public final class ReactorTasksTest {
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/tasks/test-id/cancel")
@@ -63,7 +64,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected CancelTaskResponse getResponse() {
+        protected ScriptedSubscriber<CancelTaskResponse> expectations() {
             return CancelTaskResponse.builder()
                 .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
                 .name("migrate")
@@ -86,7 +87,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected CancelTaskRequest getValidRequest() {
+        protected CancelTaskRequest validRequest() {
             return CancelTaskRequest.builder()
                 .taskId("test-id")
                 .build();
@@ -104,7 +105,7 @@ public final class ReactorTasksTest {
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v3/apps/test-application-id/tasks")
@@ -118,7 +119,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected CreateTaskResponse getResponse() {
+        protected ScriptedSubscriber<CreateTaskResponse> expectations() {
             return CreateTaskResponse.builder()
                 .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
                 .name("migrate")
@@ -141,7 +142,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected CreateTaskRequest getValidRequest() {
+        protected CreateTaskRequest validRequest() {
             return CreateTaskRequest.builder()
                 .applicationId("test-application-id")
                 .command("echo 'hello world'")
@@ -162,7 +163,7 @@ public final class ReactorTasksTest {
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/tasks/test-id")
@@ -175,7 +176,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected GetTaskResponse getResponse() {
+        protected ScriptedSubscriber<GetTaskResponse> expectations() {
             return GetTaskResponse.builder()
                 .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
                 .name("migrate")
@@ -198,7 +199,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected GetTaskRequest getValidRequest() {
+        protected GetTaskRequest validRequest() {
             return GetTaskRequest.builder()
                 .taskId("test-id")
                 .build();
@@ -216,7 +217,7 @@ public final class ReactorTasksTest {
         private final ReactorTasks tasks = new ReactorTasks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/tasks?page=1")
@@ -229,7 +230,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected ListTasksResponse getResponse() {
+        protected ScriptedSubscriber<ListTasksResponse> expectations() {
             return ListTasksResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -286,7 +287,7 @@ public final class ReactorTasksTest {
         }
 
         @Override
-        protected ListTasksRequest getValidRequest() throws Exception {
+        protected ListTasksRequest validRequest() {
             return ListTasksRequest.builder()
                 .page(1)
                 .build();

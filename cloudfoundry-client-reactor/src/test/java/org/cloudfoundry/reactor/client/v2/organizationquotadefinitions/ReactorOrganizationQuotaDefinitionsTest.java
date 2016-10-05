@@ -35,6 +35,7 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -51,7 +52,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/quota_definitions")
@@ -66,7 +67,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected CreateOrganizationQuotaDefinitionResponse getResponse() {
+        protected ScriptedSubscriber<CreateOrganizationQuotaDefinitionResponse> expectations() {
             return CreateOrganizationQuotaDefinitionResponse.builder()
                 .metadata(Metadata.builder()
                     .id("27a0466e-53c0-439a-ab9f-3e56854302f9")
@@ -90,7 +91,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected CreateOrganizationQuotaDefinitionRequest getValidRequest() throws Exception {
+        protected CreateOrganizationQuotaDefinitionRequest validRequest() {
             return CreateOrganizationQuotaDefinitionRequest.builder()
                 .name("gold_quota")
                 .nonBasicServicesAllowed(true)
@@ -115,7 +116,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/quota_definitions/test-quota-definition-id")
@@ -127,12 +128,12 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected DeleteOrganizationQuotaDefinitionResponse getResponse() {
+        protected ScriptedSubscriber<DeleteOrganizationQuotaDefinitionResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteOrganizationQuotaDefinitionRequest getValidRequest() throws Exception {
+        protected DeleteOrganizationQuotaDefinitionRequest validRequest() {
             return DeleteOrganizationQuotaDefinitionRequest.builder()
                 .organizationQuotaDefinitionId("test-quota-definition-id")
                 .build();
@@ -150,7 +151,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/quota_definitions/test-quota-definition-id")
@@ -164,7 +165,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected GetOrganizationQuotaDefinitionResponse getResponse() {
+        protected ScriptedSubscriber<GetOrganizationQuotaDefinitionResponse> expectations() {
             return GetOrganizationQuotaDefinitionResponse.builder()
                 .metadata(Metadata.builder()
                     .id("c1b8a422-e2b2-4e28-8a16-90ebef2a6922")
@@ -188,7 +189,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected GetOrganizationQuotaDefinitionRequest getValidRequest() throws Exception {
+        protected GetOrganizationQuotaDefinitionRequest validRequest() {
             return GetOrganizationQuotaDefinitionRequest.builder()
                 .organizationQuotaDefinitionId("test-quota-definition-id")
                 .build();
@@ -206,7 +207,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/quota_definitions?page=-1")
@@ -220,7 +221,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected ListOrganizationQuotaDefinitionsResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationQuotaDefinitionsResponse> expectations() {
             return ListOrganizationQuotaDefinitionsResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -248,7 +249,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected ListOrganizationQuotaDefinitionsRequest getValidRequest() throws Exception {
+        protected ListOrganizationQuotaDefinitionsRequest validRequest() {
             return ListOrganizationQuotaDefinitionsRequest.builder()
                 .page(-1)
                 .build();
@@ -266,7 +267,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         private final ReactorOrganizationQuotaDefinitions quotaDefinitions = new ReactorOrganizationQuotaDefinitions(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/quota_definitions/test-quota-definition-id")
@@ -281,7 +282,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected UpdateOrganizationQuotaDefinitionResponse getResponse() {
+        protected ScriptedSubscriber<UpdateOrganizationQuotaDefinitionResponse> expectations() {
             return UpdateOrganizationQuotaDefinitionResponse.builder()
                 .metadata(Metadata.builder()
                     .id("cd10a1dd-f372-4b19-8ff6-60214b265f6f")
@@ -306,7 +307,7 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
         }
 
         @Override
-        protected UpdateOrganizationQuotaDefinitionRequest getValidRequest() throws Exception {
+        protected UpdateOrganizationQuotaDefinitionRequest validRequest() {
             return UpdateOrganizationQuotaDefinitionRequest.builder()
                 .organizationQuotaDefinitionId("test-quota-definition-id")
                 .build();

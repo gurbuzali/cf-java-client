@@ -31,6 +31,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -46,7 +47,7 @@ public final class ReactorServiceKeysTest {
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/service_keys")
@@ -60,7 +61,7 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected CreateServiceKeyResponse getResponse() {
+        protected ScriptedSubscriber<CreateServiceKeyResponse> expectations() {
             return CreateServiceKeyResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:22Z")
@@ -77,7 +78,7 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected CreateServiceKeyRequest getValidRequest() throws Exception {
+        protected CreateServiceKeyRequest validRequest() {
             return CreateServiceKeyRequest.builder()
                 .name("name-960")
                 .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
@@ -95,7 +96,7 @@ public final class ReactorServiceKeysTest {
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_keys/test-service-key-id")
@@ -107,12 +108,12 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServiceKeyRequest getValidRequest() throws Exception {
+        protected DeleteServiceKeyRequest validRequest() {
             return DeleteServiceKeyRequest.builder()
                 .serviceKeyId("test-service-key-id")
                 .build();
@@ -129,7 +130,7 @@ public final class ReactorServiceKeysTest {
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_keys/test-service-key-id")
@@ -142,7 +143,7 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected GetServiceKeyResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceKeyResponse> expectations() {
             return GetServiceKeyResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:22Z")
@@ -159,7 +160,7 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected GetServiceKeyRequest getValidRequest() throws Exception {
+        protected GetServiceKeyRequest validRequest() {
             return GetServiceKeyRequest.builder()
                 .serviceKeyId("test-service-key-id")
                 .build();
@@ -176,7 +177,7 @@ public final class ReactorServiceKeysTest {
         private final ReactorServiceKeys serviceKeys = new ReactorServiceKeys(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_keys?q=name%20IN%20test-name&page=-1")
@@ -189,7 +190,7 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected ListServiceKeysResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceKeysResponse> expectations() {
             return ListServiceKeysResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -210,7 +211,7 @@ public final class ReactorServiceKeysTest {
         }
 
         @Override
-        protected ListServiceKeysRequest getValidRequest() throws Exception {
+        protected ListServiceKeysRequest validRequest() {
             return ListServiceKeysRequest.builder()
                 .name("test-name")
                 .page(-1)

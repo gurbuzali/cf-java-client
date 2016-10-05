@@ -48,6 +48,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -67,7 +68,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/service_instances/test-service-instance-id/routes/route-id")
@@ -81,7 +82,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected BindServiceInstanceToRouteResponse getResponse() {
+        protected ScriptedSubscriber<BindServiceInstanceToRouteResponse> expectations() {
             return BindServiceInstanceToRouteResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-12-22T18:27:58Z")
@@ -105,7 +106,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected BindServiceInstanceToRouteRequest getValidRequest() throws Exception {
+        protected BindServiceInstanceToRouteRequest validRequest() {
             return BindServiceInstanceToRouteRequest.builder()
                 .serviceInstanceId("test-service-instance-id")
                 .routeId("route-id")
@@ -125,7 +126,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/service_instances?accepts_incomplete=true")
@@ -139,7 +140,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected CreateServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<CreateServiceInstanceResponse> expectations() {
             return CreateServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:08Z")
@@ -170,7 +171,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected CreateServiceInstanceRequest getValidRequest() throws Exception {
+        protected CreateServiceInstanceRequest validRequest() {
             return CreateServiceInstanceRequest.builder()
                 .acceptsIncomplete(true)
                 .name("my-service-instance")
@@ -194,7 +195,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_instances/test-service-instance-id?accepts_incomplete=true&purge=true")
@@ -206,12 +207,12 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected DeleteServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServiceInstanceResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServiceInstanceRequest getValidRequest() {
+        protected DeleteServiceInstanceRequest validRequest() {
             return DeleteServiceInstanceRequest.builder()
                 .serviceInstanceId("test-service-instance-id")
                 .acceptsIncomplete(true)
@@ -231,7 +232,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_instances/test-service-instance-id?accepts_incomplete=true&async=true&purge=true")
@@ -244,7 +245,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected DeleteServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServiceInstanceResponse> expectations() {
             return DeleteServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -259,7 +260,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected DeleteServiceInstanceRequest getValidRequest() {
+        protected DeleteServiceInstanceRequest validRequest() {
             return DeleteServiceInstanceRequest.builder()
                 .async(true)
                 .serviceInstanceId("test-service-instance-id")
@@ -280,7 +281,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_instances/test-service-instance-id")
@@ -293,7 +294,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected GetServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceInstanceResponse> expectations() {
             return GetServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("24ec15f9-f6c7-434a-8893-51baab8408d8")
@@ -326,7 +327,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected GetServiceInstanceRequest getValidRequest() throws Exception {
+        protected GetServiceInstanceRequest validRequest() {
             return GetServiceInstanceRequest.builder()
                 .serviceInstanceId("test-service-instance-id")
                 .build();
@@ -344,7 +345,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_instances/test-service-instance-id/permissions")
@@ -357,14 +358,14 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected GetServiceInstancePermissionsResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceInstancePermissionsResponse> expectations() {
             return GetServiceInstancePermissionsResponse.builder()
                 .manage(true)
                 .build();
         }
 
         @Override
-        protected GetServiceInstancePermissionsRequest getValidRequest() throws Exception {
+        protected GetServiceInstancePermissionsRequest validRequest() {
             return GetServiceInstancePermissionsRequest.builder()
                 .serviceInstanceId("test-service-instance-id")
                 .build();
@@ -382,7 +383,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_instances?q=name%20IN%20test-name&page=-1")
@@ -395,7 +396,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected ListServiceInstancesResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceInstancesResponse> expectations() {
             return ListServiceInstancesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -432,7 +433,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected ListServiceInstancesRequest getValidRequest() {
+        protected ListServiceInstancesRequest validRequest() {
             return ListServiceInstancesRequest.builder()
                 .name("test-name")
                 .page(-1)
@@ -451,7 +452,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_instances/test-service-instance-id/service_bindings?q=app_guid%20IN%20test-application-id&page=-1")
@@ -464,7 +465,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected ListServiceInstanceServiceBindingsResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceInstanceServiceBindingsResponse> expectations() {
             return ListServiceInstanceServiceBindingsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -488,7 +489,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected ListServiceInstanceServiceBindingsRequest getValidRequest() throws Exception {
+        protected ListServiceInstanceServiceBindingsRequest validRequest() {
             return ListServiceInstanceServiceBindingsRequest.builder()
                 .serviceInstanceId("test-service-instance-id")
                 .applicationId("test-application-id")
@@ -508,7 +509,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_instances/test-service-instance-id/service_keys?page=-1")
@@ -521,7 +522,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected ListServiceInstanceServiceKeysResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceInstanceServiceKeysResponse> expectations() {
             return ListServiceInstanceServiceKeysResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -542,7 +543,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected ListServiceInstanceServiceKeysRequest getValidRequest() throws Exception {
+        protected ListServiceInstanceServiceKeysRequest validRequest() {
             return ListServiceInstanceServiceKeysRequest.builder()
                 .serviceInstanceId("test-service-instance-id")
                 .page(-1)
@@ -561,7 +562,7 @@ public final class ReactorServiceInstancesTest {
         private final ReactorServiceInstances serviceInstances = new ReactorServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/service_instances/test-service-instance-id?accepts_incomplete=true")
@@ -575,7 +576,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected UpdateServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<UpdateServiceInstanceResponse> expectations() {
             return UpdateServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:08Z")
@@ -605,7 +606,7 @@ public final class ReactorServiceInstancesTest {
         }
 
         @Override
-        protected UpdateServiceInstanceRequest getValidRequest() throws Exception {
+        protected UpdateServiceInstanceRequest validRequest() {
             return UpdateServiceInstanceRequest.builder()
                 .acceptsIncomplete(true)
                 .serviceInstanceId("test-service-instance-id")

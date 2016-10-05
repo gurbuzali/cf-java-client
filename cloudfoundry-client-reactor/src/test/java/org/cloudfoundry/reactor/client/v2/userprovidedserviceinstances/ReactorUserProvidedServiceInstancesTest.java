@@ -37,6 +37,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -56,7 +57,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/user_provided_service_instances")
@@ -70,7 +71,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected CreateUserProvidedServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<CreateUserProvidedServiceInstanceResponse> expectations() {
             return CreateUserProvidedServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:35Z")
@@ -92,7 +93,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected CreateUserProvidedServiceInstanceRequest getValidRequest() throws Exception {
+        protected CreateUserProvidedServiceInstanceRequest validRequest() {
             return CreateUserProvidedServiceInstanceRequest.builder()
                 .spaceId("0d45d43f-7d50-43c6-9981-b32ce8d5a373")
                 .name("my-user-provided-instance")
@@ -113,7 +114,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/user_provided_service_instances/5b6b45c8-89be-48d2-affd-f64346ad4d93")
@@ -125,12 +126,12 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteUserProvidedServiceInstanceRequest getValidRequest() throws Exception {
+        protected DeleteUserProvidedServiceInstanceRequest validRequest() {
             return DeleteUserProvidedServiceInstanceRequest.builder()
                 .userProvidedServiceInstanceId("5b6b45c8-89be-48d2-affd-f64346ad4d93")
                 .build();
@@ -147,7 +148,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/user_provided_service_instances/8c12fd06-6639-4844-b5e7-a6831cadbbcc")
@@ -160,7 +161,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected GetUserProvidedServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<GetUserProvidedServiceInstanceResponse> expectations() {
             return GetUserProvidedServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:34Z")
@@ -181,7 +182,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected GetUserProvidedServiceInstanceRequest getValidRequest() throws Exception {
+        protected GetUserProvidedServiceInstanceRequest validRequest() {
             return GetUserProvidedServiceInstanceRequest.builder()
                 .userProvidedServiceInstanceId("8c12fd06-6639-4844-b5e7-a6831cadbbcc")
                 .build();
@@ -198,7 +199,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/user_provided_service_instances?page=-1")
@@ -211,7 +212,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ListUserProvidedServiceInstancesResponse getResponse() {
+        protected ScriptedSubscriber<ListUserProvidedServiceInstancesResponse> expectations() {
             return ListUserProvidedServiceInstancesResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -236,7 +237,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ListUserProvidedServiceInstancesRequest getValidRequest() throws Exception {
+        protected ListUserProvidedServiceInstancesRequest validRequest() {
             return ListUserProvidedServiceInstancesRequest.builder()
                 .page(-1)
                 .build();
@@ -253,7 +254,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/user_provided_service_instances/test-user-provided-service-instance-id/service_bindings?page=-1")
@@ -266,7 +267,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ListUserProvidedServiceInstanceServiceBindingsResponse getResponse() {
+        protected ScriptedSubscriber<ListUserProvidedServiceInstanceServiceBindingsResponse> expectations() {
             return ListUserProvidedServiceInstanceServiceBindingsResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -291,7 +292,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected ListUserProvidedServiceInstanceServiceBindingsRequest getValidRequest() throws Exception {
+        protected ListUserProvidedServiceInstanceServiceBindingsRequest validRequest() {
             return ListUserProvidedServiceInstanceServiceBindingsRequest.builder()
                 .userProvidedServiceInstanceId("test-user-provided-service-instance-id")
                 .page(-1)
@@ -309,7 +310,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d")
@@ -323,7 +324,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected UpdateUserProvidedServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<UpdateUserProvidedServiceInstanceResponse> expectations() {
             return UpdateUserProvidedServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-02-19T02:04:06Z")
@@ -345,7 +346,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected UpdateUserProvidedServiceInstanceRequest getValidRequest() throws Exception {
+        protected UpdateUserProvidedServiceInstanceRequest validRequest() {
             return UpdateUserProvidedServiceInstanceRequest.builder()
                 .credential("somekey", "somenewvalue")
                 .userProvidedServiceInstanceId("e2c198b1-fa15-414e-a9a4-31537996b39d")
@@ -363,7 +364,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         private final ReactorUserProvidedServiceInstances userProvidedServiceInstances = new ReactorUserProvidedServiceInstances(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/user_provided_service_instances/e2c198b1-fa15-414e-a9a4-31537996b39d")
@@ -377,7 +378,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected UpdateUserProvidedServiceInstanceResponse getResponse() {
+        protected ScriptedSubscriber<UpdateUserProvidedServiceInstanceResponse> expectations() {
             return UpdateUserProvidedServiceInstanceResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2016-02-19T02:04:06Z")
@@ -399,7 +400,7 @@ public final class ReactorUserProvidedServiceInstancesTest {
         }
 
         @Override
-        protected UpdateUserProvidedServiceInstanceRequest getValidRequest() throws Exception {
+        protected UpdateUserProvidedServiceInstanceRequest validRequest() {
             return UpdateUserProvidedServiceInstanceRequest.builder()
                 .credentials(Collections.emptyMap())
                 .userProvidedServiceInstanceId("e2c198b1-fa15-414e-a9a4-31537996b39d")

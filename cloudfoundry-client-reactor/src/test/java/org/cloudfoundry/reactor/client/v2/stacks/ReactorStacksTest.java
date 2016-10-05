@@ -28,6 +28,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -39,7 +40,7 @@ public final class ReactorStacksTest {
         private final ReactorStacks stacks = new ReactorStacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/stacks/test-stack-id")
@@ -52,7 +53,7 @@ public final class ReactorStacksTest {
         }
 
         @Override
-        protected GetStackResponse getResponse() {
+        protected ScriptedSubscriber<GetStackResponse> expectations() {
             return GetStackResponse.builder()
                 .metadata(Metadata.builder()
                     .id("fe4999cf-a207-4d40-bb03-f4bbf697edac")
@@ -67,7 +68,7 @@ public final class ReactorStacksTest {
         }
 
         @Override
-        protected GetStackRequest getValidRequest() throws Exception {
+        protected GetStackRequest validRequest() {
             return GetStackRequest.builder()
                 .stackId("test-stack-id")
                 .build();
@@ -85,7 +86,7 @@ public final class ReactorStacksTest {
         private final ReactorStacks stacks = new ReactorStacks(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/stacks?q=name%20IN%20test-name&page=-1")
@@ -98,7 +99,7 @@ public final class ReactorStacksTest {
         }
 
         @Override
-        protected ListStacksResponse getResponse() {
+        protected ScriptedSubscriber<ListStacksResponse> expectations() {
             return ListStacksResponse.builder()
                 .totalResults(3)
                 .totalPages(1)
@@ -139,7 +140,7 @@ public final class ReactorStacksTest {
         }
 
         @Override
-        protected ListStacksRequest getValidRequest() throws Exception {
+        protected ListStacksRequest validRequest() {
             return ListStacksRequest.builder()
                 .name("test-name")
                 .page(-1)

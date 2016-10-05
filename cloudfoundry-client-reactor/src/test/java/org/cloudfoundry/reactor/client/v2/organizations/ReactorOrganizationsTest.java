@@ -103,6 +103,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -122,7 +123,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/auditors/uaa-id-71")
@@ -135,7 +136,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationAuditorResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationAuditorResponse> expectations() {
             return AssociateOrganizationAuditorResponse.builder()
                 .metadata(Metadata.builder()
                     .id("83c4fac5-cd9e-41ee-96df-b4f50fff4aef")
@@ -162,7 +163,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationAuditorRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationAuditorRequest validRequest() {
             return AssociateOrganizationAuditorRequest.builder()
                 .auditorId("uaa-id-71")
                 .organizationId("test-organization-id")
@@ -181,7 +182,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/auditors")
@@ -195,7 +196,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationAuditorByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationAuditorByUsernameResponse> expectations() {
             return AssociateOrganizationAuditorByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("50dfb04d-cd49-477d-a54c-32e00e180022")
@@ -222,7 +223,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationAuditorByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationAuditorByUsernameRequest validRequest() {
             return AssociateOrganizationAuditorByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("user@example.com")
@@ -241,7 +242,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/billing_managers/test-billing-manager-id")
@@ -254,7 +255,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationBillingManagerResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationBillingManagerResponse> expectations() {
             return AssociateOrganizationBillingManagerResponse.builder()
                 .entity(OrganizationEntity.builder()
                     .applicationEventsUrl("/v2/organizations/39ab104d-79f9-4bac-82e0-35b826a236b8/app_events")
@@ -281,7 +282,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationBillingManagerRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationBillingManagerRequest validRequest() {
             return AssociateOrganizationBillingManagerRequest.builder()
                 .billingManagerId("test-billing-manager-id")
                 .organizationId("test-organization-id")
@@ -301,7 +302,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/billing_managers")
@@ -315,7 +316,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationBillingManagerByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationBillingManagerByUsernameResponse> expectations() {
             return AssociateOrganizationBillingManagerByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("c8d4f13c-8880-4859-8e03-fc690efd8f48")
@@ -342,7 +343,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationBillingManagerByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationBillingManagerByUsernameRequest validRequest() {
             return AssociateOrganizationBillingManagerByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("user@example.com")
@@ -361,7 +362,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/managers/test-manager-id")
@@ -374,7 +375,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationManagerResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationManagerResponse> expectations() {
             return AssociateOrganizationManagerResponse.builder()
                 .metadata(Metadata.builder()
                     .id("cc7c5224-f973-4358-a95a-dd72decbb20f")
@@ -401,7 +402,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationManagerRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationManagerRequest validRequest() {
             return AssociateOrganizationManagerRequest.builder()
                 .organizationId("test-organization-id")
                 .managerId("test-manager-id")
@@ -420,7 +421,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/managers")
@@ -434,7 +435,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationManagerByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationManagerByUsernameResponse> expectations() {
             return AssociateOrganizationManagerByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("8d2238e2-2fb3-4ede-b188-1fd3a533c4b4")
@@ -461,7 +462,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationManagerByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationManagerByUsernameRequest validRequest() {
             return AssociateOrganizationManagerByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("user@example.com")
@@ -480,7 +481,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/users/test-user-id")
@@ -493,7 +494,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationUserResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationUserResponse> expectations() {
             return AssociateOrganizationUserResponse.builder()
                 .metadata(Metadata.builder()
                     .id("584664d0-e5bb-449b-bfe5-0136c30c4ff8")
@@ -520,7 +521,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationUserRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationUserRequest validRequest() {
             return AssociateOrganizationUserRequest.builder()
                 .organizationId("test-organization-id")
                 .userId("test-user-id")
@@ -539,7 +540,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/users")
@@ -553,7 +554,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationUserByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationUserByUsernameResponse> expectations() {
             return AssociateOrganizationUserByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("1a93417a-811a-46c7-85fa-4a0507c53f08")
@@ -580,7 +581,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationUserByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationUserByUsernameRequest validRequest() {
             return AssociateOrganizationUserByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("user@example.com")
@@ -599,7 +600,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id/private_domains/test-private-domain-id")
@@ -612,7 +613,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationPrivateDomainResponse getResponse() {
+        protected ScriptedSubscriber<AssociateOrganizationPrivateDomainResponse> expectations() {
             return AssociateOrganizationPrivateDomainResponse.builder()
                 .entity(OrganizationEntity.builder()
                     .name("name-228")
@@ -639,7 +640,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected AssociateOrganizationPrivateDomainRequest getValidRequest() throws Exception {
+        protected AssociateOrganizationPrivateDomainRequest validRequest() {
             return AssociateOrganizationPrivateDomainRequest.builder()
                 .organizationId("test-organization-id")
                 .privateDomainId("test-private-domain-id")
@@ -658,7 +659,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/organizations")
@@ -672,7 +673,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected CreateOrganizationResponse getResponse() {
+        protected ScriptedSubscriber<CreateOrganizationResponse> expectations() {
             return CreateOrganizationResponse.builder()
                 .metadata(Metadata.builder()
                     .id("137bfc86-5a2f-4759-9c0c-59ef614cd0be")
@@ -699,7 +700,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected CreateOrganizationRequest getValidRequest() throws Exception {
+        protected CreateOrganizationRequest validRequest() {
             return CreateOrganizationRequest.builder()
                 .name("my-org-name")
                 .quotaDefinitionId("ffc919cd-3e21-43a6-9e4e-62802d149cdb")
@@ -718,7 +719,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id")
@@ -730,12 +731,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected DeleteOrganizationResponse getResponse() {
+        protected ScriptedSubscriber<DeleteOrganizationResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteOrganizationRequest getValidRequest() throws Exception {
+        protected DeleteOrganizationRequest validRequest() {
             return DeleteOrganizationRequest.builder()
                 .organizationId("test-organization-id")
                 .build();
@@ -753,7 +754,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id?async=true")
@@ -766,7 +767,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected DeleteOrganizationResponse getResponse() {
+        protected ScriptedSubscriber<DeleteOrganizationResponse> expectations() {
             return DeleteOrganizationResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -781,7 +782,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected DeleteOrganizationRequest getValidRequest() throws Exception {
+        protected DeleteOrganizationRequest validRequest() {
             return DeleteOrganizationRequest.builder()
                 .async(true)
                 .organizationId("test-organization-id")
@@ -800,7 +801,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id")
@@ -813,7 +814,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationResponse getResponse() {
+        protected ScriptedSubscriber<GetOrganizationResponse> expectations() {
             return GetOrganizationResponse.builder()
                 .metadata(Metadata.builder()
                     .id("027616f3-66c4-412c-8214-7e43db2d587b")
@@ -840,7 +841,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationRequest getValidRequest() throws Exception {
+        protected GetOrganizationRequest validRequest() {
             return GetOrganizationRequest.builder()
                 .organizationId("test-organization-id")
                 .build();
@@ -858,7 +859,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/instance_usage")
@@ -871,14 +872,14 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationInstanceUsageResponse getResponse() {
+        protected ScriptedSubscriber<GetOrganizationInstanceUsageResponse> expectations() {
             return GetOrganizationInstanceUsageResponse.builder()
                 .instanceUsage(3)
                 .build();
         }
 
         @Override
-        protected GetOrganizationInstanceUsageRequest getValidRequest() throws Exception {
+        protected GetOrganizationInstanceUsageRequest validRequest() {
             return GetOrganizationInstanceUsageRequest.builder()
                 .organizationId("test-organization-id")
                 .build();
@@ -896,7 +897,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/memory_usage")
@@ -909,14 +910,14 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationMemoryUsageResponse getResponse() {
+        protected ScriptedSubscriber<GetOrganizationMemoryUsageResponse> expectations() {
             return GetOrganizationMemoryUsageResponse.builder()
                 .memoryUsageInMb(0)
                 .build();
         }
 
         @Override
-        protected GetOrganizationMemoryUsageRequest getValidRequest() throws Exception {
+        protected GetOrganizationMemoryUsageRequest validRequest() {
             return GetOrganizationMemoryUsageRequest.builder()
                 .organizationId("test-organization-id")
                 .build();
@@ -934,7 +935,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/user_roles?page=-1")
@@ -947,7 +948,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationUserRolesResponse getResponse() {
+        protected ScriptedSubscriber<GetOrganizationUserRolesResponse> expectations() {
             return GetOrganizationUserRolesResponse.builder()
                 .totalResults(2)
                 .totalPages(2)
@@ -980,7 +981,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected GetOrganizationUserRolesRequest getValidRequest() throws Exception {
+        protected GetOrganizationUserRolesRequest validRequest() {
             return GetOrganizationUserRolesRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -999,7 +1000,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations?q=name%20IN%20test-name&page=-1")
@@ -1012,7 +1013,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationsResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationsResponse> expectations() {
             return ListOrganizationsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1043,7 +1044,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationsRequest getValidRequest() throws Exception {
+        protected ListOrganizationsRequest validRequest() {
             return ListOrganizationsRequest.builder()
                 .name("test-name")
                 .page(-1)
@@ -1062,7 +1063,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/auditors?page=-1")
@@ -1075,7 +1076,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationAuditorsResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationAuditorsResponse> expectations() {
             return ListOrganizationAuditorsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1103,7 +1104,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationAuditorsRequest getValidRequest() throws Exception {
+        protected ListOrganizationAuditorsRequest validRequest() {
             return ListOrganizationAuditorsRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1122,7 +1123,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/billing_managers?page=-1")
@@ -1135,7 +1136,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationBillingManagersResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationBillingManagersResponse> expectations() {
             return ListOrganizationBillingManagersResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1163,7 +1164,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationBillingManagersRequest getValidRequest() throws Exception {
+        protected ListOrganizationBillingManagersRequest validRequest() {
             return ListOrganizationBillingManagersRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1182,7 +1183,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/domains?page=-1")
@@ -1195,7 +1196,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationDomainsResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationDomainsResponse> expectations() {
             return ListOrganizationDomainsResponse.builder()
                 .totalResults(2)
                 .totalPages(1)
@@ -1223,7 +1224,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationDomainsRequest getValidRequest() throws Exception {
+        protected ListOrganizationDomainsRequest validRequest() {
             return ListOrganizationDomainsRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1242,7 +1243,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/managers?page=-1")
@@ -1255,7 +1256,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationManagersResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationManagersResponse> expectations() {
             return ListOrganizationManagersResponse.builder()
                 .totalResults(2)
                 .totalPages(1)
@@ -1302,7 +1303,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationManagersRequest getValidRequest() throws Exception {
+        protected ListOrganizationManagersRequest validRequest() {
             return ListOrganizationManagersRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1321,7 +1322,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/private_domains?page=-1")
@@ -1334,7 +1335,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationPrivateDomainsResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationPrivateDomainsResponse> expectations() {
             return ListOrganizationPrivateDomainsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1356,7 +1357,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationPrivateDomainsRequest getValidRequest() throws Exception {
+        protected ListOrganizationPrivateDomainsRequest validRequest() {
             return ListOrganizationPrivateDomainsRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1375,7 +1376,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/services?page=-1")
@@ -1388,7 +1389,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationServicesResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationServicesResponse> expectations() {
             return ListOrganizationServicesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1415,7 +1416,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationServicesRequest getValidRequest() throws Exception {
+        protected ListOrganizationServicesRequest validRequest() {
             return ListOrganizationServicesRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1434,7 +1435,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/space_quota_definitions?page=-1")
@@ -1447,7 +1448,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationSpaceQuotaDefinitionsResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationSpaceQuotaDefinitionsResponse> expectations() {
             return ListOrganizationSpaceQuotaDefinitionsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1473,7 +1474,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationSpaceQuotaDefinitionsRequest getValidRequest() throws Exception {
+        protected ListOrganizationSpaceQuotaDefinitionsRequest validRequest() {
             return ListOrganizationSpaceQuotaDefinitionsRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1492,7 +1493,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/spaces?page=-1")
@@ -1505,7 +1506,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationSpacesResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationSpacesResponse> expectations() {
             return ListOrganizationSpacesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1537,7 +1538,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationSpacesRequest getValidRequest() throws Exception {
+        protected ListOrganizationSpacesRequest validRequest() {
             return ListOrganizationSpacesRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1556,7 +1557,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/users?page=-1")
@@ -1569,7 +1570,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationUsersResponse getResponse() {
+        protected ScriptedSubscriber<ListOrganizationUsersResponse> expectations() {
             return ListOrganizationUsersResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1597,7 +1598,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected ListOrganizationUsersRequest getValidRequest() throws Exception {
+        protected ListOrganizationUsersRequest validRequest() {
             return ListOrganizationUsersRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -1616,7 +1617,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/auditors/test-auditor-id")
@@ -1628,12 +1629,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationAuditorRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationAuditorRequest validRequest() {
             return RemoveOrganizationAuditorRequest.builder()
                 .auditorId("test-auditor-id")
                 .organizationId("test-organization-id")
@@ -1652,7 +1653,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/auditors")
@@ -1665,12 +1666,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationAuditorByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationAuditorByUsernameRequest validRequest() {
             return RemoveOrganizationAuditorByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("auditor@example.com")
@@ -1689,7 +1690,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/billing_managers/test-billing-manager-id")
@@ -1701,12 +1702,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationBillingManagerRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationBillingManagerRequest validRequest() {
             return RemoveOrganizationBillingManagerRequest.builder()
                 .billingManagerId("test-billing-manager-id")
                 .organizationId("test-organization-id")
@@ -1725,7 +1726,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/managers/test-manager-id")
@@ -1737,12 +1738,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationManagerRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationManagerRequest validRequest() {
             return RemoveOrganizationManagerRequest.builder()
                 .organizationId("test-organization-id")
                 .managerId("test-manager-id")
@@ -1761,7 +1762,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/billing_managers")
@@ -1774,12 +1775,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationBillingManagerByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationBillingManagerByUsernameRequest validRequest() {
             return RemoveOrganizationBillingManagerByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("billing_manager@example.com")
@@ -1798,7 +1799,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/managers")
@@ -1811,12 +1812,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationManagerByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationManagerByUsernameRequest validRequest() {
             return RemoveOrganizationManagerByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("manage@example.com")
@@ -1835,7 +1836,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/private_domains/test-private-domain-id")
@@ -1847,12 +1848,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationPrivateDomainRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationPrivateDomainRequest validRequest() {
             return RemoveOrganizationPrivateDomainRequest.builder()
                 .organizationId("test-organization-id")
                 .privateDomainId("test-private-domain-id")
@@ -1870,7 +1871,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/users/test-user-id")
@@ -1882,12 +1883,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationUserRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationUserRequest validRequest() {
             return RemoveOrganizationUserRequest.builder()
                 .organizationId("test-organization-id")
                 .userId("test-user-id")
@@ -1905,7 +1906,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/organizations/test-organization-id/users")
@@ -1918,12 +1919,12 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveOrganizationUserByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveOrganizationUserByUsernameRequest validRequest() {
             return RemoveOrganizationUserByUsernameRequest.builder()
                 .organizationId("test-organization-id")
                 .username("user@example.com")
@@ -1942,7 +1943,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/organizations/test-organization-id/summary")
@@ -1955,7 +1956,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected SummaryOrganizationResponse getResponse() {
+        protected ScriptedSubscriber<SummaryOrganizationResponse> expectations() {
             return SummaryOrganizationResponse.builder()
                 .id("525a6450-9202-4ea1-beca-6fdda210710e")
                 .name("name-357")
@@ -1972,7 +1973,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected SummaryOrganizationRequest getValidRequest() throws Exception {
+        protected SummaryOrganizationRequest validRequest() {
             return SummaryOrganizationRequest.builder()
                 .organizationId("test-organization-id")
                 .build();
@@ -1990,7 +1991,7 @@ public final class ReactorOrganizationsTest {
         private final ReactorOrganizations organizations = new ReactorOrganizations(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/organizations/test-organization-id")
@@ -2004,7 +2005,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected UpdateOrganizationResponse getResponse() {
+        protected ScriptedSubscriber<UpdateOrganizationResponse> expectations() {
             return UpdateOrganizationResponse.builder()
                 .metadata(Metadata.builder()
                     .id("31a539be-dbfd-4db6-aec1-6565ebe975ed")
@@ -2032,7 +2033,7 @@ public final class ReactorOrganizationsTest {
         }
 
         @Override
-        protected UpdateOrganizationRequest getValidRequest() throws Exception {
+        protected UpdateOrganizationRequest validRequest() {
             return UpdateOrganizationRequest.builder()
                 .organizationId("test-organization-id")
                 .name("New Organization Name")

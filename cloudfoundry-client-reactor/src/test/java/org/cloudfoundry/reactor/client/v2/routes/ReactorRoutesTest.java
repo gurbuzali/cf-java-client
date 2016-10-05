@@ -43,6 +43,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -60,7 +61,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/routes/test-route-id/apps/test-app-id")
@@ -73,7 +74,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected AssociateRouteApplicationResponse getResponse() {
+        protected ScriptedSubscriber<AssociateRouteApplicationResponse> expectations() {
             return AssociateRouteApplicationResponse.builder()
                 .metadata(Metadata.builder()
                     .id("a05c94a3-e4b3-456e-b044-475270919ea7")
@@ -95,7 +96,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected AssociateRouteApplicationRequest getValidRequest() throws Exception {
+        protected AssociateRouteApplicationRequest validRequest() {
             return AssociateRouteApplicationRequest.builder()
                 .applicationId("test-app-id")
                 .routeId("test-route-id")
@@ -114,7 +115,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/routes")
@@ -128,7 +129,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected CreateRouteResponse getResponse() {
+        protected ScriptedSubscriber<CreateRouteResponse> expectations() {
             return CreateRouteResponse.builder()
                 .metadata(Metadata.builder()
                     .id("ad307f5b-efec-4034-8cf1-1f86515ee093")
@@ -150,7 +151,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected CreateRouteRequest getValidRequest() throws Exception {
+        protected CreateRouteRequest validRequest() {
             return CreateRouteRequest.builder()
                 .domainId("4d9e6314-58ca-4f09-a736-d8bcc903b95e")
                 .port(10000)
@@ -170,7 +171,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/routes/test-route-id")
@@ -182,12 +183,12 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected DeleteRouteResponse getResponse() {
+        protected ScriptedSubscriber<DeleteRouteResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteRouteRequest getValidRequest() throws Exception {
+        protected DeleteRouteRequest validRequest() {
             return DeleteRouteRequest.builder()
                 .routeId("test-route-id")
                 .build();
@@ -205,7 +206,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/routes/test-route-id?async=true")
@@ -218,7 +219,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected DeleteRouteResponse getResponse() {
+        protected ScriptedSubscriber<DeleteRouteResponse> expectations() {
             return DeleteRouteResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -233,7 +234,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected DeleteRouteRequest getValidRequest() throws Exception {
+        protected DeleteRouteRequest validRequest() {
             return DeleteRouteRequest.builder()
                 .async(true)
                 .routeId("test-route-id")
@@ -252,7 +253,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/routes/reserved/domain/test-domain-id/host/test-host?path=test-path")
@@ -264,12 +265,12 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected Boolean getResponse() {
+        protected ScriptedSubscriber<Boolean> expectations() {
             return true;
         }
 
         @Override
-        protected RouteExistsRequest getValidRequest() throws Exception {
+        protected RouteExistsRequest validRequest() {
             return RouteExistsRequest.builder()
                 .domainId("test-domain-id")
                 .host("test-host")
@@ -288,7 +289,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/routes/test-route-id")
@@ -301,7 +302,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected GetRouteResponse getResponse() {
+        protected ScriptedSubscriber<GetRouteResponse> expectations() {
             return GetRouteResponse.builder()
                 .metadata(Metadata.builder()
                     .id("e6c3ae35-9083-4816-9432-ee8ad700fd03")
@@ -325,7 +326,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected GetRouteRequest getValidRequest() throws Exception {
+        protected GetRouteRequest validRequest() {
             return GetRouteRequest.builder()
                 .routeId("test-route-id")
                 .build();
@@ -343,7 +344,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/routes?page=-1")
@@ -356,7 +357,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected ListRoutesResponse getResponse() {
+        protected ScriptedSubscriber<ListRoutesResponse> expectations() {
             return ListRoutesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -384,7 +385,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected ListRoutesRequest getValidRequest() {
+        protected ListRoutesRequest validRequest() {
             return ListRoutesRequest.builder()
                 .page(-1)
                 .build();
@@ -402,7 +403,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/routes/test-route-id/apps?page=-1")
@@ -416,7 +417,7 @@ public final class ReactorRoutesTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected ListRouteApplicationsResponse getResponse() {
+        protected ScriptedSubscriber<ListRouteApplicationsResponse> expectations() {
             return ListRouteApplicationsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -457,7 +458,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected ListRouteApplicationsRequest getValidRequest() {
+        protected ListRouteApplicationsRequest validRequest() {
             return ListRouteApplicationsRequest.builder()
                 .routeId("test-route-id")
                 .page(-1)
@@ -476,7 +477,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/routes/test-route-id/apps/test-app-id")
@@ -488,12 +489,12 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveRouteApplicationRequest getValidRequest() throws Exception {
+        protected RemoveRouteApplicationRequest validRequest() {
             return RemoveRouteApplicationRequest.builder()
                 .applicationId("test-app-id")
                 .routeId("test-route-id")
@@ -512,7 +513,7 @@ public final class ReactorRoutesTest {
         private final ReactorRoutes routes = new ReactorRoutes(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/routes/test-route-id")
@@ -526,7 +527,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected UpdateRouteResponse getResponse() {
+        protected ScriptedSubscriber<UpdateRouteResponse> expectations() {
             return UpdateRouteResponse.builder()
                 .metadata(Metadata.builder()
                     .id("fc72a0ae-374b-4f06-b96d-38a3864ee91b")
@@ -549,7 +550,7 @@ public final class ReactorRoutesTest {
         }
 
         @Override
-        protected UpdateRouteRequest getValidRequest() throws Exception {
+        protected UpdateRouteRequest validRequest() {
             return UpdateRouteRequest.builder()
                 .routeId("test-route-id")
                 .port(10000)

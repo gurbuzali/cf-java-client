@@ -109,6 +109,7 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.cloudfoundry.util.FluentMap;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -129,7 +130,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/auditors/test-auditor-id")
@@ -142,7 +143,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceAuditorResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceAuditorResponse> expectations() {
             return AssociateSpaceAuditorResponse.builder()
                 .metadata(Metadata.builder()
                     .id("9639c996-9005-4b70-b852-d40f346d58dc")
@@ -169,7 +170,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceAuditorRequest getValidRequest() throws Exception {
+        protected AssociateSpaceAuditorRequest validRequest() {
             return AssociateSpaceAuditorRequest.builder()
                 .spaceId("test-space-id")
                 .auditorId("test-auditor-id")
@@ -188,7 +189,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/auditors")
@@ -202,7 +203,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceAuditorByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceAuditorByUsernameResponse> expectations() {
             return AssociateSpaceAuditorByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("873193ee-878c-436f-80bd-10d68927937d")
@@ -229,7 +230,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceAuditorByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateSpaceAuditorByUsernameRequest validRequest() {
             return AssociateSpaceAuditorByUsernameRequest.builder()
                 .spaceId("test-space-id")
                 .username("user@example.com")
@@ -248,7 +249,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/developers/test-developer-id")
@@ -261,7 +262,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceDeveloperResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceDeveloperResponse> expectations() {
             return AssociateSpaceDeveloperResponse.builder()
                 .metadata(Metadata.builder()
                     .id("6f8f8e0d-54f2-4736-a08e-1044fcf061d3")
@@ -288,7 +289,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceDeveloperRequest getValidRequest() throws Exception {
+        protected AssociateSpaceDeveloperRequest validRequest() {
             return AssociateSpaceDeveloperRequest.builder()
                 .spaceId("test-space-id")
                 .developerId("test-developer-id")
@@ -307,7 +308,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/managers/test-manager-id")
@@ -320,7 +321,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceManagerResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceManagerResponse> expectations() {
             return AssociateSpaceManagerResponse.builder()
                 .metadata(Metadata.builder()
                     .id("542943ff-a40b-4004-9559-434b0169508c")
@@ -347,7 +348,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceManagerRequest getValidRequest() throws Exception {
+        protected AssociateSpaceManagerRequest validRequest() {
             return AssociateSpaceManagerRequest.builder()
                 .spaceId("test-space-id")
                 .managerId("test-manager-id")
@@ -366,7 +367,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/security_groups/test-security-group-id")
@@ -379,7 +380,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceSecurityGroupResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceSecurityGroupResponse> expectations() {
             return AssociateSpaceSecurityGroupResponse.builder()
                 .metadata(Metadata.builder()
                     .id("c9424692-395b-403b-90e6-10049bbd9e23")
@@ -406,7 +407,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceSecurityGroupRequest getValidRequest() throws Exception {
+        protected AssociateSpaceSecurityGroupRequest validRequest() {
             return AssociateSpaceSecurityGroupRequest.builder()
                 .spaceId("test-space-id")
                 .securityGroupId("test-security-group-id")
@@ -425,7 +426,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/developers")
@@ -439,7 +440,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceDeveloperByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceDeveloperByUsernameResponse> expectations() {
             return AssociateSpaceDeveloperByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("b6d11f17-1cea-4c00-a951-fef3223b8c84")
@@ -466,7 +467,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceDeveloperByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateSpaceDeveloperByUsernameRequest validRequest() {
             return AssociateSpaceDeveloperByUsernameRequest.builder()
                 .spaceId("test-space-id")
                 .username("user@example.com")
@@ -485,7 +486,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id/managers")
@@ -499,7 +500,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceManagerByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<AssociateSpaceManagerByUsernameResponse> expectations() {
             return AssociateSpaceManagerByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("4351f97b-3485-4738-821b-5bf77bed44eb")
@@ -526,7 +527,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected AssociateSpaceManagerByUsernameRequest getValidRequest() throws Exception {
+        protected AssociateSpaceManagerByUsernameRequest validRequest() {
             return AssociateSpaceManagerByUsernameRequest.builder()
                 .spaceId("test-space-id")
                 .username("user@example.com")
@@ -545,7 +546,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/spaces")
@@ -559,7 +560,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected CreateSpaceResponse getResponse() {
+        protected ScriptedSubscriber<CreateSpaceResponse> expectations() {
             return CreateSpaceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("d29dc30c-793c-49a6-97fe-9aff75dcbd12")
@@ -586,7 +587,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected CreateSpaceRequest getValidRequest() throws Exception {
+        protected CreateSpaceRequest validRequest() {
             return CreateSpaceRequest.builder()
                 .name("development")
                 .organizationId("c523070c-3006-4715-86dd-414afaecd949")
@@ -605,7 +606,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id")
@@ -617,12 +618,12 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected DeleteSpaceResponse getResponse() {
+        protected ScriptedSubscriber<DeleteSpaceResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteSpaceRequest getValidRequest() throws Exception {
+        protected DeleteSpaceRequest validRequest() {
             return DeleteSpaceRequest.builder()
                 .spaceId("test-space-id")
                 .build();
@@ -640,7 +641,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id?async=true")
@@ -653,7 +654,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected DeleteSpaceResponse getResponse() {
+        protected ScriptedSubscriber<DeleteSpaceResponse> expectations() {
             return DeleteSpaceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -668,7 +669,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected DeleteSpaceRequest getValidRequest() throws Exception {
+        protected DeleteSpaceRequest validRequest() {
             return DeleteSpaceRequest.builder()
                 .async(true)
                 .spaceId("test-space-id")
@@ -687,7 +688,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id")
@@ -700,7 +701,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected GetSpaceResponse getResponse() {
+        protected ScriptedSubscriber<GetSpaceResponse> expectations() {
             return GetSpaceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("0f102457-c1fc-42e5-9c81-c7be2bc65dcd")
@@ -727,7 +728,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected GetSpaceRequest getValidRequest() throws Exception {
+        protected GetSpaceRequest validRequest() {
             return GetSpaceRequest.builder()
                 .spaceId("test-space-id")
                 .build();
@@ -745,7 +746,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/summary")
@@ -759,7 +760,7 @@ public final class ReactorSpacesTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected GetSpaceSummaryResponse getResponse() {
+        protected ScriptedSubscriber<GetSpaceSummaryResponse> expectations() {
             return GetSpaceSummaryResponse.builder()
                 .id("c6473a38-92f4-4595-9462-01af4c4b1893")
                 .name("name-159")
@@ -822,7 +823,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected GetSpaceSummaryRequest getValidRequest() throws Exception {
+        protected GetSpaceSummaryRequest validRequest() {
             return GetSpaceSummaryRequest.builder()
                 .spaceId("test-space-id")
                 .build();
@@ -840,7 +841,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces?q=name%20IN%20test-name&page=-1")
@@ -853,7 +854,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpacesResponse getResponse() {
+        protected ScriptedSubscriber<ListSpacesResponse> expectations() {
             return ListSpacesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -884,7 +885,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpacesRequest getValidRequest() throws Exception {
+        protected ListSpacesRequest validRequest() {
             return ListSpacesRequest.builder()
                 .name("test-name")
                 .page(-1)
@@ -903,7 +904,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/apps?q=name%20IN%20test-name&page=-1")
@@ -917,7 +918,7 @@ public final class ReactorSpacesTest {
 
         @SuppressWarnings("deprecation")
         @Override
-        protected ListSpaceApplicationsResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceApplicationsResponse> expectations() {
             return ListSpaceApplicationsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -958,7 +959,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceApplicationsRequest getValidRequest() throws Exception {
+        protected ListSpaceApplicationsRequest validRequest() {
             return ListSpaceApplicationsRequest.builder()
                 .spaceId("test-space-id")
                 .name("test-name")
@@ -978,7 +979,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/auditors?page=-1")
@@ -991,7 +992,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceAuditorsResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceAuditorsResponse> expectations() {
             return ListSpaceAuditorsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1019,7 +1020,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceAuditorsRequest getValidRequest() throws Exception {
+        protected ListSpaceAuditorsRequest validRequest() {
             return ListSpaceAuditorsRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1037,7 +1038,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/developers?page=-1")
@@ -1050,7 +1051,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceDevelopersResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceDevelopersResponse> expectations() {
             return ListSpaceDevelopersResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1078,7 +1079,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceDevelopersRequest getValidRequest() throws Exception {
+        protected ListSpaceDevelopersRequest validRequest() {
             return ListSpaceDevelopersRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1097,7 +1098,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/domains?page=-1")
@@ -1110,7 +1111,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceDomainsResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceDomainsResponse> expectations() {
             return ListSpaceDomainsResponse.builder()
                 .totalResults(2)
                 .totalPages(1)
@@ -1138,7 +1139,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceDomainsRequest getValidRequest() throws Exception {
+        protected ListSpaceDomainsRequest validRequest() {
             return ListSpaceDomainsRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1156,7 +1157,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/events?page=-1")
@@ -1169,7 +1170,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceEventsResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceEventsResponse> expectations() {
             return ListSpaceEventsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1199,7 +1200,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceEventsRequest getValidRequest() throws Exception {
+        protected ListSpaceEventsRequest validRequest() {
             return ListSpaceEventsRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1218,7 +1219,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/managers?page=-1")
@@ -1231,7 +1232,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceManagersResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceManagersResponse> expectations() {
             return ListSpaceManagersResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1259,7 +1260,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceManagersRequest getValidRequest() throws Exception {
+        protected ListSpaceManagersRequest validRequest() {
             return ListSpaceManagersRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1278,7 +1279,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/routes?page=-1")
@@ -1291,7 +1292,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceRoutesResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceRoutesResponse> expectations() {
             return ListSpaceRoutesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1317,7 +1318,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceRoutesRequest getValidRequest() throws Exception {
+        protected ListSpaceRoutesRequest validRequest() {
             return ListSpaceRoutesRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1336,7 +1337,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/security_groups?page=-1")
@@ -1349,7 +1350,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceSecurityGroupsResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceSecurityGroupsResponse> expectations() {
             return ListSpaceSecurityGroupsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1375,7 +1376,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceSecurityGroupsRequest getValidRequest() throws Exception {
+        protected ListSpaceSecurityGroupsRequest validRequest() {
             return ListSpaceSecurityGroupsRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1394,7 +1395,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/service_instances?page=-1&return_user_provided_service_instances=true")
@@ -1407,7 +1408,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceServiceInstancesResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceServiceInstancesResponse> expectations() {
             return ListSpaceServiceInstancesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1436,7 +1437,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceServiceInstancesRequest getValidRequest() throws Exception {
+        protected ListSpaceServiceInstancesRequest validRequest() {
             return ListSpaceServiceInstancesRequest.builder()
                 .spaceId("test-space-id")
                 .returnUserProvidedServiceInstances(true)
@@ -1456,7 +1457,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/services?page=-1")
@@ -1469,7 +1470,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceServicesResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceServicesResponse> expectations() {
             return ListSpaceServicesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1496,7 +1497,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceServicesRequest getValidRequest() throws Exception {
+        protected ListSpaceServicesRequest validRequest() {
             return ListSpaceServicesRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1515,7 +1516,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/spaces/test-space-id/user_roles?page=-1")
@@ -1528,7 +1529,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceUserRolesResponse getResponse() {
+        protected ScriptedSubscriber<ListSpaceUserRolesResponse> expectations() {
             return ListSpaceUserRolesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -1559,7 +1560,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected ListSpaceUserRolesRequest getValidRequest() throws Exception {
+        protected ListSpaceUserRolesRequest validRequest() {
             return ListSpaceUserRolesRequest.builder()
                 .spaceId("test-space-id")
                 .page(-1)
@@ -1578,7 +1579,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/auditors/test-auditor-id")
@@ -1590,12 +1591,12 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveSpaceAuditorRequest getValidRequest() throws Exception {
+        protected RemoveSpaceAuditorRequest validRequest() {
             return RemoveSpaceAuditorRequest.builder()
                 .auditorId("test-auditor-id")
                 .spaceId("test-space-id")
@@ -1614,7 +1615,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/auditors")
@@ -1628,7 +1629,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceAuditorByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<RemoveSpaceAuditorByUsernameResponse> expectations() {
             return RemoveSpaceAuditorByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("6ee704bb-fc88-40f6-9ab9-02fe8df35730")
@@ -1655,7 +1656,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceAuditorByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveSpaceAuditorByUsernameRequest validRequest() {
             return RemoveSpaceAuditorByUsernameRequest.builder()
                 .spaceId("test-space-id")
                 .username("auditor@example.com")
@@ -1674,7 +1675,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/developers/test-developer-id")
@@ -1686,12 +1687,12 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveSpaceDeveloperRequest getValidRequest() throws Exception {
+        protected RemoveSpaceDeveloperRequest validRequest() {
             return RemoveSpaceDeveloperRequest.builder()
                 .developerId("test-developer-id")
                 .spaceId("test-space-id")
@@ -1709,7 +1710,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/developers")
@@ -1723,7 +1724,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceDeveloperByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<RemoveSpaceDeveloperByUsernameResponse> expectations() {
             return RemoveSpaceDeveloperByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("998375df-21ec-4d73-a0fd-83c11b7c7c1d")
@@ -1750,7 +1751,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceDeveloperByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveSpaceDeveloperByUsernameRequest validRequest() {
             return RemoveSpaceDeveloperByUsernameRequest.builder()
                 .spaceId("test-space-id")
                 .username("developer@example.com")
@@ -1769,7 +1770,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/managers/test-manager-id")
@@ -1781,12 +1782,12 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveSpaceManagerRequest getValidRequest() throws Exception {
+        protected RemoveSpaceManagerRequest validRequest() {
             return RemoveSpaceManagerRequest.builder()
                 .spaceId("test-space-id")
                 .managerId("test-manager-id")
@@ -1805,7 +1806,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/managers")
@@ -1819,7 +1820,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceManagerByUsernameResponse getResponse() {
+        protected ScriptedSubscriber<RemoveSpaceManagerByUsernameResponse> expectations() {
             return RemoveSpaceManagerByUsernameResponse.builder()
                 .metadata(Metadata.builder()
                     .id("9f29c6d5-10cf-4d2c-a934-b0f2ea054bd2")
@@ -1846,7 +1847,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected RemoveSpaceManagerByUsernameRequest getValidRequest() throws Exception {
+        protected RemoveSpaceManagerByUsernameRequest validRequest() {
             return RemoveSpaceManagerByUsernameRequest.builder()
                 .spaceId("test-space-id")
                 .username("manager@example.com")
@@ -1865,7 +1866,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/spaces/test-space-id/security_groups/test-security-group-id")
@@ -1877,12 +1878,12 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected RemoveSpaceSecurityGroupRequest getValidRequest() throws Exception {
+        protected RemoveSpaceSecurityGroupRequest validRequest() {
             return RemoveSpaceSecurityGroupRequest.builder()
                 .spaceId("test-space-id")
                 .securityGroupId("test-security-group-id")
@@ -1901,7 +1902,7 @@ public final class ReactorSpacesTest {
         private final ReactorSpaces spaces = new ReactorSpaces(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/spaces/test-space-id")
@@ -1915,7 +1916,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected UpdateSpaceResponse getResponse() {
+        protected ScriptedSubscriber<UpdateSpaceResponse> expectations() {
             return UpdateSpaceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("e7b9e252-88cb-415c-ace4-2864922e550c")
@@ -1943,7 +1944,7 @@ public final class ReactorSpacesTest {
         }
 
         @Override
-        protected UpdateSpaceRequest getValidRequest() throws Exception {
+        protected UpdateSpaceRequest validRequest() {
             return UpdateSpaceRequest.builder()
                 .spaceId("test-space-id")
                 .name("New Space Name")

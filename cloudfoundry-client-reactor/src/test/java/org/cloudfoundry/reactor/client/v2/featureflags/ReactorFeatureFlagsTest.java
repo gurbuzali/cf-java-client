@@ -28,6 +28,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpMethod.PUT;
@@ -40,7 +41,7 @@ public final class ReactorFeatureFlagsTest {
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/config/feature_flags/app_scaling")
@@ -53,7 +54,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected GetFeatureFlagResponse getResponse() {
+        protected ScriptedSubscriber<GetFeatureFlagResponse> expectations() {
             return GetFeatureFlagResponse.builder()
                 .name("app_scaling")
                 .enabled(true)
@@ -62,7 +63,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected GetFeatureFlagRequest getValidRequest() {
+        protected GetFeatureFlagRequest validRequest() {
             return GetFeatureFlagRequest.builder()
                 .name("app_scaling")
                 .build();
@@ -80,7 +81,7 @@ public final class ReactorFeatureFlagsTest {
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/config/feature_flags/set_roles_by_username")
@@ -93,7 +94,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected GetFeatureFlagResponse getResponse() {
+        protected ScriptedSubscriber<GetFeatureFlagResponse> expectations() {
             return GetFeatureFlagResponse.builder()
                 .name("set_roles_by_username")
                 .enabled(true)
@@ -102,7 +103,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected GetFeatureFlagRequest getValidRequest() {
+        protected GetFeatureFlagRequest validRequest() {
             return GetFeatureFlagRequest.builder()
                 .name("set_roles_by_username")
                 .build();
@@ -120,7 +121,7 @@ public final class ReactorFeatureFlagsTest {
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/config/feature_flags")
@@ -133,7 +134,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected ListFeatureFlagsResponse getResponse() {
+        protected ScriptedSubscriber<ListFeatureFlagsResponse> expectations() {
             return ListFeatureFlagsResponse.builder()
                 .featureFlag(FeatureFlagEntity.builder()
                     .name("user_org_creation")
@@ -212,7 +213,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected ListFeatureFlagsRequest getValidRequest() throws Exception {
+        protected ListFeatureFlagsRequest validRequest() {
             return ListFeatureFlagsRequest.builder().build();
         }
 
@@ -228,7 +229,7 @@ public final class ReactorFeatureFlagsTest {
         private final ReactorFeatureFlags featureFlags = new ReactorFeatureFlags(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/config/feature_flags/user_org_creation")
@@ -242,7 +243,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected SetFeatureFlagResponse getResponse() {
+        protected ScriptedSubscriber<SetFeatureFlagResponse> expectations() {
             return SetFeatureFlagResponse.builder()
                 .name("user_org_creation")
                 .enabled(true)
@@ -251,7 +252,7 @@ public final class ReactorFeatureFlagsTest {
         }
 
         @Override
-        protected SetFeatureFlagRequest getValidRequest() {
+        protected SetFeatureFlagRequest validRequest() {
             return SetFeatureFlagRequest.builder()
                 .enabled(true)
                 .name("user_org_creation")

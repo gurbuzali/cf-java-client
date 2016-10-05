@@ -33,6 +33,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -48,7 +49,7 @@ public final class ReactorPrivateDomainsTest {
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/private_domains")
@@ -62,7 +63,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected CreatePrivateDomainResponse getResponse() {
+        protected ScriptedSubscriber<CreatePrivateDomainResponse> expectations() {
             return CreatePrivateDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("4af3234e-813d-453f-b3ae-fcdecfd87a47")
@@ -79,7 +80,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected CreatePrivateDomainRequest getValidRequest() throws Exception {
+        protected CreatePrivateDomainRequest validRequest() {
             return CreatePrivateDomainRequest.builder()
                 .name("exmaple.com")
                 .owningOrganizationId("22bb8ae1-6324-40eb-b077-bd1bfad773f8")
@@ -97,7 +98,7 @@ public final class ReactorPrivateDomainsTest {
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/private_domains/test-private-domain-id")
@@ -109,12 +110,12 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected DeletePrivateDomainResponse getResponse() {
+        protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeletePrivateDomainRequest getValidRequest() throws Exception {
+        protected DeletePrivateDomainRequest validRequest() {
             return DeletePrivateDomainRequest.builder()
                 .privateDomainId("test-private-domain-id")
                 .build();
@@ -132,7 +133,7 @@ public final class ReactorPrivateDomainsTest {
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/private_domains/test-private-domain-id?async=true")
@@ -145,7 +146,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected DeletePrivateDomainResponse getResponse() {
+        protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
             return DeletePrivateDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -160,7 +161,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected DeletePrivateDomainRequest getValidRequest() throws Exception {
+        protected DeletePrivateDomainRequest validRequest() {
             return DeletePrivateDomainRequest.builder()
                 .async(true)
                 .privateDomainId("test-private-domain-id")
@@ -179,7 +180,7 @@ public final class ReactorPrivateDomainsTest {
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/private_domains/test-private-domain-id")
@@ -192,7 +193,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected GetPrivateDomainResponse getResponse() {
+        protected ScriptedSubscriber<GetPrivateDomainResponse> expectations() {
             return GetPrivateDomainResponse.builder()
                 .metadata(Metadata.builder()
                     .id("3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
@@ -209,7 +210,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected GetPrivateDomainRequest getValidRequest() throws Exception {
+        protected GetPrivateDomainRequest validRequest() {
             return GetPrivateDomainRequest.builder()
                 .privateDomainId("test-private-domain-id")
                 .build();
@@ -227,7 +228,7 @@ public final class ReactorPrivateDomainsTest {
         private final ReactorPrivateDomains privateDomains = new ReactorPrivateDomains(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/private_domains?q=name%20IN%20test-name.com&page=-1")
@@ -240,7 +241,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected ListPrivateDomainsResponse getResponse() {
+        protected ScriptedSubscriber<ListPrivateDomainsResponse> expectations() {
             return ListPrivateDomainsResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -261,7 +262,7 @@ public final class ReactorPrivateDomainsTest {
         }
 
         @Override
-        protected ListPrivateDomainsRequest getValidRequest() throws Exception {
+        protected ListPrivateDomainsRequest validRequest() {
             return ListPrivateDomainsRequest.builder()
                 .name("test-name.com")
                 .page(-1)

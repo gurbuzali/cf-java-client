@@ -47,6 +47,7 @@ import org.cloudfoundry.uaa.users.UserId;
 import org.cloudfoundry.uaa.users.VerifyUserRequest;
 import org.cloudfoundry.uaa.users.VerifyUserResponse;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -68,7 +69,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/Users/9140c37c-c5d9-4c4d-a265-b6fe2f9dd02d/password")
@@ -82,7 +83,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ChangeUserPasswordResponse getResponse() {
+        protected ScriptedSubscriber<ChangeUserPasswordResponse> expectations() {
             return ChangeUserPasswordResponse.builder()
                 .status("ok")
                 .message("password updated")
@@ -90,7 +91,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ChangeUserPasswordRequest getValidRequest() throws Exception {
+        protected ChangeUserPasswordRequest validRequest() {
             return ChangeUserPasswordRequest.builder()
                 .oldPassword("secret")
                 .password("newsecret")
@@ -110,7 +111,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/Users")
@@ -124,7 +125,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected CreateUserResponse getResponse() {
+        protected ScriptedSubscriber<CreateUserResponse> expectations() {
             return CreateUserResponse.builder()
                 .id("9d175c69-8f25-4460-82d7-be9657f87a68")
                 .externalId("test-user")
@@ -217,7 +218,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected CreateUserRequest getValidRequest() throws Exception {
+        protected CreateUserRequest validRequest() {
             return CreateUserRequest.builder()
                 .externalId("test-user")
                 .userName("ZO6FEI@test.org")
@@ -248,7 +249,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/Users/421225f4-318e-4a4d-9219-4b6a0ed3678a")
@@ -262,7 +263,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected DeleteUserResponse getResponse() {
+        protected ScriptedSubscriber<DeleteUserResponse> expectations() {
             return DeleteUserResponse.builder()
                 .id("421225f4-318e-4a4d-9219-4b6a0ed3678a")
                 .externalId("test-user")
@@ -371,7 +372,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected DeleteUserRequest getValidRequest() throws Exception {
+        protected DeleteUserRequest validRequest() {
             return DeleteUserRequest.builder()
                 .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
                 .version("*")
@@ -390,7 +391,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/Users/1faa46a0-0c6f-4e13-8334-d1f6e5f2e1dd/verify-link?redirect_uri=http://redirect.to/app")
@@ -403,14 +404,14 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected GetUserVerificationLinkResponse getResponse() {
+        protected ScriptedSubscriber<GetUserVerificationLinkResponse> expectations() {
             return GetUserVerificationLinkResponse.builder()
                 .verifyLink("http://localhost/verify_user?code=nOGQWBqCx5")
                 .build();
         }
 
         @Override
-        protected GetUserVerificationLinkRequest getValidRequest() throws Exception {
+        protected GetUserVerificationLinkRequest validRequest() {
             return GetUserVerificationLinkRequest.builder()
                 .redirectUri("http://redirect.to/app")
                 .userId("1faa46a0-0c6f-4e13-8334-d1f6e5f2e1dd")
@@ -429,7 +430,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/invite_users?client_id=u7ptqw&redirect_uri=example.com")
@@ -443,7 +444,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected InviteUsersResponse getResponse() {
+        protected ScriptedSubscriber<InviteUsersResponse> expectations() {
             return InviteUsersResponse.builder()
                 .newInvite(Invite.builder()
                     .email("user1@pjy596.com")
@@ -464,7 +465,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected InviteUsersRequest getValidRequest() throws Exception {
+        protected InviteUsersRequest validRequest() {
             return InviteUsersRequest.builder()
                 .clientId("u7ptqw")
                 .email("user1@pjy596.com", "user2@pjy596.com")
@@ -484,7 +485,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path(
@@ -498,7 +499,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ListUsersResponse getResponse() {
+        protected ScriptedSubscriber<ListUsersResponse> expectations() {
             return ListUsersResponse.builder()
                 .resource(User.builder()
                     .id("a94534d5-de08-41eb-8712-a51314e6a484")
@@ -605,7 +606,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ListUsersRequest getValidRequest() throws Exception {
+        protected ListUsersRequest validRequest() {
             return ListUsersRequest.builder()
                 .filter("id+eq+\"a94534d5-de08-41eb-8712-a51314e6a484\"+or+email+eq+\"Da63pG@test.org\"")
                 .count(50)
@@ -627,7 +628,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path(
@@ -642,7 +643,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected LookupUserIdsResponse getResponse() {
+        protected ScriptedSubscriber<LookupUserIdsResponse> expectations() {
             return LookupUserIdsResponse.builder()
                 .resource(UserId.builder()
                     .id("c1476587-5ec9-4b7e-9ed2-381e3133f07a")
@@ -662,7 +663,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected LookupUserIdsRequest getValidRequest() throws Exception {
+        protected LookupUserIdsRequest validRequest() {
             return LookupUserIdsRequest.builder()
                 .filter("userName+eq+\"bobOu38vE@test.org\"+or+id+eq+\"c1476587-5ec9-4b7e-9ed2-381e3133f07a\"")
                 .count(10)
@@ -684,7 +685,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/Users/test-user-id")
@@ -699,7 +700,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected UpdateUserResponse getResponse() {
+        protected ScriptedSubscriber<UpdateUserResponse> expectations() {
             return UpdateUserResponse.builder()
                 .active(true)
                 .approval(Approval.builder()
@@ -758,7 +759,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected UpdateUserRequest getValidRequest() throws Exception {
+        protected UpdateUserRequest validRequest() {
             return UpdateUserRequest.builder()
                 .active(true)
                 .email(Email.builder()
@@ -789,7 +790,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/Users/c0d42e48-9b69-461d-a77b-f75d3a5948b6/verify")
@@ -803,7 +804,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected VerifyUserResponse getResponse() {
+        protected ScriptedSubscriber<VerifyUserResponse> expectations() {
             return VerifyUserResponse.builder()
                 .id("c0d42e48-9b69-461d-a77b-f75d3a5948b6")
                 .meta(Meta.builder()
@@ -830,7 +831,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected VerifyUserRequest getValidRequest() throws Exception {
+        protected VerifyUserRequest validRequest() {
             return VerifyUserRequest.builder()
                 .userId("c0d42e48-9b69-461d-a77b-f75d3a5948b6")
                 .version("12")

@@ -23,6 +23,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -35,7 +36,7 @@ public final class ReactorInfoTest {
         private final ReactorInfo info = new ReactorInfo(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/info")
@@ -48,7 +49,7 @@ public final class ReactorInfoTest {
         }
 
         @Override
-        protected GetInfoResponse getResponse() {
+        protected ScriptedSubscriber<GetInfoResponse> expectations() {
             return GetInfoResponse.builder()
                 .name("vcap")
                 .buildNumber("2222")
@@ -66,7 +67,7 @@ public final class ReactorInfoTest {
         }
 
         @Override
-        protected GetInfoRequest getValidRequest() {
+        protected GetInfoRequest validRequest() {
             return GetInfoRequest.builder()
                 .build();
         }

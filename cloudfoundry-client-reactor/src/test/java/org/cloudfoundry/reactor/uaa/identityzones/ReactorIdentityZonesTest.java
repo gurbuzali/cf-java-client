@@ -39,6 +39,7 @@ import org.cloudfoundry.uaa.identityzones.TokenPolicy;
 import org.cloudfoundry.uaa.identityzones.UpdateIdentityZoneRequest;
 import org.cloudfoundry.uaa.identityzones.UpdateIdentityZoneResponse;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -56,7 +57,7 @@ public final class ReactorIdentityZonesTest {
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/identity-zones")
@@ -70,7 +71,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected CreateIdentityZoneResponse getResponse() {
+        protected ScriptedSubscriber<CreateIdentityZoneResponse> expectations() {
             return CreateIdentityZoneResponse.builder()
                 .createdAt(1463595920184L)
                 .description("Like the Twilight Zone but tastier.")
@@ -126,7 +127,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected CreateIdentityZoneRequest getValidRequest() throws Exception {
+        protected CreateIdentityZoneRequest validRequest() {
             return CreateIdentityZoneRequest.builder()
                 .description("Like the Twilight Zone but tastier.")
                 .identityZoneId("twiglet-create")
@@ -190,7 +191,7 @@ public final class ReactorIdentityZonesTest {
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/identity-zones/twiglet-delete")
@@ -203,7 +204,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected DeleteIdentityZoneResponse getResponse() {
+        protected ScriptedSubscriber<DeleteIdentityZoneResponse> expectations() {
             return DeleteIdentityZoneResponse.builder()
                 .createdAt(1463595919906L)
                 .description("Like the Twilight Zone but tastier.")
@@ -259,7 +260,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected DeleteIdentityZoneRequest getValidRequest() throws Exception {
+        protected DeleteIdentityZoneRequest validRequest() {
             return DeleteIdentityZoneRequest.builder()
                 .identityZoneId("twiglet-delete")
                 .build();
@@ -276,7 +277,7 @@ public final class ReactorIdentityZonesTest {
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/identity-zones/twiglet-get")
@@ -289,7 +290,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected GetIdentityZoneResponse getResponse() {
+        protected ScriptedSubscriber<GetIdentityZoneResponse> expectations() {
             return GetIdentityZoneResponse.builder()
                 .createdAt(1463595920104L)
                 .id("twiglet-get")
@@ -344,7 +345,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected GetIdentityZoneRequest getValidRequest() throws Exception {
+        protected GetIdentityZoneRequest validRequest() {
             return GetIdentityZoneRequest.builder()
                 .identityZoneId("twiglet-get")
                 .build();
@@ -361,7 +362,7 @@ public final class ReactorIdentityZonesTest {
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/identity-zones")
@@ -374,7 +375,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected ListIdentityZonesResponse getResponse() {
+        protected ScriptedSubscriber<ListIdentityZonesResponse> expectations() {
             return ListIdentityZonesResponse.builder()
                 .identityZone(IdentityZone.builder()
                     .createdAt(1463595916851L)
@@ -484,7 +485,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected ListIdentityZonesRequest getValidRequest() throws Exception {
+        protected ListIdentityZonesRequest validRequest() {
             return ListIdentityZonesRequest.builder().build();
         }
 
@@ -499,7 +500,7 @@ public final class ReactorIdentityZonesTest {
         private final ReactorIdentityZones identityZones = new ReactorIdentityZones(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/identity-zones/twiglet-update")
@@ -513,7 +514,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected UpdateIdentityZoneResponse getResponse() {
+        protected ScriptedSubscriber<UpdateIdentityZoneResponse> expectations() {
             return UpdateIdentityZoneResponse.builder()
                 .createdAt(1463595920023L)
                 .description("Like the Twilight Zone but not tastier.")
@@ -569,7 +570,7 @@ public final class ReactorIdentityZonesTest {
         }
 
         @Override
-        protected UpdateIdentityZoneRequest getValidRequest() throws Exception {
+        protected UpdateIdentityZoneRequest validRequest() {
             return UpdateIdentityZoneRequest.builder()
                 .description("Like the Twilight Zone but not tastier.")
                 .identityZoneId("twiglet-update")

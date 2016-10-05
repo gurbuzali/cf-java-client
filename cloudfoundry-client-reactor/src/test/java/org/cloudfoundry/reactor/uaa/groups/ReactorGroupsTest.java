@@ -57,6 +57,7 @@ import org.cloudfoundry.uaa.users.Email;
 import org.cloudfoundry.uaa.users.Meta;
 import org.cloudfoundry.uaa.users.Name;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -74,7 +75,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/Groups/test-group-id/members")
@@ -88,7 +89,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected AddMemberResponse getResponse() {
+        protected ScriptedSubscriber<AddMemberResponse> expectations() {
             return AddMemberResponse.builder()
                 .origin("uaa")
                 .type(MemberType.USER)
@@ -97,7 +98,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected AddMemberRequest getValidRequest() throws Exception {
+        protected AddMemberRequest validRequest() {
             return AddMemberRequest.builder()
                 .groupId("test-group-id")
                 .origin("uaa")
@@ -117,7 +118,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/Groups/test-group-id/members/test-member-id")
@@ -130,7 +131,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected CheckMembershipResponse getResponse() {
+        protected ScriptedSubscriber<CheckMembershipResponse> expectations() {
             return CheckMembershipResponse.builder()
                 .origin("uaa")
                 .type(MemberType.USER)
@@ -139,7 +140,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected CheckMembershipRequest getValidRequest() throws Exception {
+        protected CheckMembershipRequest validRequest() {
             return CheckMembershipRequest.builder()
                 .groupId("test-group-id")
                 .memberId("test-member-id")
@@ -157,7 +158,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .header("X-Identity-Zone-Id", "uaa")
@@ -172,7 +173,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected CreateGroupResponse getResponse() {
+        protected ScriptedSubscriber<CreateGroupResponse> expectations() {
             return CreateGroupResponse.builder()
                 .id("46081184-7ca9-453d-9bf8-74da7113bec6")
                 .metadata(Metadata.builder()
@@ -193,7 +194,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected CreateGroupRequest getValidRequest() throws Exception {
+        protected CreateGroupRequest validRequest() {
             return CreateGroupRequest.builder()
                 .description("the cool group")
                 .displayName("Cool Group Name")
@@ -217,7 +218,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .header("If-Match", "*")
@@ -231,7 +232,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected DeleteGroupResponse getResponse() {
+        protected ScriptedSubscriber<DeleteGroupResponse> expectations() {
             return DeleteGroupResponse.builder()
                 .id("test-group-id")
                 .metadata(Metadata.builder()
@@ -252,7 +253,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected DeleteGroupRequest getValidRequest() throws Exception {
+        protected DeleteGroupRequest validRequest() {
             return DeleteGroupRequest.builder()
                 .groupId("test-group-id")
                 .version("*")
@@ -270,7 +271,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/Groups/test-group-id")
@@ -283,7 +284,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected GetGroupResponse getResponse() {
+        protected ScriptedSubscriber<GetGroupResponse> expectations() {
             return GetGroupResponse.builder()
                 .id("test-group-id")
                 .metadata(Metadata.builder()
@@ -304,7 +305,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected GetGroupRequest getValidRequest() throws Exception {
+        protected GetGroupRequest validRequest() {
             return GetGroupRequest.builder()
                 .groupId("test-group-id")
                 .build();
@@ -321,7 +322,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET)
@@ -336,7 +337,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListGroupsResponse getResponse() {
+        protected ScriptedSubscriber<ListGroupsResponse> expectations() {
             return ListGroupsResponse.builder()
                 .resource(Group.builder()
                     .id("f87c557a-8ddc-43d3-98fb-e420ebc7f0f1")
@@ -364,7 +365,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListGroupsRequest getValidRequest() throws Exception {
+        protected ListGroupsRequest validRequest() {
             return ListGroupsRequest.builder()
                 .filter("id+eq+\"f87c557a-8ddc-43d3-98fb-e420ebc7f0f1\"+or+displayName+eq+\"Cooler Group Name for List\"")
                 .count(50)
@@ -385,7 +386,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET)
@@ -399,7 +400,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListExternalGroupMappingsResponse getResponse() {
+        protected ScriptedSubscriber<ListExternalGroupMappingsResponse> expectations() {
             return ListExternalGroupMappingsResponse.builder()
                 .resource(ExternalGroupResource.builder()
                     .groupId("c4a41861-6c83-45a7-995e-64fb66565dce")
@@ -416,7 +417,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListExternalGroupMappingsRequest getValidRequest() throws Exception {
+        protected ListExternalGroupMappingsRequest validRequest() {
             return ListExternalGroupMappingsRequest.builder()
                 .filter("group_id+eq+\"0480db7f-d1bc-4d2b-b723-febc684c0ee9\"")
                 .count(50)
@@ -435,7 +436,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET)
@@ -449,7 +450,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListMembersResponse getResponse() {
+        protected ScriptedSubscriber<ListMembersResponse> expectations() {
             return ListMembersResponse.builder()
                 .member(Member.builder()
                     .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
@@ -485,7 +486,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListMembersRequest getValidRequest() throws Exception {
+        protected ListMembersRequest validRequest() {
             return ListMembersRequest.builder()
                 .groupId("f87c557a-8ddc-43d3-98fb-e420ebc7f0f1")
                 .returnEntities(true)
@@ -503,7 +504,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET)
@@ -517,7 +518,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListMembersResponse getResponse() {
+        protected ScriptedSubscriber<ListMembersResponse> expectations() {
             return ListMembersResponse.builder()
                 .member(Member.builder()
                     .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
@@ -528,7 +529,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected ListMembersRequest getValidRequest() throws Exception {
+        protected ListMembersRequest validRequest() {
             return ListMembersRequest.builder()
                 .groupId("f87c557a-8ddc-43d3-98fb-e420ebc7f0f1")
                 .returnEntities(false)
@@ -546,7 +547,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/Groups/External")
@@ -560,7 +561,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected MapExternalGroupResponse getResponse() {
+        protected ScriptedSubscriber<MapExternalGroupResponse> expectations() {
             return MapExternalGroupResponse.builder()
                 .groupId("76937b62-346c-4848-953c-d790b87ec80a")
                 .displayName("Group For Testing Creating External Group Mapping")
@@ -576,7 +577,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected MapExternalGroupRequest getValidRequest() throws Exception {
+        protected MapExternalGroupRequest validRequest() {
             return MapExternalGroupRequest.builder()
                 .groupId("76937b62-346c-4848-953c-d790b87ec80a")
                 .externalGroup("External group")
@@ -594,7 +595,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/Groups/test-group-id/members/40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
@@ -607,7 +608,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected RemoveMemberResponse getResponse() {
+        protected ScriptedSubscriber<RemoveMemberResponse> expectations() {
             return RemoveMemberResponse.builder()
                 .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
                 .type(MemberType.USER)
@@ -616,7 +617,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected RemoveMemberRequest getValidRequest() throws Exception {
+        protected RemoveMemberRequest validRequest() {
             return RemoveMemberRequest.builder()
                 .groupId("test-group-id")
                 .memberId("40bc8ef1-0719-4a0c-9f60-e9f843cd4af2")
@@ -634,7 +635,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/Groups/External/displayName/Group For Testing Deleting External Group Mapping By Name/externalGroup/external group/origin/ldap")
@@ -647,7 +648,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UnmapExternalGroupByGroupDisplayNameResponse getResponse() {
+        protected ScriptedSubscriber<UnmapExternalGroupByGroupDisplayNameResponse> expectations() {
             return UnmapExternalGroupByGroupDisplayNameResponse.builder()
                 .groupId("f8f0048f-de32-4d20-b41d-5820b690063d")
                 .displayName("Group For Testing Deleting External Group Mapping By Name")
@@ -663,7 +664,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UnmapExternalGroupByGroupDisplayNameRequest getValidRequest() throws Exception {
+        protected UnmapExternalGroupByGroupDisplayNameRequest validRequest() {
             return UnmapExternalGroupByGroupDisplayNameRequest.builder()
                 .groupDisplayName("Group For Testing Deleting External Group Mapping By Name")
                 .externalGroup("external group")
@@ -682,7 +683,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/Groups/External/groupId/d68167b4-81b3-490d-9838-94092d5c89f6/externalGroup/external group/origin/ldap")
@@ -695,7 +696,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UnmapExternalGroupByGroupIdResponse getResponse() {
+        protected ScriptedSubscriber<UnmapExternalGroupByGroupIdResponse> expectations() {
             return UnmapExternalGroupByGroupIdResponse.builder()
                 .groupId("d68167b4-81b3-490d-9838-94092d5c89f6")
                 .displayName("Group For Testing Deleting External Group Mapping")
@@ -711,7 +712,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UnmapExternalGroupByGroupIdRequest getValidRequest() throws Exception {
+        protected UnmapExternalGroupByGroupIdRequest validRequest() {
             return UnmapExternalGroupByGroupIdRequest.builder()
                 .groupId("d68167b4-81b3-490d-9838-94092d5c89f6")
                 .externalGroup("external group")
@@ -730,7 +731,7 @@ public final class ReactorGroupsTest {
         private final ReactorGroups groups = new ReactorGroups(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/Groups/test-group-id")
@@ -746,7 +747,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UpdateGroupResponse getResponse() {
+        protected ScriptedSubscriber<UpdateGroupResponse> expectations() {
             return UpdateGroupResponse.builder()
                 .id("test-group-id")
                 .metadata(Metadata.builder()
@@ -767,7 +768,7 @@ public final class ReactorGroupsTest {
         }
 
         @Override
-        protected UpdateGroupRequest getValidRequest() throws Exception {
+        protected UpdateGroupRequest validRequest() {
             return UpdateGroupRequest.builder()
                 .identityZoneId("uaa")
                 .groupId("test-group-id")

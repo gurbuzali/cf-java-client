@@ -47,13 +47,14 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.cloudfoundry.util.FluentMap;
 import org.cloudfoundry.util.OperationUtils;
-import org.cloudfoundry.util.test.TestSubscriber;
-import org.reactivestreams.Publisher;
 import org.springframework.core.io.ClassPathResource;
-import reactor.core.publisher.Flux;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
@@ -62,7 +63,6 @@ import static io.netty.handler.codec.http.HttpMethod.POST;
 import static io.netty.handler.codec.http.HttpResponseStatus.CREATED;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static org.cloudfoundry.util.tuple.TupleUtils.consumer;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public final class ReactorPackagesTest {
@@ -72,20 +72,7 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v3/apps/test-application-id/packages?source_package_guid=test-source-package-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/apps/POST_{id}_packages_copy_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected CopyPackageResponse getResponse() {
+        protected ScriptedSubscriber<CopyPackageResponse> expectations() {
             return CopyPackageResponse.builder()
                 .id("041af871-9d09-45de-ad2d-df8c4771a1ee")
                 .type(PackageType.DOCKER)
@@ -108,16 +95,29 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected CopyPackageRequest getValidRequest() {
-            return CopyPackageRequest.builder()
-                .applicationId("test-application-id")
-                .sourcePackageId("test-source-package-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v3/apps/test-application-id/packages?source_package_guid=test-source-package-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/apps/POST_{id}_packages_copy_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<CopyPackageResponse> invoke(CopyPackageRequest request) {
             return this.packages.copy(request);
+        }
+
+        @Override
+        protected CopyPackageRequest validRequest() {
+            return CopyPackageRequest.builder()
+                .applicationId("test-application-id")
+                .sourcePackageId("test-source-package-id")
+                .build();
         }
 
     }
@@ -127,21 +127,7 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v3/apps/test-application-id/packages")
-                    .payload("fixtures/client/v3/apps/POST_{id}_packages_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v3/apps/POST_{id}_packages_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected CreatePackageResponse getResponse() {
+        protected ScriptedSubscriber<CreatePackageResponse> expectations() {
             return CreatePackageResponse.builder()
                 .id("909affe0-4aa1-42f4-b399-1a67cb5a90fa")
                 .type(PackageType.DOCKER)
@@ -164,12 +150,15 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected CreatePackageRequest getValidRequest() {
-            return CreatePackageRequest.builder()
-                .applicationId("test-application-id")
-                .type(PackageType.DOCKER)
-                .data(org.cloudfoundry.client.v3.DockerData.builder()
-                    .image("registry/image:latest")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v3/apps/test-application-id/packages")
+                    .payload("fixtures/client/v3/apps/POST_{id}_packages_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v3/apps/POST_{id}_packages_response.json")
                     .build())
                 .build();
         }
@@ -179,6 +168,17 @@ public final class ReactorPackagesTest {
             return this.packages.create(request);
         }
 
+        @Override
+        protected CreatePackageRequest validRequest() {
+            return CreatePackageRequest.builder()
+                .applicationId("test-application-id")
+                .type(PackageType.DOCKER)
+                .data(org.cloudfoundry.client.v3.DockerData.builder()
+                    .image("registry/image:latest")
+                    .build())
+                .build();
+        }
+
     }
 
     public static final class Delete extends AbstractClientApiTest<DeletePackageRequest, Void> {
@@ -186,7 +186,12 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected ScriptedSubscriber<Void> expectations() {
+            return null;
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v3/packages/test-package-id")
@@ -198,20 +203,15 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected Void getResponse() {
-            return null;
+        protected Mono<Void> invoke(DeletePackageRequest request) {
+            return this.packages.delete(request);
         }
 
         @Override
-        protected DeletePackageRequest getValidRequest() {
+        protected DeletePackageRequest validRequest() {
             return DeletePackageRequest.builder()
                 .packageId("test-package-id")
                 .build();
-        }
-
-        @Override
-        protected Mono<Void> invoke(DeletePackageRequest request) {
-            return this.packages.delete(request);
         }
 
     }
@@ -221,13 +221,14 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected void assertions(TestSubscriber<byte[]> testSubscriber, Publisher<byte[]> expected) {
-            Flux.from(expected)
-                .subscribe(e -> testSubscriber.expectThat(a -> assertArrayEquals(e, a)));
+        protected ScriptedSubscriber<byte[]> expectations() {
+            return ScriptedSubscriber.<byte[]>create()
+                .expectValueWith(actual -> Arrays.equals(getBytes("fixtures/client/v3/packages/GET_{id}_download_response.bin"), actual))
+                .expectComplete();
         }
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/packages/test-package-id/download")
@@ -240,21 +241,16 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected byte[] getResponse() {
-            return getBytes("fixtures/client/v3/packages/GET_{id}_download_response.bin");
-        }
-
-        @Override
-        protected DownloadPackageRequest getValidRequest() {
-            return DownloadPackageRequest.builder()
-                .packageId("test-package-id")
-                .build();
-        }
-
-        @Override
         protected Mono<byte[]> invoke(DownloadPackageRequest request) {
             return this.packages.download(request)
                 .as(OperationUtils::collectByteArray);
+        }
+
+        @Override
+        protected DownloadPackageRequest validRequest() {
+            return DownloadPackageRequest.builder()
+                .packageId("test-package-id")
+                .build();
         }
 
     }
@@ -264,20 +260,7 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/packages/test-package-id")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/packages/GET_{id}_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected GetPackageResponse getResponse() {
+        protected ScriptedSubscriber<GetPackageResponse> expectations() {
             return GetPackageResponse.builder()
                 .id("guid-ebaae129-a8ee-43cf-a0a6-734c7ed0d1b4")
                 .type(PackageType.BITS)
@@ -310,15 +293,28 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected GetPackageRequest getValidRequest() {
-            return GetPackageRequest.builder()
-                .packageId("test-package-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/packages/test-package-id")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/packages/GET_{id}_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<GetPackageResponse> invoke(GetPackageRequest request) {
             return this.packages.get(request);
+        }
+
+        @Override
+        protected GetPackageRequest validRequest() {
+            return GetPackageRequest.builder()
+                .packageId("test-package-id")
+                .build();
         }
 
     }
@@ -328,20 +324,7 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/v3/packages")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/client/v3/packages/GET_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected ListPackagesResponse getResponse() {
+        protected ScriptedSubscriber<ListPackagesResponse> expectations() {
             return ListPackagesResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -407,14 +390,27 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected ListPackagesRequest getValidRequest() {
-            return ListPackagesRequest.builder()
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/v3/packages")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/client/v3/packages/GET_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<ListPackagesResponse> invoke(ListPackagesRequest request) {
             return this.packages.list(request);
+        }
+
+        @Override
+        protected ListPackagesRequest validRequest() {
+            return ListPackagesRequest.builder()
+                .build();
         }
 
     }
@@ -424,21 +420,7 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v3/packages/test-package-id/droplets")
-                    .payload("fixtures/client/v3/packages/POST_{id}_droplets_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v3/packages/POST_{id}_droplets_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected StagePackageResponse getResponse() {
+        protected ScriptedSubscriber<StagePackageResponse> expectations() {
             return StagePackageResponse.builder()
                 .id("whatuuid")
                 .state(org.cloudfoundry.client.v3.droplets.State.PENDING)
@@ -490,7 +472,26 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected StagePackageRequest getValidRequest() {
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v3/packages/test-package-id/droplets")
+                    .payload("fixtures/client/v3/packages/POST_{id}_droplets_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v3/packages/POST_{id}_droplets_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<StagePackageResponse> invoke(StagePackageRequest request) {
+            return this.packages.stage(request);
+        }
+
+        @Override
+        protected StagePackageRequest validRequest() {
             return StagePackageRequest.builder()
                 .packageId("test-package-id")
                 .environmentVariable("CUSTOM_ENV_VAR", "hello")
@@ -503,11 +504,6 @@ public final class ReactorPackagesTest {
                     .build())
                 .build();
         }
-
-        @Override
-        protected Mono<StagePackageResponse> invoke(StagePackageRequest request) {
-            return this.packages.stage(request);
-        }
     }
 
     public static final class Upload extends AbstractClientApiTest<UploadPackageRequest, UploadPackageResponse> {
@@ -515,31 +511,7 @@ public final class ReactorPackagesTest {
         private final ReactorPackages packages = new ReactorPackages(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/v3/packages/test-package-id/upload")
-                    .contents(consumer((headers, body) -> {
-                        String boundary = extractBoundary(headers);
-
-                        assertEquals("--" + boundary + "\r\n" +
-                            "Content-Disposition: form-data; name=\"bits\"; filename=\"application.zip\"\r\n" +
-                            "Content-Type: application/zip\r\n" +
-                            "\r\n" +
-                            "test-content\n" +
-                            "\r\n" +
-                            "--" + boundary + "--", body.readString(Charset.defaultCharset()));
-                    }))
-                    .build())
-                .response(TestResponse.builder()
-                    .status(CREATED)
-                    .payload("fixtures/client/v3/packages/POST_{id}_upload_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected UploadPackageResponse getResponse() {
+        protected ScriptedSubscriber<UploadPackageResponse> expectations() {
             return UploadPackageResponse.builder()
                 .id("guid-f582d3d1-320c-4524-9c4f-480252ab5bff")
                 .type(PackageType.BITS)
@@ -573,16 +545,44 @@ public final class ReactorPackagesTest {
         }
 
         @Override
-        protected UploadPackageRequest getValidRequest() throws Exception {
-            return UploadPackageRequest.builder()
-                .bits(new ClassPathResource("fixtures/client/v3/packages/test-package.zip").getInputStream())
-                .packageId("test-package-id")
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/v3/packages/test-package-id/upload")
+                    .contents(consumer((headers, body) -> {
+                        String boundary = extractBoundary(headers);
+
+                        assertEquals("--" + boundary + "\r\n" +
+                            "Content-Disposition: form-data; name=\"bits\"; filename=\"application.zip\"\r\n" +
+                            "Content-Type: application/zip\r\n" +
+                            "\r\n" +
+                            "test-content\n" +
+                            "\r\n" +
+                            "--" + boundary + "--", body.readString(Charset.defaultCharset()));
+                    }))
+                    .build())
+                .response(TestResponse.builder()
+                    .status(CREATED)
+                    .payload("fixtures/client/v3/packages/POST_{id}_upload_response.json")
+                    .build())
                 .build();
         }
 
         @Override
         protected Mono<UploadPackageResponse> invoke(UploadPackageRequest request) {
             return this.packages.upload(request);
+        }
+
+        @Override
+        protected UploadPackageRequest validRequest() {
+            try {
+                return UploadPackageRequest.builder()
+                    .bits(new ClassPathResource("fixtures/client/v3/packages/test-package.zip").getInputStream())
+                    .packageId("test-package-id")
+                    .build();
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            }
         }
 
     }

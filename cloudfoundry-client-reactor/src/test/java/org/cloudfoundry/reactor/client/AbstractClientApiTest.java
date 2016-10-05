@@ -19,7 +19,9 @@ package org.cloudfoundry.reactor.client;
 import okhttp3.Headers;
 import org.cloudfoundry.client.v2.CloudFoundryException;
 import org.cloudfoundry.reactor.AbstractApiTest;
+import org.cloudfoundry.util.test.ErrorExpectation;
 import org.junit.Test;
+import reactor.test.ScriptedSubscriber;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,11 +41,14 @@ public abstract class AbstractClientApiTest<REQ, RSP> extends AbstractApiTest<RE
 
     @Test
     public final void error() throws Exception {
-        mockRequest(getInteractionContext().getErrorResponse());
-        this.testSubscriber.expectError(CloudFoundryException.class, "CF-UnprocessableEntity(10008): The request is semantically invalid: space_guid and name unique");
-        invoke(getValidRequest()).subscribe(this.testSubscriber);
+        mockRequest(interactionContext().getErrorResponse());
 
-        this.testSubscriber.verify(Duration.ofSeconds(5));
+        ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "CF-UnprocessableEntity(10008): The request is semantically invalid: space_guid and name unique");
+        ScriptedSubscriber<RSP> subscriber = ScriptedSubscriber.<RSP>create()
+            .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+
+        invoke(validRequest()).subscribe(subscriber);
+        subscriber.verify(Duration.ofSeconds(5));
         verify();
     }
 

@@ -35,6 +35,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -52,7 +53,7 @@ public final class ReactorServicesTest {
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/services/test-service-id?purge=true")
@@ -64,12 +65,12 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected DeleteServiceResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServiceRequest getValidRequest() throws Exception {
+        protected DeleteServiceRequest validRequest() {
             return DeleteServiceRequest.builder()
                 .purge(true)
                 .serviceId("test-service-id")
@@ -88,7 +89,7 @@ public final class ReactorServicesTest {
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/services/test-service-id?async=true")
@@ -101,7 +102,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected DeleteServiceResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
             return DeleteServiceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -116,7 +117,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected DeleteServiceRequest getValidRequest() throws Exception {
+        protected DeleteServiceRequest validRequest() {
             return DeleteServiceRequest.builder()
                 .async(true)
                 .serviceId("test-service-id")
@@ -135,7 +136,7 @@ public final class ReactorServicesTest {
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/services/test-service-id")
@@ -148,7 +149,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected GetServiceResponse getResponse() {
+        protected ScriptedSubscriber<GetServiceResponse> expectations() {
             return GetServiceResponse.builder()
                 .metadata(Metadata.builder()
                     .id("58eb36ad-0636-428b-b4ed-afc14e48d926")
@@ -169,7 +170,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected GetServiceRequest getValidRequest() throws Exception {
+        protected GetServiceRequest validRequest() {
             return GetServiceRequest.builder()
                 .serviceId("test-service-id")
                 .build();
@@ -187,7 +188,7 @@ public final class ReactorServicesTest {
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/services?q=label%20IN%20test-label&page=-1")
@@ -200,7 +201,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ListServicesResponse getResponse() {
+        protected ScriptedSubscriber<ListServicesResponse> expectations() {
             return ListServicesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -227,7 +228,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ListServicesRequest getValidRequest() throws Exception {
+        protected ListServicesRequest validRequest() {
             return ListServicesRequest.builder()
                 .label("test-label")
                 .page(-1)
@@ -246,7 +247,7 @@ public final class ReactorServicesTest {
         private final ReactorServices services = new ReactorServices(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/services/f1b0edbe-fac4-4512-9071-8b26045413bb/service_plans?page=-1")
@@ -259,7 +260,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ListServiceServicePlansResponse getResponse() {
+        protected ScriptedSubscriber<ListServiceServicePlansResponse> expectations() {
             return ListServiceServicePlansResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -285,7 +286,7 @@ public final class ReactorServicesTest {
         }
 
         @Override
-        protected ListServiceServicePlansRequest getValidRequest() throws Exception {
+        protected ListServiceServicePlansRequest validRequest() {
             return ListServiceServicePlansRequest.builder()
                 .serviceId("f1b0edbe-fac4-4512-9071-8b26045413bb")
                 .page(-1)

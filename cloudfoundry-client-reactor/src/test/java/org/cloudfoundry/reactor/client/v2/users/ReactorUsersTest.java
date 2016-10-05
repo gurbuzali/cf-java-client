@@ -26,6 +26,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -37,7 +38,7 @@ public final class ReactorUsersTest {
         private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/users?page=-1")
@@ -50,7 +51,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ListUsersResponse getResponse() {
+        protected ScriptedSubscriber<ListUsersResponse> expectations() {
             return ListUsersResponse.builder()
                 .totalResults(2)
                 .totalPages(1)
@@ -97,7 +98,7 @@ public final class ReactorUsersTest {
         }
 
         @Override
-        protected ListUsersRequest getValidRequest() throws Exception {
+        protected ListUsersRequest validRequest() {
             return ListUsersRequest.builder()
                 .page(-1)
                 .build();

@@ -42,6 +42,7 @@ import org.cloudfoundry.uaa.tokens.RefreshTokenResponse;
 import org.cloudfoundry.uaa.tokens.TokenFormat;
 import org.cloudfoundry.uaa.tokens.TokenKey;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Arrays;
 
@@ -57,7 +58,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/check_token?scopes=password.write,scim.userids&token=f9f2f98d88e04ff7bb1f69041d3c0346")
@@ -71,7 +72,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected CheckTokenResponse getResponse() {
+        protected ScriptedSubscriber<CheckTokenResponse> expectations() {
             return CheckTokenResponse.builder()
                 .userId("ae77988e-1b25-4e02-87f2-81f98293a356")
                 .userName("marissa")
@@ -96,7 +97,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected CheckTokenRequest getValidRequest() {
+        protected CheckTokenRequest validRequest() {
             return CheckTokenRequest.builder()
                 .token("f9f2f98d88e04ff7bb1f69041d3c0346")
                 .scope("password.write")
@@ -118,7 +119,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/token_key")
@@ -131,7 +132,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenKeyResponse getResponse() {
+        protected ScriptedSubscriber<GetTokenKeyResponse> expectations() {
             return GetTokenKeyResponse.builder()
                 .id("testKey")
                 .algorithm("SHA256withRSA")
@@ -154,7 +155,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenKeyRequest getValidRequest() {
+        protected GetTokenKeyRequest validRequest() {
             return GetTokenKeyRequest.builder()
                 .build();
         }
@@ -171,7 +172,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/token?code=zI6Z1X&client_id=login&client_secret=loginsecret&redirect_uri=https://uaa.cloudfoundry.com/redirect/cf" +
@@ -187,7 +188,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByAuthorizationCodeResponse getResponse() {
+        protected ScriptedSubscriber<GetTokenByAuthorizationCodeResponse> expectations() {
             return GetTokenByAuthorizationCodeResponse.builder()
                 .accessToken("555e2047bbc849628ff8cbfa7b342274")
                 .tokenType("bearer")
@@ -199,7 +200,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByAuthorizationCodeRequest getValidRequest() {
+        protected GetTokenByAuthorizationCodeRequest validRequest() {
             return GetTokenByAuthorizationCodeRequest.builder()
                 .clientId("login")
                 .clientSecret("loginsecret")
@@ -221,7 +222,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/token?client_id=login&client_secret=loginsecret&token_format=opaque&grant_type=client_credentials&response_type=token")
@@ -236,7 +237,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByClientCredentialsResponse getResponse() {
+        protected ScriptedSubscriber<GetTokenByClientCredentialsResponse> expectations() {
             return GetTokenByClientCredentialsResponse.builder()
                 .accessToken("f87f93a2666d4e6eaa54e34df86d160c")
                 .tokenType("bearer")
@@ -247,7 +248,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByClientCredentialsRequest getValidRequest() {
+        protected GetTokenByClientCredentialsRequest validRequest() {
             return GetTokenByClientCredentialsRequest.builder()
                 .clientId("login")
                 .clientSecret("loginsecret")
@@ -267,7 +268,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/token?passcode=qcZNkd&token_format=opaque&grant_type=password&response_type=token")
@@ -282,7 +283,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByOneTimePasscodeResponse getResponse() {
+        protected ScriptedSubscriber<GetTokenByOneTimePasscodeResponse> expectations() {
             return GetTokenByOneTimePasscodeResponse.builder()
                 .accessToken("0ddcada64ef742a28badaf4750ef435f")
                 .tokenType("bearer")
@@ -294,7 +295,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByOneTimePasscodeRequest getValidRequest() {
+        protected GetTokenByOneTimePasscodeRequest validRequest() {
             return GetTokenByOneTimePasscodeRequest.builder()
                 .clientId("app")
                 .clientSecret("appclientsecret")
@@ -315,7 +316,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/token?code=NAlA1d&client_id=app&client_secret=appclientsecret&redirect_uri=https://uaa.cloudfoundry.com/redirect/cf&token_format=opaque" +
@@ -331,7 +332,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByOpenIdResponse getResponse() {
+        protected ScriptedSubscriber<GetTokenByOpenIdResponse> expectations() {
             return GetTokenByOpenIdResponse.builder()
                 .accessToken("53a58e6581ee49d08f9e572f673bc8db")
                 .tokenType("bearer")
@@ -344,7 +345,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByOpenIdRequest getValidRequest() {
+        protected GetTokenByOpenIdRequest validRequest() {
             return GetTokenByOpenIdRequest.builder()
                 .clientId("app")
                 .clientSecret("appclientsecret")
@@ -366,7 +367,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/token?client_id=app&client_secret=appclientsecret&password=secr3T&token_format=opaque&" +
@@ -382,7 +383,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByPasswordResponse getResponse() {
+        protected ScriptedSubscriber<GetTokenByPasswordResponse> expectations() {
             return GetTokenByPasswordResponse.builder()
                 .accessToken("cd37a35114084fafb83d21c6f2af0e84")
                 .tokenType("bearer")
@@ -394,7 +395,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected GetTokenByPasswordRequest getValidRequest() {
+        protected GetTokenByPasswordRequest validRequest() {
             return GetTokenByPasswordRequest.builder()
                 .clientId("app")
                 .clientSecret("appclientsecret")
@@ -416,7 +417,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/token_keys")
@@ -429,7 +430,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected ListTokenKeysResponse getResponse() {
+        protected ScriptedSubscriber<ListTokenKeysResponse> expectations() {
             return ListTokenKeysResponse.builder()
                 .key(TokenKey.builder()
                     .id("testKey")
@@ -454,7 +455,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected ListTokenKeysRequest getValidRequest() throws Exception {
+        protected ListTokenKeysRequest validRequest() {
             return ListTokenKeysRequest.builder()
                 .build();
         }
@@ -470,7 +471,7 @@ public final class ReactorTokensTest {
         private final ReactorTokens tokens = new ReactorTokens(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/oauth/token?client_id=app&client_secret=appclientsecret&refresh_token=6af5fc07a8b74c2eafb0079ff477bb11-r&token_format=opaque&grant_type=refresh_token")
@@ -483,7 +484,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected RefreshTokenResponse getResponse() {
+        protected ScriptedSubscriber<RefreshTokenResponse> expectations() {
             return RefreshTokenResponse.builder()
                 .accessToken("eyJhbGciOiJIUzI1NiIsImtpZCI6Imx")
                 .tokenType("bearer")
@@ -495,7 +496,7 @@ public final class ReactorTokensTest {
         }
 
         @Override
-        protected RefreshTokenRequest getValidRequest() {
+        protected RefreshTokenRequest validRequest() {
             return RefreshTokenRequest.builder()
                 .clientId("app")
                 .clientSecret("appclientsecret")

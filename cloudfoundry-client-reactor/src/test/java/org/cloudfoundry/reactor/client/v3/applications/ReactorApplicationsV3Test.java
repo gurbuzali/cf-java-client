@@ -82,6 +82,7 @@ import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import org.cloudfoundry.util.FluentMap;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -102,7 +103,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/apps/test-application-id/current_droplet")
@@ -116,7 +117,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected AssignApplicationDropletResponse getResponse() {
+        protected ScriptedSubscriber<AssignApplicationDropletResponse> expectations() {
             return AssignApplicationDropletResponse.builder()
                 .id("guid-a08fd981-137f-4a8f-9c32-6be10007edde")
                 .name("name1")
@@ -169,7 +170,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected AssignApplicationDropletRequest getValidRequest() throws Exception {
+        protected AssignApplicationDropletRequest validRequest() {
             return AssignApplicationDropletRequest.builder()
                 .dropletId("guid-3b5793e7-f6c8-40cb-a8d8-07080280da83")
                 .applicationId("test-application-id")
@@ -188,7 +189,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/apps/test-application-id/tasks/test-task-id/cancel")
@@ -201,7 +202,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected CancelApplicationTaskResponse getResponse() {
+        protected ScriptedSubscriber<CancelApplicationTaskResponse> expectations() {
             return CancelApplicationTaskResponse.builder()
                 .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
                 .name("migrate")
@@ -224,7 +225,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected CancelApplicationTaskRequest getValidRequest() throws Exception {
+        protected CancelApplicationTaskRequest validRequest() {
             return CancelApplicationTaskRequest.builder()
                 .applicationId("test-application-id")
                 .taskId("test-task-id")
@@ -243,7 +244,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v3/apps")
@@ -257,7 +258,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected CreateApplicationResponse getResponse() {
+        protected ScriptedSubscriber<CreateApplicationResponse> expectations() {
             return CreateApplicationResponse.builder()
                 .id("a1aef47a-600b-4b2b-a2f6-f5dc5344f886")
                 .name("my_app")
@@ -306,7 +307,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected CreateApplicationRequest getValidRequest() throws Exception {
+        protected CreateApplicationRequest validRequest() {
             return CreateApplicationRequest.builder()
                 .name("my_app")
                 .environmentVariable("open", "source")
@@ -337,7 +338,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v3/apps/test-application-id")
@@ -349,12 +350,12 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteApplicationRequest getValidRequest() throws Exception {
+        protected DeleteApplicationRequest validRequest() {
             return DeleteApplicationRequest.builder()
                 .applicationId("test-application-id")
                 .build();
@@ -372,7 +373,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v3/apps/test-application-id/processes/test-type/instances/test-index")
@@ -384,12 +385,12 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected Void getResponse() {
+        protected ScriptedSubscriber<Void> expectations() {
             return null;
         }
 
         @Override
-        protected TerminateApplicationInstanceRequest getValidRequest() throws Exception {
+        protected TerminateApplicationInstanceRequest validRequest() {
             return TerminateApplicationInstanceRequest.builder()
                 .applicationId("test-application-id")
                 .index("test-index")
@@ -409,7 +410,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id")
@@ -422,7 +423,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationResponse getResponse() {
+        protected ScriptedSubscriber<GetApplicationResponse> expectations() {
             return GetApplicationResponse.builder()
                 .id("guid-cad6a8b6-a0dc-4bb1-a5a8-095dd29cb6d6")
                 .name("my_app")
@@ -474,7 +475,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationRequest getValidRequest() throws Exception {
+        protected GetApplicationRequest validRequest() {
             return GetApplicationRequest.builder()
                 .applicationId("test-application-id")
                 .build();
@@ -492,7 +493,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-id/processes/test-type/stats")
@@ -505,7 +506,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationProcessStatisticsResponse getResponse() {
+        protected ScriptedSubscriber<GetApplicationProcessStatisticsResponse> expectations() {
             return GetApplicationProcessStatisticsResponse.builder()
                 .resource(ProcessStatisticsResource.builder()
                     .type("web")
@@ -531,7 +532,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationProcessStatisticsRequest getValidRequest() throws Exception {
+        protected GetApplicationProcessStatisticsRequest validRequest() {
             return GetApplicationProcessStatisticsRequest.builder()
                 .applicationId("test-id")
                 .type("test-type")
@@ -550,7 +551,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/env")
@@ -563,7 +564,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationEnvironmentResponse getResponse() {
+        protected ScriptedSubscriber<GetApplicationEnvironmentResponse> expectations() {
             return GetApplicationEnvironmentResponse.builder()
                 .environmentVariable("SOME_KEY", "some_val")
                 .stagingEnvironmentVariable("STAGING_ENV", "staging_value")
@@ -584,7 +585,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationEnvironmentRequest getValidRequest() throws Exception {
+        protected GetApplicationEnvironmentRequest validRequest() {
             return GetApplicationEnvironmentRequest.builder()
                 .applicationId("test-application-id")
                 .build();
@@ -602,7 +603,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/processes/web")
@@ -615,7 +616,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationProcessResponse getResponse() {
+        protected ScriptedSubscriber<GetApplicationProcessResponse> expectations() {
             return GetApplicationProcessResponse.builder()
                 .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                 .type("web")
@@ -648,7 +649,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationProcessRequest getValidRequest() throws Exception {
+        protected GetApplicationProcessRequest validRequest() {
             return GetApplicationProcessRequest.builder()
                 .applicationId("test-application-id")
                 .type("web")
@@ -667,7 +668,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/tasks/test-task-id")
@@ -680,7 +681,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationTaskResponse getResponse() {
+        protected ScriptedSubscriber<GetApplicationTaskResponse> expectations() {
             return GetApplicationTaskResponse.builder()
                 .id("d5cc22ec-99a3-4e6a-af91-a44b4ab7b6fa")
                 .name("migrate")
@@ -703,7 +704,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected GetApplicationTaskRequest getValidRequest() throws Exception {
+        protected GetApplicationTaskRequest validRequest() {
             return GetApplicationTaskRequest.builder()
                 .applicationId("test-application-id")
                 .taskId("test-task-id")
@@ -722,7 +723,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps?names=test-name&order_by=%2Bcreated_at&page=1")
@@ -735,7 +736,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationsResponse getResponse() {
+        protected ScriptedSubscriber<ListApplicationsResponse> expectations() {
             return ListApplicationsResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -843,7 +844,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationsRequest getValidRequest() throws Exception {
+        protected ListApplicationsRequest validRequest() {
             return ListApplicationsRequest.builder()
                 .page(1)
                 .orderBy("+created_at")
@@ -863,7 +864,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/droplets?order_by=-created_at&page=1&per_page=2")
@@ -876,7 +877,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationDropletsResponse getResponse() {
+        protected ScriptedSubscriber<ListApplicationDropletsResponse> expectations() {
             return ListApplicationDropletsResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(2)
@@ -961,7 +962,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationDropletsRequest getValidRequest() throws Exception {
+        protected ListApplicationDropletsRequest validRequest() {
             return ListApplicationDropletsRequest.builder()
                 .page(1)
                 .perPage(2)
@@ -982,7 +983,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/packages?page=1")
@@ -995,7 +996,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationPackagesResponse getResponse() {
+        protected ScriptedSubscriber<ListApplicationPackagesResponse> expectations() {
             return ListApplicationPackagesResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(1)
@@ -1039,7 +1040,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationPackagesRequest getValidRequest() throws Exception {
+        protected ListApplicationPackagesRequest validRequest() {
             return ListApplicationPackagesRequest.builder()
                 .page(1)
                 .applicationId("test-application-id")
@@ -1058,7 +1059,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/processes?page=1")
@@ -1071,7 +1072,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationProcessesResponse getResponse() {
+        protected ScriptedSubscriber<ListApplicationProcessesResponse> expectations() {
             return ListApplicationProcessesResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -1147,7 +1148,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationProcessesRequest getValidRequest() throws Exception {
+        protected ListApplicationProcessesRequest validRequest() {
             return ListApplicationProcessesRequest.builder()
                 .page(1)
                 .applicationId("test-application-id")
@@ -1166,7 +1167,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v3/apps/test-application-id/tasks?page=1")
@@ -1179,7 +1180,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationTasksResponse getResponse() {
+        protected ScriptedSubscriber<ListApplicationTasksResponse> expectations() {
             return ListApplicationTasksResponse.builder()
                 .pagination(Pagination.builder()
                     .totalResults(3)
@@ -1236,7 +1237,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ListApplicationTasksRequest getValidRequest() throws Exception {
+        protected ListApplicationTasksRequest validRequest() {
             return ListApplicationTasksRequest.builder()
                 .page(1)
                 .applicationId("test-application-id")
@@ -1255,7 +1256,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/apps/test-application-id/processes/web/scale")
@@ -1269,7 +1270,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ScaleApplicationResponse getResponse() {
+        protected ScriptedSubscriber<ScaleApplicationResponse> expectations() {
             return ScaleApplicationResponse.builder()
                 .id("6a901b7c-9417-4dc1-8189-d3234aa0ab82")
                 .type("web")
@@ -1302,7 +1303,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected ScaleApplicationRequest getValidRequest() throws Exception {
+        protected ScaleApplicationRequest validRequest() {
             return ScaleApplicationRequest.builder()
                 .applicationId("test-application-id")
                 .type("web")
@@ -1324,7 +1325,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/apps/test-application-id/start")
@@ -1337,7 +1338,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected StartApplicationResponse getResponse() {
+        protected ScriptedSubscriber<StartApplicationResponse> expectations() {
             return StartApplicationResponse.builder()
                 .id("guid-76956e3e-9905-42f9-b2c1-f9b53ef24ac0")
                 .name("original_name")
@@ -1390,7 +1391,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected StartApplicationRequest getValidRequest() throws Exception {
+        protected StartApplicationRequest validRequest() {
             return StartApplicationRequest.builder()
                 .applicationId("test-application-id")
                 .build();
@@ -1408,7 +1409,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v3/apps/test-application-id/stop")
@@ -1421,7 +1422,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected StopApplicationResponse getResponse() {
+        protected ScriptedSubscriber<StopApplicationResponse> expectations() {
             return StopApplicationResponse.builder()
                 .id("guid-11e8e36d-71f5-4be8-9487-c6d1a187e439")
                 .name("original_name")
@@ -1474,7 +1475,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected StopApplicationRequest getValidRequest() throws Exception {
+        protected StopApplicationRequest validRequest() {
             return StopApplicationRequest.builder()
                 .applicationId("test-application-id")
                 .build();
@@ -1492,7 +1493,7 @@ public final class ReactorApplicationsV3Test {
         private final ReactorApplicationsV3 applications = new ReactorApplicationsV3(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PATCH).path("/v3/apps/test-application-id")
@@ -1506,7 +1507,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected UpdateApplicationResponse getResponse() {
+        protected ScriptedSubscriber<UpdateApplicationResponse> expectations() {
             return UpdateApplicationResponse.builder()
                 .id("guid-003fabe4-542f-487d-b9b7-8b1bffdd0ca9")
                 .name("new_name")
@@ -1557,7 +1558,7 @@ public final class ReactorApplicationsV3Test {
         }
 
         @Override
-        protected UpdateApplicationRequest getValidRequest() throws Exception {
+        protected UpdateApplicationRequest validRequest() {
             return UpdateApplicationRequest.builder()
                 .applicationId("test-application-id")
                 .name("new_name")

@@ -37,6 +37,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.Collections;
 
@@ -56,7 +57,7 @@ public final class ReactorServicePlansTest {
         private final ReactorServicePlans servicePlans = new ReactorServicePlans(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_plans/test-service-plan-id")
@@ -68,12 +69,12 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected DeleteServicePlanResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServicePlanResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServicePlanRequest getValidRequest() throws Exception {
+        protected DeleteServicePlanRequest validRequest() {
             return DeleteServicePlanRequest.builder()
                 .servicePlanId("test-service-plan-id")
                 .build();
@@ -91,7 +92,7 @@ public final class ReactorServicePlansTest {
         private final ReactorServicePlans servicePlans = new ReactorServicePlans(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_plans/test-service-plan-id?async=true")
@@ -104,7 +105,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected DeleteServicePlanResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServicePlanResponse> expectations() {
             return DeleteServicePlanResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -119,7 +120,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected DeleteServicePlanRequest getValidRequest() throws Exception {
+        protected DeleteServicePlanRequest validRequest() {
             return DeleteServicePlanRequest.builder()
                 .async(true)
                 .servicePlanId("test-service-plan-id")
@@ -138,7 +139,7 @@ public final class ReactorServicePlansTest {
         private final ReactorServicePlans servicePlans = new ReactorServicePlans(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_plans/test-service-plan-id")
@@ -151,7 +152,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected GetServicePlanResponse getResponse() {
+        protected ScriptedSubscriber<GetServicePlanResponse> expectations() {
             return GetServicePlanResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:16Z")
@@ -173,7 +174,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected GetServicePlanRequest getValidRequest() throws Exception {
+        protected GetServicePlanRequest validRequest() {
             return GetServicePlanRequest.builder()
                 .servicePlanId("test-service-plan-id")
                 .build();
@@ -190,7 +191,7 @@ public final class ReactorServicePlansTest {
         private final ReactorServicePlans servicePlans = new ReactorServicePlans(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_plans?q=service_guid%20IN%20test-service-id&page=-1")
@@ -203,7 +204,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected ListServicePlansResponse getResponse() {
+        protected ScriptedSubscriber<ListServicePlansResponse> expectations() {
             return ListServicePlansResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -229,7 +230,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected ListServicePlansRequest getValidRequest() throws Exception {
+        protected ListServicePlansRequest validRequest() {
             return ListServicePlansRequest.builder()
                 .serviceId("test-service-id")
                 .page(-1)
@@ -247,7 +248,7 @@ public final class ReactorServicePlansTest {
         private final ReactorServicePlans servicePlans = new ReactorServicePlans(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_plans/test-service-plan-id/service_instances?q=space_guid%20IN%20test-space-id&page=-1")
@@ -260,7 +261,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected ListServicePlanServiceInstancesResponse getResponse() {
+        protected ScriptedSubscriber<ListServicePlanServiceInstancesResponse> expectations() {
             return ListServicePlanServiceInstancesResponse.builder()
                 .totalResults(1)
                 .totalPages(1)
@@ -287,7 +288,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected ListServicePlanServiceInstancesRequest getValidRequest() throws Exception {
+        protected ListServicePlanServiceInstancesRequest validRequest() {
             return ListServicePlanServiceInstancesRequest.builder()
                 .servicePlanId("test-service-plan-id")
                 .spaceId("test-space-id")
@@ -307,7 +308,7 @@ public final class ReactorServicePlansTest {
         private final ReactorServicePlans servicePlans = new ReactorServicePlans(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/service_plans/test-service-plan-id")
@@ -321,7 +322,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected UpdateServicePlanResponse getResponse() {
+        protected ScriptedSubscriber<UpdateServicePlanResponse> expectations() {
             return UpdateServicePlanResponse.builder()
                 .metadata(Metadata.builder()
                     .id("195f6bd5-0aa4-4a97-9c8d-5410e5e6d4b6")
@@ -344,7 +345,7 @@ public final class ReactorServicePlansTest {
         }
 
         @Override
-        protected UpdateServicePlanRequest getValidRequest() throws Exception {
+        protected UpdateServicePlanRequest validRequest() {
             return UpdateServicePlanRequest.builder()
                 .servicePlanId("test-service-plan-id")
                 .publiclyVisible(false)

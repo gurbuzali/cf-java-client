@@ -36,6 +36,7 @@ import org.cloudfoundry.reactor.TestRequest;
 import org.cloudfoundry.reactor.TestResponse;
 import org.cloudfoundry.reactor.client.AbstractClientApiTest;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static io.netty.handler.codec.http.HttpMethod.DELETE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -54,7 +55,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         private final ServicePlanVisibilities servicePlanVisibilities = new ReactorServicePlanVisibilities(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(POST).path("/v2/service_plan_visibilities")
@@ -68,7 +69,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected CreateServicePlanVisibilityResponse getResponse() {
+        protected ScriptedSubscriber<CreateServicePlanVisibilityResponse> expectations() {
             return CreateServicePlanVisibilityResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:28Z")
@@ -85,7 +86,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected CreateServicePlanVisibilityRequest getValidRequest() throws Exception {
+        protected CreateServicePlanVisibilityRequest validRequest() {
             return CreateServicePlanVisibilityRequest.builder()
                 .organizationId("09be17a1-0cc6-4edb-955c-cf2a2ae85470")
                 .servicePlanId("43f5496b-9117-404a-a637-eb38141b05af")
@@ -103,7 +104,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         private final ServicePlanVisibilities servicePlanVisibilities = new ReactorServicePlanVisibilities(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_plan_visibilities/test-service-plan-visibility-id")
@@ -115,12 +116,12 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected DeleteServicePlanVisibilityResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServicePlanVisibilityResponse> expectations() {
             return null;
         }
 
         @Override
-        protected DeleteServicePlanVisibilityRequest getValidRequest() throws Exception {
+        protected DeleteServicePlanVisibilityRequest validRequest() {
             return DeleteServicePlanVisibilityRequest.builder()
                 .servicePlanVisibilityId("test-service-plan-visibility-id")
                 .build();
@@ -137,7 +138,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         private final ServicePlanVisibilities servicePlanVisibilities = new ReactorServicePlanVisibilities(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(DELETE).path("/v2/service_plan_visibilities/test-service-plan-visibility-id?async=true")
@@ -150,7 +151,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected DeleteServicePlanVisibilityResponse getResponse() {
+        protected ScriptedSubscriber<DeleteServicePlanVisibilityResponse> expectations() {
             return DeleteServicePlanVisibilityResponse.builder()
                 .metadata(Metadata.builder()
                     .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
@@ -165,7 +166,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected DeleteServicePlanVisibilityRequest getValidRequest() throws Exception {
+        protected DeleteServicePlanVisibilityRequest validRequest() {
             return DeleteServicePlanVisibilityRequest.builder()
                 .async(true)
                 .servicePlanVisibilityId("test-service-plan-visibility-id")
@@ -183,7 +184,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         private final ServicePlanVisibilities servicePlanVisibilities = new ReactorServicePlanVisibilities(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_plan_visibilities/test-service-plan-visibility-id")
@@ -196,7 +197,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected GetServicePlanVisibilityResponse getResponse() {
+        protected ScriptedSubscriber<GetServicePlanVisibilityResponse> expectations() {
             return GetServicePlanVisibilityResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:28Z")
@@ -213,7 +214,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected GetServicePlanVisibilityRequest getValidRequest() throws Exception {
+        protected GetServicePlanVisibilityRequest validRequest() {
             return GetServicePlanVisibilityRequest.builder()
                 .servicePlanVisibilityId("test-service-plan-visibility-id")
                 .build();
@@ -230,7 +231,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         private final ServicePlanVisibilities servicePlanVisibilities = new ReactorServicePlanVisibilities(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(GET).path("/v2/service_plan_visibilities?q=organization_guid%20IN%20test-organization-id&page=-1")
@@ -243,7 +244,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected ListServicePlanVisibilitiesResponse getResponse() {
+        protected ScriptedSubscriber<ListServicePlanVisibilitiesResponse> expectations() {
             return ListServicePlanVisibilitiesResponse.builder()
                 .totalPages(1)
                 .totalResults(1)
@@ -264,7 +265,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected ListServicePlanVisibilitiesRequest getValidRequest() throws Exception {
+        protected ListServicePlanVisibilitiesRequest validRequest() {
             return ListServicePlanVisibilitiesRequest.builder()
                 .organizationId("test-organization-id")
                 .page(-1)
@@ -282,7 +283,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         private final ServicePlanVisibilities servicePlanVisibilities = new ReactorServicePlanVisibilities(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
 
         @Override
-        protected InteractionContext getInteractionContext() {
+        protected InteractionContext interactionContext() {
             return InteractionContext.builder()
                 .request(TestRequest.builder()
                     .method(PUT).path("/v2/service_plan_visibilities/test-service-plan-visibility-id")
@@ -296,7 +297,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected UpdateServicePlanVisibilityResponse getResponse() {
+        protected ScriptedSubscriber<UpdateServicePlanVisibilityResponse> expectations() {
             return UpdateServicePlanVisibilityResponse.builder()
                 .metadata(Metadata.builder()
                     .createdAt("2015-07-27T22:43:28Z")
@@ -314,7 +315,7 @@ public final class ReactorServicePlanVisibilitiesTest {
         }
 
         @Override
-        protected UpdateServicePlanVisibilityRequest getValidRequest() throws Exception {
+        protected UpdateServicePlanVisibilityRequest validRequest() {
             return UpdateServicePlanVisibilityRequest.builder()
                 .organizationId("e4d0b68b-9e73-4253-b03f-2bfda6cd814b")
                 .servicePlanId("7288464d-3866-436a-915c-2bada4725e7e")
