@@ -16,9 +16,9 @@
 
 package org.cloudfoundry.operations;
 
-import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Test;
 import org.reactivestreams.Publisher;
+import reactor.test.ScriptedSubscriber;
 
 import java.time.Duration;
 
@@ -26,15 +26,12 @@ public abstract class AbstractOperationsApiTest<T> extends AbstractOperationsTes
 
     @Test
     public final void test() throws Exception {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<T>();
-
-        assertions(testSubscriber);
-
-        invoke().subscribe(testSubscriber);
-        testSubscriber.verify(Duration.ofSeconds(5));
+        ScriptedSubscriber<T> subscriber = expectations();
+        invoke().subscribe(subscriber);
+        subscriber.verify(Duration.ofSeconds(5));
     }
 
-    protected abstract void assertions(TestSubscriber<T> testSubscriber);
+    protected abstract ScriptedSubscriber<T> expectations();
 
     protected abstract Publisher<T> invoke();
 

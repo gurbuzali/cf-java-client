@@ -20,11 +20,16 @@ import org.cloudfoundry.client.CloudFoundryClient;
 import org.cloudfoundry.client.v2.organizations.ListOrganizationSpaceQuotaDefinitionsRequest;
 import org.cloudfoundry.client.v2.organizations.ListOrganizationSpaceQuotaDefinitionsResponse;
 import org.cloudfoundry.client.v2.spacequotadefinitions.SpaceQuotaDefinitionResource;
+import org.cloudfoundry.doppler.Error;
 import org.cloudfoundry.operations.AbstractOperationsApiTest;
+import org.cloudfoundry.util.test.ErrorExpectation;
 import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Before;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
+
+import java.util.function.Predicate;
 
 import static org.cloudfoundry.util.test.TestObjects.fill;
 import static org.mockito.Mockito.when;
@@ -65,10 +70,11 @@ public final class DefaultSpaceAdminTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(SpaceQuota.builder(), "space-quota-definition-")
-                    .build());
+        protected ScriptedSubscriber<SpaceQuota> expectations() {
+            return ScriptedSubscriber.<SpaceQuota>create()
+                .expectValue(fill(SpaceQuota.builder(), "space-quota-definition-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -86,9 +92,11 @@ public final class DefaultSpaceAdminTest {
         private final DefaultSpaceAdmin spaceAdmin = new DefaultSpaceAdmin(Mono.just(this.cloudFoundryClient), MISSING_ORGANIZATION_ID);
 
         @Override
-        protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_ORGANIZATION_ID");
+        protected ScriptedSubscriber<SpaceQuota> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_ORGANIZATION_ID");
+
+            return ScriptedSubscriber.<SpaceQuota>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -111,9 +119,11 @@ public final class DefaultSpaceAdminTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalArgumentException.class, "Space Quota test-space-quota-definition-name does not exist");
+        protected ScriptedSubscriber<SpaceQuota> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Space Quota test-space-quota-definition-name does not exist");
+
+            return ScriptedSubscriber.<SpaceQuota>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override
@@ -136,10 +146,11 @@ public final class DefaultSpaceAdminTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(SpaceQuota.builder(), "space-quota-definition-")
-                    .build());
+        protected ScriptedSubscriber<SpaceQuota> expectations() {
+            return ScriptedSubscriber.<SpaceQuota>create()
+                .expectValue(fill(SpaceQuota.builder(), "space-quota-definition-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -155,9 +166,11 @@ public final class DefaultSpaceAdminTest {
         private final DefaultSpaceAdmin spaceAdmin = new DefaultSpaceAdmin(Mono.just(this.cloudFoundryClient), MISSING_ORGANIZATION_ID);
 
         @Override
-        protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) {
-            testSubscriber
-                .expectError(IllegalStateException.class, "MISSING_ORGANIZATION_ID");
+        protected ScriptedSubscriber<SpaceQuota> expectations() {
+            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalStateException.class, "MISSING_ORGANIZATION_ID");
+
+            return ScriptedSubscriber.<SpaceQuota>create()
+                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
         }
 
         @Override

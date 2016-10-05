@@ -25,6 +25,7 @@ import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Before;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import static org.cloudfoundry.util.test.TestObjects.fill;
 import static org.mockito.Mockito.when;
@@ -66,10 +67,11 @@ public final class DefaultStacksTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Stack> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(Stack.builder(), "stack-")
-                    .build());
+        protected ScriptedSubscriber<Stack> expectations() {
+            return ScriptedSubscriber.<Stack>create()
+                .expectValue(fill(Stack.builder(), "stack-")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -92,10 +94,11 @@ public final class DefaultStacksTest {
         }
 
         @Override
-        protected void assertions(TestSubscriber<Stack> testSubscriber) {
-            testSubscriber
-                .expectEquals(fill(Stack.builder(), "stack-")
-                    .build());
+        protected ScriptedSubscriber<Stack> expectations() {
+            return ScriptedSubscriber.<Stack>create()
+                .expectValue(fill(Stack.builder(), "stack-")
+                    .build())
+                .expectComplete();
         }
 
         @Override

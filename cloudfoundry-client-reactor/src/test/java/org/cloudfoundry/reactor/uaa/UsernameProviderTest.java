@@ -27,6 +27,7 @@ import org.cloudfoundry.uaa.tokens.Tokens;
 import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.ScriptedSubscriber;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -34,6 +35,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.time.Duration;
+import java.util.concurrent.TimeoutException;
 
 import static org.cloudfoundry.util.test.TestObjects.fill;
 import static org.mockito.Mockito.mock;
@@ -64,18 +66,19 @@ public final class UsernameProviderTest {
     }
 
     @Test
-    public void test() throws InterruptedException {
+    public void test() throws InterruptedException, TimeoutException {
         requestTokenKey(this.tokens, this.publicKey);
         when(this.tokenProvider.getToken(this.connectionContext)).thenReturn(Mono.just(this.token));
 
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
+        ScriptedSubscriber<String> subscriber = ScriptedSubscriber.<String>create()
+            .expectValue("test-username")
+            .expectComplete();
 
         new UsernameProvider(this.connectionContext, this.tokenProvider, this.tokens)
             .get()
-            .subscribe(testSubscriber
-                .expectEquals("test-username"));
+            .subscribe(subscriber);
 
-        testSubscriber.verify(Duration.ofSeconds(1));
+        subscriber.verify(Duration.ofSeconds(1));
     }
 
     private static String getPublicKey(PublicKey publicKey) {
