@@ -19,7 +19,6 @@ package org.cloudfoundry.operations.advanced;
 import org.cloudfoundry.operations.AbstractOperationsApiTest;
 import org.cloudfoundry.uaa.UaaClient;
 import org.cloudfoundry.uaa.authorizations.AuthorizeByAuthorizationCodeGrantApiRequest;
-import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.Before;
 import reactor.core.publisher.Mono;
 import reactor.test.ScriptedSubscriber;
