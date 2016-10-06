@@ -70,10 +70,12 @@ public final class ReactorUsersTest {
 
         @Override
         protected ScriptedSubscriber<ChangeUserPasswordResponse> expectations() {
-            return ChangeUserPasswordResponse.builder()
-                .status("ok")
-                .message("password updated")
-                .build();
+            return ScriptedSubscriber.<ChangeUserPasswordResponse>create()
+                .expectValue(ChangeUserPasswordResponse.builder()
+                    .status("ok")
+                    .message("password updated")
+                    .build())
+                .expectComplete();
         }
 
         @Override
@@ -112,95 +114,97 @@ public final class ReactorUsersTest {
 
         @Override
         protected ScriptedSubscriber<CreateUserResponse> expectations() {
-            return CreateUserResponse.builder()
-                .id("9d175c69-8f25-4460-82d7-be9657f87a68")
-                .externalId("test-user")
-                .meta(Meta.builder()
-                    .version(0)
-                    .created("2016-05-18T18:25:24.559Z")
-                    .lastModified("2016-05-18T18:25:24.559Z")
+            return ScriptedSubscriber.<CreateUserResponse>create()
+                .expectValue(CreateUserResponse.builder()
+                    .id("9d175c69-8f25-4460-82d7-be9657f87a68")
+                    .externalId("test-user")
+                    .meta(Meta.builder()
+                        .version(0)
+                        .created("2016-05-18T18:25:24.559Z")
+                        .lastModified("2016-05-18T18:25:24.559Z")
+                        .build())
+                    .userName("ZO6FEI@test.org")
+                    .name(Name.builder()
+                        .familyName("family name")
+                        .givenName("given name")
+                        .build())
+                    .email(Email.builder()
+                        .value("ZO6FEI@test.org")
+                        .primary(false)
+                        .build())
+                    .group(Group.builder()
+                        .value("4622c5e1-ddfd-4e17-9e81-2ae3c03972be")
+                        .display("password.write")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("62f67643-05d8-43c6-b193-4cd6ab9960cb")
+                        .display("cloud_controller.write")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("c47bf470-f9c4-4eea-97e4-490ce7b8f6f7")
+                        .display("uaa.user")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("8a6add1f-d3ee-400c-a263-c4197351b78e")
+                        .display("approvals.me")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("e10424ed-ed80-45ac-848b-7f7e79b00c42")
+                        .display("cloud_controller.read")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("ede11441-6ffe-4510-81f8-bb40626155f0")
+                        .display("openid")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("7e3d4b06-0d6b-43a1-ac3a-5f1b2642262c")
+                        .display("scim.me")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("3b481f3c-d9a7-4920-a687-72cb0381b671")
+                        .display("cloud_controller_service_permissions.read")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("4480c647-4047-4c6a-877f-70f5f96e8c11")
+                        .display("oauth.approvals")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("542bb178-1c04-4bb5-813a-5a038319ac1d")
+                        .display("user_attributes")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("c4ac4653-2fdd-4901-a028-9c9866cb4e9c")
+                        .display("scim.userids")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("74fde138-daf3-4e4d-bb52-93a6cb727030")
+                        .display("profile")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .value("1b18551f-eead-4076-90dd-b464998f6ddd")
+                        .display("roles")
+                        .type(DIRECT)
+                        .build())
+                    .active(true)
+                    .verified(true)
+                    .origin("uaa")
+                    .zoneId("uaa")
+                    .passwordLastModified("2016-05-18T18:25:24.000Z")
+                    .schemas(Collections.singletonList("urn:scim:schemas:core:1.0"))
                     .build())
-                .userName("ZO6FEI@test.org")
-                .name(Name.builder()
-                    .familyName("family name")
-                    .givenName("given name")
-                    .build())
-                .email(Email.builder()
-                    .value("ZO6FEI@test.org")
-                    .primary(false)
-                    .build())
-                .group(Group.builder()
-                    .value("4622c5e1-ddfd-4e17-9e81-2ae3c03972be")
-                    .display("password.write")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("62f67643-05d8-43c6-b193-4cd6ab9960cb")
-                    .display("cloud_controller.write")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("c47bf470-f9c4-4eea-97e4-490ce7b8f6f7")
-                    .display("uaa.user")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("8a6add1f-d3ee-400c-a263-c4197351b78e")
-                    .display("approvals.me")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("e10424ed-ed80-45ac-848b-7f7e79b00c42")
-                    .display("cloud_controller.read")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("ede11441-6ffe-4510-81f8-bb40626155f0")
-                    .display("openid")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("7e3d4b06-0d6b-43a1-ac3a-5f1b2642262c")
-                    .display("scim.me")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("3b481f3c-d9a7-4920-a687-72cb0381b671")
-                    .display("cloud_controller_service_permissions.read")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("4480c647-4047-4c6a-877f-70f5f96e8c11")
-                    .display("oauth.approvals")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("542bb178-1c04-4bb5-813a-5a038319ac1d")
-                    .display("user_attributes")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("c4ac4653-2fdd-4901-a028-9c9866cb4e9c")
-                    .display("scim.userids")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("74fde138-daf3-4e4d-bb52-93a6cb727030")
-                    .display("profile")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("1b18551f-eead-4076-90dd-b464998f6ddd")
-                    .display("roles")
-                    .type(DIRECT)
-                    .build())
-                .active(true)
-                .verified(true)
-                .origin("uaa")
-                .zoneId("uaa")
-                .passwordLastModified("2016-05-18T18:25:24.000Z")
-                .schemas(Collections.singletonList("urn:scim:schemas:core:1.0"))
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -250,258 +254,22 @@ public final class ReactorUsersTest {
 
         @Override
         protected ScriptedSubscriber<DeleteUserResponse> expectations() {
-            return DeleteUserResponse.builder()
-                .id("421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                .externalId("test-user")
-                .meta(Meta.builder()
-                    .version(0)
-                    .created("2016-05-18T18:25:23.102Z")
-                    .lastModified("2016-05-18T18:25:23.102Z")
-                    .build())
-                .userName("7Q4Rqr@test.org")
-                .name(Name.builder()
-                    .familyName("family name")
-                    .givenName("given name")
-                    .build())
-                .email(Email.builder()
-                    .value("7Q4Rqr@test.org")
-                    .primary(false)
-                    .build())
-                .group(Group.builder()
-                    .value("4622c5e1-ddfd-4e17-9e81-2ae3c03972be")
-                    .display("password.write")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("62f67643-05d8-43c6-b193-4cd6ab9960cb")
-                    .display("cloud_controller.write")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("c47bf470-f9c4-4eea-97e4-490ce7b8f6f7")
-                    .display("uaa.user")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("8a6add1f-d3ee-400c-a263-c4197351b78e")
-                    .display("approvals.me")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("e10424ed-ed80-45ac-848b-7f7e79b00c42")
-                    .display("cloud_controller.read")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("ede11441-6ffe-4510-81f8-bb40626155f0")
-                    .display("openid")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("7e3d4b06-0d6b-43a1-ac3a-5f1b2642262c")
-                    .display("scim.me")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("3b481f3c-d9a7-4920-a687-72cb0381b671")
-                    .display("cloud_controller_service_permissions.read")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("4480c647-4047-4c6a-877f-70f5f96e8c11")
-                    .display("oauth.approvals")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("542bb178-1c04-4bb5-813a-5a038319ac1d")
-                    .display("user_attributes")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("c4ac4653-2fdd-4901-a028-9c9866cb4e9c")
-                    .display("scim.userids")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("74fde138-daf3-4e4d-bb52-93a6cb727030")
-                    .display("profile")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .value("1b18551f-eead-4076-90dd-b464998f6ddd")
-                    .display("roles")
-                    .type(DIRECT)
-                    .build())
-                .approval(Approval.builder()
-                    .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                    .clientId("identity")
-                    .scope("uaa.user")
-                    .status(APPROVED)
-                    .lastUpdatedAt("2016-05-18T18:25:53.114Z")
-                    .expiresAt("2016-05-18T18:25:53.114Z")
-                    .build())
-                .approval(Approval.builder()
-                    .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                    .clientId("client id")
-                    .scope("scim.read")
-                    .status(APPROVED)
-                    .lastUpdatedAt("2016-05-18T18:25:23.112Z")
-                    .expiresAt("2016-05-18T18:25:33.112Z")
-                    .build())
-                .active(true)
-                .verified(true)
-                .origin("uaa")
-                .zoneId("uaa")
-                .passwordLastModified("2016-05-18T18:25:23.000Z")
-                .schemas(Collections.singletonList("urn:scim:schemas:core:1.0"))
-                .build();
-        }
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(DELETE).path("/Users/421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                    .header("If-Match", "*")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/DELETE_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected Mono<DeleteUserResponse> invoke(DeleteUserRequest request) {
-            return this.users.delete(request);
-        }
-
-        @Override
-        protected DeleteUserRequest validRequest() {
-            return DeleteUserRequest.builder()
-                .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
-                .version("*")
-                .build();
-        }
-
-    }
-
-    public static final class GetVerificationLink extends AbstractUaaApiTest<GetUserVerificationLinkRequest, GetUserVerificationLinkResponse> {
-
-        private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected ScriptedSubscriber<GetUserVerificationLinkResponse> expectations() {
-            return GetUserVerificationLinkResponse.builder()
-                .verifyLink("http://localhost/verify_user?code=nOGQWBqCx5")
-                .build();
-        }
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(GET).path("/Users/1faa46a0-0c6f-4e13-8334-d1f6e5f2e1dd/verify-link?redirect_uri=http://redirect.to/app")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users/GET_{id}_verify_link_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected Mono<GetUserVerificationLinkResponse> invoke(GetUserVerificationLinkRequest request) {
-            return this.users.getVerificationLink(request);
-        }
-
-        @Override
-        protected GetUserVerificationLinkRequest validRequest() {
-            return GetUserVerificationLinkRequest.builder()
-                .redirectUri("http://redirect.to/app")
-                .userId("1faa46a0-0c6f-4e13-8334-d1f6e5f2e1dd")
-                .build();
-        }
-
-    }
-
-    public static final class InviteUsers extends AbstractUaaApiTest<InviteUsersRequest, InviteUsersResponse> {
-
-        private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected ScriptedSubscriber<InviteUsersResponse> expectations() {
-            return InviteUsersResponse.builder()
-                .newInvite(Invite.builder()
-                    .email("user1@pjy596.com")
-                    .userId("68af461b-484e-464a-96ac-a336abed48ad")
-                    .origin("uaa")
-                    .success(true)
-                    .inviteLink("http://localhost/invitations/accept?code=WEqtpOh73k")
-                    .build())
-                .newInvite(Invite.builder()
-                    .email("user2@pjy596.com")
-                    .userId("d256cf96-5c14-4649-9a0d-5564c66411b5")
-                    .origin("uaa")
-                    .success(true)
-                    .inviteLink("http://localhost/invitations/accept?code=n5X0hCsD3N")
-                    .build())
-                .failedInvite()
-                .build();
-        }
-
-        @Override
-        protected InteractionContext interactionContext() {
-            return InteractionContext.builder()
-                .request(TestRequest.builder()
-                    .method(POST).path("/invite_users?client_id=u7ptqw&redirect_uri=example.com")
-                    .payload("fixtures/uaa/users/POST_invite_users_request.json")
-                    .build())
-                .response(TestResponse.builder()
-                    .status(OK)
-                    .payload("fixtures/uaa/users//POST_invite_users_response.json")
-                    .build())
-                .build();
-        }
-
-        @Override
-        protected Mono<InviteUsersResponse> invoke(InviteUsersRequest request) {
-            return this.users.invite(request);
-        }
-
-        @Override
-        protected InviteUsersRequest validRequest() {
-            return InviteUsersRequest.builder()
-                .clientId("u7ptqw")
-                .email("user1@pjy596.com", "user2@pjy596.com")
-                .redirectUri("example.com")
-                .build();
-        }
-
-    }
-
-    public static final class List extends AbstractUaaApiTest<ListUsersRequest, ListUsersResponse> {
-
-        private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
-
-        @Override
-        protected ScriptedSubscriber<ListUsersResponse> expectations() {
-            return ListUsersResponse.builder()
-                .resource(User.builder()
-                    .id("a94534d5-de08-41eb-8712-a51314e6a484")
+            return ScriptedSubscriber.<DeleteUserResponse>create()
+                .expectValue(DeleteUserResponse.builder()
+                    .id("421225f4-318e-4a4d-9219-4b6a0ed3678a")
                     .externalId("test-user")
                     .meta(Meta.builder()
                         .version(0)
-                        .created("2016-05-18T18:25:24.036Z")
-                        .lastModified("2016-05-18T18:25:24.036Z")
+                        .created("2016-05-18T18:25:23.102Z")
+                        .lastModified("2016-05-18T18:25:23.102Z")
                         .build())
-                    .userName("Da63pG@test.org")
+                    .userName("7Q4Rqr@test.org")
                     .name(Name.builder()
                         .familyName("family name")
                         .givenName("given name")
                         .build())
                     .email(Email.builder()
-                        .value("Da63pG@test.org")
+                        .value("7Q4Rqr@test.org")
                         .primary(false)
                         .build())
                     .group(Group.builder()
@@ -570,25 +338,269 @@ public final class ReactorUsersTest {
                         .type(DIRECT)
                         .build())
                     .approval(Approval.builder()
-                        .userId("a94534d5-de08-41eb-8712-a51314e6a484")
+                        .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
+                        .clientId("identity")
+                        .scope("uaa.user")
+                        .status(APPROVED)
+                        .lastUpdatedAt("2016-05-18T18:25:53.114Z")
+                        .expiresAt("2016-05-18T18:25:53.114Z")
+                        .build())
+                    .approval(Approval.builder()
+                        .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
                         .clientId("client id")
                         .scope("scim.read")
                         .status(APPROVED)
-                        .lastUpdatedAt("2016-05-18T18:25:24.047Z")
-                        .expiresAt("2016-05-18T18:25:34.047Z")
+                        .lastUpdatedAt("2016-05-18T18:25:23.112Z")
+                        .expiresAt("2016-05-18T18:25:33.112Z")
                         .build())
                     .active(true)
                     .verified(true)
                     .origin("uaa")
                     .zoneId("uaa")
-                    .passwordLastModified("2016-05-18T18:25:24.000Z")
+                    .passwordLastModified("2016-05-18T18:25:23.000Z")
+                    .schemas(Collections.singletonList("urn:scim:schemas:core:1.0"))
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(DELETE).path("/Users/421225f4-318e-4a4d-9219-4b6a0ed3678a")
+                    .header("If-Match", "*")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/DELETE_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<DeleteUserResponse> invoke(DeleteUserRequest request) {
+            return this.users.delete(request);
+        }
+
+        @Override
+        protected DeleteUserRequest validRequest() {
+            return DeleteUserRequest.builder()
+                .userId("421225f4-318e-4a4d-9219-4b6a0ed3678a")
+                .version("*")
+                .build();
+        }
+
+    }
+
+    public static final class GetVerificationLink extends AbstractUaaApiTest<GetUserVerificationLinkRequest, GetUserVerificationLinkResponse> {
+
+        private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<GetUserVerificationLinkResponse> expectations() {
+            return ScriptedSubscriber.<GetUserVerificationLinkResponse>create()
+                .expectValue(GetUserVerificationLinkResponse.builder()
+                    .verifyLink("http://localhost/verify_user?code=nOGQWBqCx5")
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(GET).path("/Users/1faa46a0-0c6f-4e13-8334-d1f6e5f2e1dd/verify-link?redirect_uri=http://redirect.to/app")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users/GET_{id}_verify_link_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<GetUserVerificationLinkResponse> invoke(GetUserVerificationLinkRequest request) {
+            return this.users.getVerificationLink(request);
+        }
+
+        @Override
+        protected GetUserVerificationLinkRequest validRequest() {
+            return GetUserVerificationLinkRequest.builder()
+                .redirectUri("http://redirect.to/app")
+                .userId("1faa46a0-0c6f-4e13-8334-d1f6e5f2e1dd")
+                .build();
+        }
+
+    }
+
+    public static final class InviteUsers extends AbstractUaaApiTest<InviteUsersRequest, InviteUsersResponse> {
+
+        private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<InviteUsersResponse> expectations() {
+            return ScriptedSubscriber.<InviteUsersResponse>create()
+                .expectValue(InviteUsersResponse.builder()
+                    .newInvite(Invite.builder()
+                        .email("user1@pjy596.com")
+                        .userId("68af461b-484e-464a-96ac-a336abed48ad")
+                        .origin("uaa")
+                        .success(true)
+                        .inviteLink("http://localhost/invitations/accept?code=WEqtpOh73k")
+                        .build())
+                    .newInvite(Invite.builder()
+                        .email("user2@pjy596.com")
+                        .userId("d256cf96-5c14-4649-9a0d-5564c66411b5")
+                        .origin("uaa")
+                        .success(true)
+                        .inviteLink("http://localhost/invitations/accept?code=n5X0hCsD3N")
+                        .build())
+                    .failedInvite()
+                    .build())
+                .expectComplete();
+        }
+
+        @Override
+        protected InteractionContext interactionContext() {
+            return InteractionContext.builder()
+                .request(TestRequest.builder()
+                    .method(POST).path("/invite_users?client_id=u7ptqw&redirect_uri=example.com")
+                    .payload("fixtures/uaa/users/POST_invite_users_request.json")
+                    .build())
+                .response(TestResponse.builder()
+                    .status(OK)
+                    .payload("fixtures/uaa/users//POST_invite_users_response.json")
+                    .build())
+                .build();
+        }
+
+        @Override
+        protected Mono<InviteUsersResponse> invoke(InviteUsersRequest request) {
+            return this.users.invite(request);
+        }
+
+        @Override
+        protected InviteUsersRequest validRequest() {
+            return InviteUsersRequest.builder()
+                .clientId("u7ptqw")
+                .email("user1@pjy596.com", "user2@pjy596.com")
+                .redirectUri("example.com")
+                .build();
+        }
+
+    }
+
+    public static final class List extends AbstractUaaApiTest<ListUsersRequest, ListUsersResponse> {
+
+        private final ReactorUsers users = new ReactorUsers(CONNECTION_CONTEXT, this.root, TOKEN_PROVIDER);
+
+        @Override
+        protected ScriptedSubscriber<ListUsersResponse> expectations() {
+            return ScriptedSubscriber.<ListUsersResponse>create()
+                .expectValue(ListUsersResponse.builder()
+                    .resource(User.builder()
+                        .id("a94534d5-de08-41eb-8712-a51314e6a484")
+                        .externalId("test-user")
+                        .meta(Meta.builder()
+                            .version(0)
+                            .created("2016-05-18T18:25:24.036Z")
+                            .lastModified("2016-05-18T18:25:24.036Z")
+                            .build())
+                        .userName("Da63pG@test.org")
+                        .name(Name.builder()
+                            .familyName("family name")
+                            .givenName("given name")
+                            .build())
+                        .email(Email.builder()
+                            .value("Da63pG@test.org")
+                            .primary(false)
+                            .build())
+                        .group(Group.builder()
+                            .value("4622c5e1-ddfd-4e17-9e81-2ae3c03972be")
+                            .display("password.write")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("62f67643-05d8-43c6-b193-4cd6ab9960cb")
+                            .display("cloud_controller.write")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("c47bf470-f9c4-4eea-97e4-490ce7b8f6f7")
+                            .display("uaa.user")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("8a6add1f-d3ee-400c-a263-c4197351b78e")
+                            .display("approvals.me")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("e10424ed-ed80-45ac-848b-7f7e79b00c42")
+                            .display("cloud_controller.read")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("ede11441-6ffe-4510-81f8-bb40626155f0")
+                            .display("openid")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("7e3d4b06-0d6b-43a1-ac3a-5f1b2642262c")
+                            .display("scim.me")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("3b481f3c-d9a7-4920-a687-72cb0381b671")
+                            .display("cloud_controller_service_permissions.read")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("4480c647-4047-4c6a-877f-70f5f96e8c11")
+                            .display("oauth.approvals")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("542bb178-1c04-4bb5-813a-5a038319ac1d")
+                            .display("user_attributes")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("c4ac4653-2fdd-4901-a028-9c9866cb4e9c")
+                            .display("scim.userids")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("74fde138-daf3-4e4d-bb52-93a6cb727030")
+                            .display("profile")
+                            .type(DIRECT)
+                            .build())
+                        .group(Group.builder()
+                            .value("1b18551f-eead-4076-90dd-b464998f6ddd")
+                            .display("roles")
+                            .type(DIRECT)
+                            .build())
+                        .approval(Approval.builder()
+                            .userId("a94534d5-de08-41eb-8712-a51314e6a484")
+                            .clientId("client id")
+                            .scope("scim.read")
+                            .status(APPROVED)
+                            .lastUpdatedAt("2016-05-18T18:25:24.047Z")
+                            .expiresAt("2016-05-18T18:25:34.047Z")
+                            .build())
+                        .active(true)
+                        .verified(true)
+                        .origin("uaa")
+                        .zoneId("uaa")
+                        .passwordLastModified("2016-05-18T18:25:24.000Z")
+                        .schema("urn:scim:schemas:core:1.0")
+                        .build())
+                    .startIndex(1)
+                    .itemsPerPage(50)
+                    .totalResults(1)
                     .schema("urn:scim:schemas:core:1.0")
                     .build())
-                .startIndex(1)
-                .itemsPerPage(50)
-                .totalResults(1)
-                .schema("urn:scim:schemas:core:1.0")
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -629,22 +641,24 @@ public final class ReactorUsersTest {
 
         @Override
         protected ScriptedSubscriber<LookupUserIdsResponse> expectations() {
-            return LookupUserIdsResponse.builder()
-                .resource(UserId.builder()
-                    .id("c1476587-5ec9-4b7e-9ed2-381e3133f07a")
-                    .userName("dwayneSnbjBm@test.org")
-                    .origin("uaa")
+            return ScriptedSubscriber.<LookupUserIdsResponse>create()
+                .expectValue(LookupUserIdsResponse.builder()
+                    .resource(UserId.builder()
+                        .id("c1476587-5ec9-4b7e-9ed2-381e3133f07a")
+                        .userName("dwayneSnbjBm@test.org")
+                        .origin("uaa")
+                        .build())
+                    .resource(UserId.builder()
+                        .id("2fc67623-ee31-4edc-9b1f-0b50416195fb")
+                        .userName("bobOu38vE@test.org")
+                        .origin("uaa")
+                        .build())
+                    .startIndex(1)
+                    .itemsPerPage(10)
+                    .totalResults(2)
+                    .schema("urn:scim:schemas:core:1.0")
                     .build())
-                .resource(UserId.builder()
-                    .id("2fc67623-ee31-4edc-9b1f-0b50416195fb")
-                    .userName("bobOu38vE@test.org")
-                    .origin("uaa")
-                    .build())
-                .startIndex(1)
-                .itemsPerPage(10)
-                .totalResults(2)
-                .schema("urn:scim:schemas:core:1.0")
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -686,61 +700,63 @@ public final class ReactorUsersTest {
 
         @Override
         protected ScriptedSubscriber<UpdateUserResponse> expectations() {
-            return UpdateUserResponse.builder()
-                .active(true)
-                .approval(Approval.builder()
-                    .clientId("identity")
-                    .expiresAt("2016-05-18T18:25:54.239Z")
-                    .lastUpdatedAt("2016-05-18T18:25:54.239Z")
-                    .scope("uaa.user")
-                    .status(DENIED)
-                    .userId("test-user-id")
+            return ScriptedSubscriber.<UpdateUserResponse>create()
+                .expectValue(UpdateUserResponse.builder()
+                    .active(true)
+                    .approval(Approval.builder()
+                        .clientId("identity")
+                        .expiresAt("2016-05-18T18:25:54.239Z")
+                        .lastUpdatedAt("2016-05-18T18:25:54.239Z")
+                        .scope("uaa.user")
+                        .status(DENIED)
+                        .userId("test-user-id")
+                        .build())
+                    .approval(Approval.builder()
+                        .clientId("client id")
+                        .expiresAt("2016-05-18T18:25:34.236Z")
+                        .lastUpdatedAt("2016-05-18T18:25:34.236Z")
+                        .scope("scim.read")
+                        .status(APPROVED)
+                        .userId("test-user-id")
+                        .build())
+                    .email(Email.builder()
+                        .primary(false)
+                        .value("oH4jON@test.org")
+                        .build())
+                    .externalId("test-user")
+                    .group(Group.builder()
+                        .display("password.write")
+                        .value("4622c5e1-ddfd-4e17-9e81-2ae3c03972be")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .display("cloud_controller.write")
+                        .value("62f67643-05d8-43c6-b193-4cd6ab9960cb")
+                        .type(DIRECT)
+                        .build())
+                    .group(Group.builder()
+                        .display("uaa.user")
+                        .value("c47bf470-f9c4-4eea-97e4-490ce7b8f6f7")
+                        .type(DIRECT)
+                        .build())
+                    .id(("test-user-id"))
+                    .meta(Meta.builder()
+                        .created("2016-05-18T18:25:24.222Z")
+                        .lastModified("2016-05-18T18:25:24.265Z")
+                        .version(1)
+                        .build())
+                    .name(Name.builder()
+                        .familyName("family name")
+                        .givenName("given name")
+                        .build())
+                    .origin("uaa")
+                    .passwordLastModified("2016-05-18T18:25:24.000Z")
+                    .schema("urn:scim:schemas:core:1.0")
+                    .userName("oH4jON@test.org")
+                    .verified(true)
+                    .zoneId("uaa")
                     .build())
-                .approval(Approval.builder()
-                    .clientId("client id")
-                    .expiresAt("2016-05-18T18:25:34.236Z")
-                    .lastUpdatedAt("2016-05-18T18:25:34.236Z")
-                    .scope("scim.read")
-                    .status(APPROVED)
-                    .userId("test-user-id")
-                    .build())
-                .email(Email.builder()
-                    .primary(false)
-                    .value("oH4jON@test.org")
-                    .build())
-                .externalId("test-user")
-                .group(Group.builder()
-                    .display("password.write")
-                    .value("4622c5e1-ddfd-4e17-9e81-2ae3c03972be")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .display("cloud_controller.write")
-                    .value("62f67643-05d8-43c6-b193-4cd6ab9960cb")
-                    .type(DIRECT)
-                    .build())
-                .group(Group.builder()
-                    .display("uaa.user")
-                    .value("c47bf470-f9c4-4eea-97e4-490ce7b8f6f7")
-                    .type(DIRECT)
-                    .build())
-                .id(("test-user-id"))
-                .meta(Meta.builder()
-                    .created("2016-05-18T18:25:24.222Z")
-                    .lastModified("2016-05-18T18:25:24.265Z")
-                    .version(1)
-                    .build())
-                .name(Name.builder()
-                    .familyName("family name")
-                    .givenName("given name")
-                    .build())
-                .origin("uaa")
-                .passwordLastModified("2016-05-18T18:25:24.000Z")
-                .schema("urn:scim:schemas:core:1.0")
-                .userName("oH4jON@test.org")
-                .verified(true)
-                .zoneId("uaa")
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -791,29 +807,31 @@ public final class ReactorUsersTest {
 
         @Override
         protected ScriptedSubscriber<VerifyUserResponse> expectations() {
-            return VerifyUserResponse.builder()
-                .id("c0d42e48-9b69-461d-a77b-f75d3a5948b6")
-                .meta(Meta.builder()
-                    .version(12)
-                    .created("2016-06-03T17:59:31.027Z")
-                    .lastModified("2016-06-03T17:59:31.027Z")
+            return ScriptedSubscriber.<VerifyUserResponse>create()
+                .expectValue(VerifyUserResponse.builder()
+                    .id("c0d42e48-9b69-461d-a77b-f75d3a5948b6")
+                    .meta(Meta.builder()
+                        .version(12)
+                        .created("2016-06-03T17:59:31.027Z")
+                        .lastModified("2016-06-03T17:59:31.027Z")
+                        .build())
+                    .userName("billy_o@example.com")
+                    .name(Name.builder()
+                        .familyName("d'Orange")
+                        .givenName("William")
+                        .build())
+                    .email(Email.builder()
+                        .value("billy_o@example.com")
+                        .primary(false)
+                        .build())
+                    .active(true)
+                    .verified(true)
+                    .origin("uaa")
+                    .zoneId("uaa")
+                    .passwordLastModified("2016-06-03T17:59:31.000Z")
+                    .schema("urn:scim:schemas:core:1.0")
                     .build())
-                .userName("billy_o@example.com")
-                .name(Name.builder()
-                    .familyName("d'Orange")
-                    .givenName("William")
-                    .build())
-                .email(Email.builder()
-                    .value("billy_o@example.com")
-                    .primary(false)
-                    .build())
-                .active(true)
-                .verified(true)
-                .origin("uaa")
-                .zoneId("uaa")
-                .passwordLastModified("2016-06-03T17:59:31.000Z")
-                .schema("urn:scim:schemas:core:1.0")
-                .build();
+                .expectComplete();
         }
 
         @Override

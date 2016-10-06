@@ -40,7 +40,9 @@ public final class ReactorAuthorizationsTest {
 
         @Override
         protected ScriptedSubscriber<String> expectations() {
-            return "O6A5eT";
+            return ScriptedSubscriber.<String>create()
+                .expectValue("O6A5eT")
+                .expectComplete();
         }
 
         @Override
@@ -77,7 +79,9 @@ public final class ReactorAuthorizationsTest {
 
         @Override
         protected ScriptedSubscriber<String> expectations() {
-            return "http://redirect.to/login";
+            return ScriptedSubscriber.<String>create()
+                .expectValue("http://redirect.to/login")
+                .expectComplete();
         }
 
         @Override
@@ -115,10 +119,12 @@ public final class ReactorAuthorizationsTest {
 
         @Override
         protected ScriptedSubscriber<String> expectations() {
-            return "http://localhost:8080/app/#token_type=bearer&" +
-                "access_token=eyJhbGciOiJIUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiJlNzI4Y2UxZjUyZjE0NTU2YjViNGNiOThkMmY1ZmRiZCIsInN1YiI6IjIzOTJhMzIwLTQzZWUtNDV" +
-                "expires_in=43199&" +
-                "jti=e728ce1f52f14556b5b4cb98d2f5fdbd";
+            return ScriptedSubscriber.<String>create()
+                .expectValue("http://localhost:8080/app/#token_type=bearer&" +
+                    "access_token=eyJhbGciOiJIUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiJlNzI4Y2UxZjUyZjE0NTU2YjViNGNiOThkMmY1ZmRiZCIsInN1YiI6IjIzOTJhMzIwLTQzZWUtNDV" +
+                    "expires_in=43199&" +
+                    "jti=e728ce1f52f14556b5b4cb98d2f5fdbd")
+                .expectComplete();
         }
 
         @Override
@@ -158,7 +164,9 @@ public final class ReactorAuthorizationsTest {
 
         @Override
         protected ScriptedSubscriber<String> expectations() {
-            return "http://redirect.to/login";
+            return ScriptedSubscriber.<String>create()
+                .expectValue("http://redirect.to/login")
+                .expectComplete();
         }
 
         @Override
@@ -195,13 +203,16 @@ public final class ReactorAuthorizationsTest {
 
         @Override
         protected ScriptedSubscriber<String> expectations() {
-            return "http://localhost:8080/app/#token_type=bearer" +
-                "&id_token=eyJhbGciOiJIUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiIyMzkyYTMyMC00M2VlLTQ1ZTgtODdhNC1iYTkzYTIwMTZmODciLCJ1c2VyX25hbWUiOiJtYXJpc3NhIiwib3JpZ2l" +
-                "uIjoidWFhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3VhYS9vYXV0aC90b2tlbiIsImNsaWVudF9pZCI6ImFwcCIsImF1ZCI6WyJhcHAiXSwiemlkIjoidWFhIiwidXNlcl9pZCI6IjIzOTJhMzIwLTQzZWUtNDVlOC04N2E0LWJ" +
-                "hOTNhMjAxNmY4NyIsImF6cCI6ImFwcCIsInNjb3BlIjpbIm9wZW5pZCJdLCJleHAiOjE0NjYwNzg0OTAsImlhdCI6MTQ2NjAzNTI5MCwianRpIjoiM2NjNDg2NmYzMWRjNGIyMThkMTdiZDNhMzE4MjhmNWUiLCJlbWFpbCI6Im1hcmlzc2F" +
-                "AdGVzdC5vcmciLCJyZXZfc2lnIjoiMzYyNzRiZmMiLCJjaWQiOiJhcHAifQ.zR0b0TVFY8VrxAXLve2VRZvwb9HWMtbD79KSHwgr1wo" +
-                "&expires_in=43199" +
-                "&jti=3cc4866f31dc4b218d17bd3a31828f5e";
+            return ScriptedSubscriber.<String>create()
+                .expectValue("http://localhost:8080/app/#token_type=bearer" +
+                    "&id_token=eyJhbGciOiJIUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ" +
+                    ".eyJzdWIiOiIyMzkyYTMyMC00M2VlLTQ1ZTgtODdhNC1iYTkzYTIwMTZmODciLCJ1c2VyX25hbWUiOiJtYXJpc3NhIiwib3JpZ2l" +
+                    "uIjoidWFhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3VhYS9vYXV0aC90b2tlbiIsImNsaWVudF9pZCI6ImFwcCIsImF1ZCI6WyJhcHAiXSwiemlkIjoidWFhIiwidXNlcl9pZCI6IjIzOTJhMzIwLTQzZWUtNDVlOC04N2E0LWJ" +
+                    "hOTNhMjAxNmY4NyIsImF6cCI6ImFwcCIsInNjb3BlIjpbIm9wZW5pZCJdLCJleHAiOjE0NjYwNzg0OTAsImlhdCI6MTQ2NjAzNTI5MCwianRpIjoiM2NjNDg2NmYzMWRjNGIyMThkMTdiZDNhMzE4MjhmNWUiLCJlbWFpbCI6Im1hcmlzc2F" +
+                    "AdGVzdC5vcmciLCJyZXZfc2lnIjoiMzYyNzRiZmMiLCJjaWQiOiJhcHAifQ.zR0b0TVFY8VrxAXLve2VRZvwb9HWMtbD79KSHwgr1wo" +
+                    "&expires_in=43199" +
+                    "&jti=3cc4866f31dc4b218d17bd3a31828f5e")
+                .expectComplete();
         }
 
         @Override
@@ -244,7 +255,9 @@ public final class ReactorAuthorizationsTest {
 
         @Override
         protected ScriptedSubscriber<String> expectations() {
-            return "http://redirect.to/login";
+            return ScriptedSubscriber.<String>create()
+                .expectValue("http://redirect.to/login")
+                .expectComplete();
         }
 
         @Override
