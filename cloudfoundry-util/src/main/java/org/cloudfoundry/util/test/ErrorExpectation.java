@@ -17,41 +17,38 @@
 package org.cloudfoundry.util.test;
 
 import org.springframework.util.Assert;
+import reactor.test.ScriptedSubscriber;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public final class ErrorExpectation {
 
-    private final String message;
-
-    private final Class<? extends Throwable> type;
-
-    public ErrorExpectation(Class<? extends Throwable> type, String format, Object... args) {
+    public static <T> ScriptedSubscriber<T> exact(Class<? extends Throwable> type, String format, Object... args) {
         Assert.notNull(type, "type must not be null");
         Assert.notNull(format, "format must not be null");
 
-        this.type = type;
-        this.message = String.format(format, args);
+        String message = String.format(format, args);
+        return ScriptedSubscriber.<T>create()
+            .expectErrorWith(predicate(type, message), assertionMessage(type, message));
     }
 
-    public Function<Throwable, String> assertionMessage() {
+    private static Function<Throwable, String> assertionMessage(Class<? extends Throwable> type, String message) {
         return t -> {
-            if (!this.type.isInstance(t)) {
-                return String.format("expected error of type: %s; actual type: %s",
-                    this.type.getSimpleName(), t.getClass().getSimpleName());
+            if (!type.isInstance(t)) {
+                return String.format("expected error of type: %s; actual type: %s", type.getSimpleName(), t.getClass().getSimpleName());
             }
 
-            if (!this.message.equals(t.getMessage())) {
-                return String.format("expected message: %s; actual message: %s", this.message, t.getMessage());
+            if (!message.equals(t.getMessage())) {
+                return String.format("expected message: %s; actual message: %s", message, t.getMessage());
             }
 
             throw new IllegalArgumentException("Cannot generate assertion message for matching error");
         };
     }
 
-    public Predicate<Throwable> predicate() {
-        return t -> this.type.isInstance(t) && this.message.equals(t.getMessage());
+    private static Predicate<Throwable> predicate(Class<? extends Throwable> type, String message) {
+        return t -> type.isInstance(t) && message.equals(t.getMessage());
     }
 
 }

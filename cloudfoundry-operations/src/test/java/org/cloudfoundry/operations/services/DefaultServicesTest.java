@@ -879,10 +879,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Application test-application-name does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Application test-application-name does not exist");
         }
 
         @Override
@@ -909,10 +906,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
         }
 
         @Override
@@ -1029,10 +1023,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance-does-not-exist does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service instance test-service-instance-does-not-exist does not exist");
         }
 
         @Override
@@ -1119,10 +1110,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
         }
 
         @Override
@@ -1173,10 +1161,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service instance test-service-instance does not exist");
         }
 
         @Override
@@ -1202,10 +1187,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
         }
 
         @Override
@@ -1295,10 +1277,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<ServiceInstance> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
-
-            return ScriptedSubscriber.<ServiceInstance>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service instance test-invalid-name does not exist");
         }
 
         @Override
@@ -1388,10 +1367,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<ServiceKey> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
-
-            return ScriptedSubscriber.<ServiceKey>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service key test-service-key-not-found does not exist");
         }
 
         @Override
@@ -1540,10 +1516,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<ServiceKey> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
-
-            return ScriptedSubscriber.<ServiceKey>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service instance test-service-instance-name does not exist");
         }
 
         @Override
@@ -1712,10 +1685,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
         }
 
         @Override
@@ -1776,10 +1746,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "New service plan test-plan not found");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "New service plan test-plan not found");
         }
 
         @Override
@@ -1866,10 +1833,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Plan does not exist for the test-name service");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Plan does not exist for the test-name service");
         }
 
         @Override
@@ -1965,10 +1929,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Service Plan test-plan is not visible to your organization");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Service Plan test-plan is not visible to your organization");
         }
 
         @Override
@@ -1997,10 +1958,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Plan for the test-name service cannot be updated");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Plan for the test-name service cannot be updated");
         }
 
         @Override
@@ -2056,10 +2014,7 @@ public final class DefaultServicesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "User provided service instance test-service does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "User provided service instance test-service does not exist");
         }
 
         @Override

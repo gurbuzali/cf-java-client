@@ -236,10 +236,7 @@ public final class DefaultOrganizationAdminTest {
 
         @Override
         protected ScriptedSubscriber<OrganizationQuota> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-exception-errorCode(999): test-exception-description");
-
-            return ScriptedSubscriber.<OrganizationQuota>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(CloudFoundryException.class, "test-exception-errorCode(999): test-exception-description");
         }
 
         @Override
@@ -294,10 +291,7 @@ public final class DefaultOrganizationAdminTest {
 
         @Override
         protected ScriptedSubscriber<OrganizationQuota> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Quota test-quota-not-found does not exist");
-
-            return ScriptedSubscriber.<OrganizationQuota>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Quota test-quota-not-found does not exist");
         }
 
         @Override
@@ -380,10 +374,7 @@ public final class DefaultOrganizationAdminTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Organization test-organization-not-found does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Organization test-organization-not-found does not exist");
         }
 
         @Override
@@ -407,10 +398,7 @@ public final class DefaultOrganizationAdminTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Quota test-quota-not-found does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Quota test-quota-not-found does not exist");
         }
 
         @Override
@@ -473,10 +461,7 @@ public final class DefaultOrganizationAdminTest {
 
         @Override
         protected ScriptedSubscriber<OrganizationQuota> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Quota test-quota-not-found does not exist");
-
-            return ScriptedSubscriber.<OrganizationQuota>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Quota test-quota-not-found does not exist");
         }
 
         @Override

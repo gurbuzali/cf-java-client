@@ -423,10 +423,7 @@ public final class DefaultOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(CloudFoundryException.class, "test-error-details-errorCode(1): test-error-details-description");
         }
 
         @Override

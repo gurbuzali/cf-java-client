@@ -217,10 +217,7 @@ public final class DefaultDomainsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Organization test-organization does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Organization test-organization does not exist");
         }
 
         @Override
@@ -391,10 +388,7 @@ public final class DefaultDomainsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Private domain test-domain does not exist");
-
-            return ScriptedSubscriber.<Void>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Private domain test-domain does not exist");
         }
 
         @Override

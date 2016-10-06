@@ -94,10 +94,7 @@ public final class DefaultSpaceAdminTest {
 
         @Override
         protected ScriptedSubscriber<SpaceQuota> expectations() {
-            ErrorExpectation errorExpectation = new ErrorExpectation(IllegalArgumentException.class, "Space Quota test-space-quota-definition-name does not exist");
-
-            return ScriptedSubscriber.<SpaceQuota>create()
-                .expectErrorWith(errorExpectation.predicate(), errorExpectation.assertionMessage());
+            return ErrorExpectation.exact(IllegalArgumentException.class, "Space Quota test-space-quota-definition-name does not exist");
         }
 
         @Override

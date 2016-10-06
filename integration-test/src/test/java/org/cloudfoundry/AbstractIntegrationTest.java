@@ -16,7 +16,6 @@
 
 package org.cloudfoundry;
 
-import org.cloudfoundry.util.test.TestSubscriber;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,9 +46,6 @@ public abstract class AbstractIntegrationTest {
     @Rule
     public final TestName testName = new TestName();
 
-    private final TestSubscriber<?> testSubscriber = new TestSubscriber<>()
-        .setPerformanceLoggerName(this::getTestName);
-
     @Autowired
     protected NameFactory nameFactory;
 
@@ -60,8 +55,7 @@ public abstract class AbstractIntegrationTest {
     }
 
     @After
-    public final void verify() throws InterruptedException {
-        this.testSubscriber.verify(Duration.ofMinutes(5));
+    public final void testExit() throws InterruptedException {
         this.logger.debug("<< {} >>", getTestName());
     }
 
@@ -78,18 +72,6 @@ public abstract class AbstractIntegrationTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    protected final <T> void assertTupleEquality(Tuple2<T, T> tuple) {
-        T expected = tuple.getT1();
-        T actual = tuple.getT2();
-
-        assertEquals("tuple components not equal", expected, actual);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected final <T> TestSubscriber<T> testSubscriber() {
-        return (TestSubscriber<T>) this.testSubscriber;
     }
 
     private String getTestName() {
