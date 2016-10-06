@@ -63,6 +63,7 @@ import org.cloudfoundry.util.JobUtils;
 import org.cloudfoundry.util.OperationUtils;
 import org.cloudfoundry.util.PaginationUtils;
 import org.cloudfoundry.util.ResourceUtils;
+import org.cloudfoundry.util.test.ErrorExpectation;
 import org.cloudfoundry.util.test.TupleEqualityExpectation;
 import org.cloudfoundry.util.tuple.TupleUtils;
 import org.junit.Test;
@@ -94,6 +95,7 @@ import static org.cloudfoundry.util.DelayUtils.exponentialBackOff;
 import static org.cloudfoundry.util.OperationUtils.thenKeep;
 import static org.cloudfoundry.util.tuple.TupleUtils.consumer;
 import static org.cloudfoundry.util.tuple.TupleUtils.function;
+import static org.cloudfoundry.util.tuple.TupleUtils.predicate;
 import static reactor.core.publisher.Mono.when;
 
 public final class ApplicationsTest extends AbstractIntegrationTest {
@@ -168,6 +170,13 @@ public final class ApplicationsTest extends AbstractIntegrationTest {
     public void create() {
         String applicationName = this.nameFactory.getApplicationName();
 
+        ScriptedSubscriber<Tuple2<String, ApplicationEntity>> subscriber = ScriptedSubscriber.<Tuple2<String, ApplicationEntity>>create()
+            .expectValueWith(predicate((spaceId, entity) -> spaceId.equals(entity.getSpaceId()) && applicationName.equals(entity.getName())), function((spaceId, entity) -> {
+                
+            }))
+            .expectComplete();
+
+
         this.spaceId
             .then(spaceId -> when(
                 Mono.just(spaceId),
@@ -182,8 +191,10 @@ public final class ApplicationsTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void delete() {
+    public void delete() throws TimeoutException, InterruptedException {
         String applicationName = this.nameFactory.getApplicationName();
+
+        ScriptedSubscriber<AbstractApplicationResource> subscriber = ErrorExpectation.matches(CloudFoundryException.class, "CF-AppNotFound\\([0-9]+\\): The app could not be found: .*");
 
         this.spaceId
             .then(spaceId -> createApplicationId(this.cloudFoundryClient, spaceId, applicationName))
@@ -192,8 +203,9 @@ public final class ApplicationsTest extends AbstractIntegrationTest {
                     .applicationId(applicationId)
                     .build())))
             .then(applicationId -> requestGetApplication(this.cloudFoundryClient, applicationId))
-            .subscribe(testSubscriber()
-                .expectErrorMatch(CloudFoundryException.class, "CF-AppNotFound\\([0-9]+\\): The app could not be found: .*"));
+            .subscribe(subscriber);
+
+        subscriber.verify(Duration.ofMinutes(5));
     }
 
     @Test
@@ -1116,7 +1128,7 @@ public final class ApplicationsTest extends AbstractIntegrationTest {
         }
 
         private static Predicate<Tuple2<String, AbstractApplicationResource>> predicate(String name) {
-            return TupleUtils.predicate((applicationId, resource) -> applicationId.equals(ResourceUtils.getId(resource)) && name.equals(ResourceUtils.getEntity(resource).getName()));
+            return predicate((applicationId, resource) -> applicationId.equals(ResourceUtils.getId(resource)) && name.equals(ResourceUtils.getEntity(resource).getName()));
         }
 
     }

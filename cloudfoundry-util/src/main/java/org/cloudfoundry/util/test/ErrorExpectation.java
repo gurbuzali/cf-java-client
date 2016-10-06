@@ -21,6 +21,7 @@ import reactor.test.ScriptedSubscriber;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public final class ErrorExpectation {
 
@@ -28,27 +29,37 @@ public final class ErrorExpectation {
         Assert.notNull(type, "type must not be null");
         Assert.notNull(format, "format must not be null");
 
-        String message = String.format(format, args);
+        String expected = String.format(format, args);
         return ScriptedSubscriber.<T>create()
-            .expectErrorWith(predicate(type, message), assertionMessage(type, message));
+            .expectErrorWith(predicate(type, expected::equals), assertionMessage(type, expected::equals, actual -> String.format("expected message: %s; actual message: %s", expected, actual)));
     }
 
-    private static Function<Throwable, String> assertionMessage(Class<? extends Throwable> type, String message) {
+    public static <T> ScriptedSubscriber<T> matches(Class<? extends Throwable> type, String pattern) {
+        Assert.notNull(type, "type must not be null");
+        Assert.notNull(pattern, "pattern must not be null");
+
+        Pattern expected = Pattern.compile(pattern);
+        return ScriptedSubscriber.<T>create()
+            .expectErrorWith(predicate(type, actual -> expected.matcher(actual).matches()), assertionMessage(type, actual -> expected.matcher(actual).matches(),
+                actual -> String.format("expected message pattern: %s; actual message: %s", pattern, actual)));
+    }
+
+    private static Function<Throwable, String> assertionMessage(Class<? extends Throwable> type, Predicate<String> messagePredicate, Function<String, String> messageAssertionMessage) {
         return t -> {
             if (!type.isInstance(t)) {
                 return String.format("expected error of type: %s; actual type: %s", type.getSimpleName(), t.getClass().getSimpleName());
             }
 
-            if (!message.equals(t.getMessage())) {
-                return String.format("expected message: %s; actual message: %s", message, t.getMessage());
+            if (!messagePredicate.test(t.getMessage())) {
+                return messageAssertionMessage.apply(t.getMessage());
             }
 
             throw new IllegalArgumentException("Cannot generate assertion message for matching error");
         };
     }
 
-    private static Predicate<Throwable> predicate(Class<? extends Throwable> type, String message) {
-        return t -> type.isInstance(t) && message.equals(t.getMessage());
+    private static Predicate<Throwable> predicate(Class<? extends Throwable> type, Predicate<String> predicate) {
+        return t -> type.isInstance(t) && predicate.test(t.getMessage());
     }
 
 }
