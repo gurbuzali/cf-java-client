@@ -56,25 +56,27 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<AssociateSpaceQuotaDefinitionResponse> expectations() {
-            return AssociateSpaceQuotaDefinitionResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("ea82f16c-c21a-4a8a-947a-f7606e7f63fa")
-                    .url("/v2/space_quota_definitions/ea82f16c-c21a-4a8a-947a-f7606e7f63fa")
-                    .createdAt("2015-11-30T23:38:46Z")
+            return ScriptedSubscriber.<AssociateSpaceQuotaDefinitionResponse>create()
+                .expectValue(AssociateSpaceQuotaDefinitionResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("ea82f16c-c21a-4a8a-947a-f7606e7f63fa")
+                        .url("/v2/space_quota_definitions/ea82f16c-c21a-4a8a-947a-f7606e7f63fa")
+                        .createdAt("2015-11-30T23:38:46Z")
+                        .build())
+                    .entity(SpaceQuotaDefinitionEntity.builder()
+                        .name("name-1887")
+                        .organizationId("e188543a-cb71-4786-8703-9addbebc5bbf")
+                        .nonBasicServicesAllowed(true)
+                        .totalServices(60)
+                        .totalRoutes(1000)
+                        .memoryLimit(20480)
+                        .instanceMemoryLimit(-1)
+                        .applicationInstanceLimit(-1)
+                        .organizationUrl("/v2/organizations/e188543a-cb71-4786-8703-9addbebc5bbf")
+                        .spacesUrl("/v2/space_quota_definitions/ea82f16c-c21a-4a8a-947a-f7606e7f63fa/spaces")
+                        .build())
                     .build())
-                .entity(SpaceQuotaDefinitionEntity.builder()
-                    .name("name-1887")
-                    .organizationId("e188543a-cb71-4786-8703-9addbebc5bbf")
-                    .nonBasicServicesAllowed(true)
-                    .totalServices(60)
-                    .totalRoutes(1000)
-                    .memoryLimit(20480)
-                    .instanceMemoryLimit(-1)
-                    .applicationInstanceLimit(-1)
-                    .organizationUrl("/v2/organizations/e188543a-cb71-4786-8703-9addbebc5bbf")
-                    .spacesUrl("/v2/space_quota_definitions/ea82f16c-c21a-4a8a-947a-f7606e7f63fa/spaces")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -110,28 +112,30 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<CreateSpaceQuotaDefinitionResponse> expectations() {
-            return CreateSpaceQuotaDefinitionResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("17f055b8-b4c8-47cf-8737-0220d5706b4a")
-                    .url("/v2/space_quota_definitions/17f055b8-b4c8-47cf-8737-0220d5706b4a")
-                    .createdAt("2016-06-08T16:41:29Z")
+            return ScriptedSubscriber.<CreateSpaceQuotaDefinitionResponse>create()
+                .expectValue(CreateSpaceQuotaDefinitionResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("17f055b8-b4c8-47cf-8737-0220d5706b4a")
+                        .url("/v2/space_quota_definitions/17f055b8-b4c8-47cf-8737-0220d5706b4a")
+                        .createdAt("2016-06-08T16:41:29Z")
+                        .build())
+                    .entity(SpaceQuotaDefinitionEntity.builder()
+                        .name("gold_quota")
+                        .organizationId("c9b4ac17-ab4b-4368-b3e2-5cbf09b17a24")
+                        .nonBasicServicesAllowed(true)
+                        .totalServices(-1)
+                        .totalRoutes(10)
+                        .memoryLimit(5120)
+                        .instanceMemoryLimit(-1)
+                        .applicationInstanceLimit(-1)
+                        .applicationTaskLimit(5)
+                        .totalServiceKeys(-1)
+                        .totalReservedRoutePorts(5)
+                        .organizationUrl("/v2/organizations/c9b4ac17-ab4b-4368-b3e2-5cbf09b17a24")
+                        .spacesUrl("/v2/space_quota_definitions/17f055b8-b4c8-47cf-8737-0220d5706b4a/spaces")
+                        .build())
                     .build())
-                .entity(SpaceQuotaDefinitionEntity.builder()
-                    .name("gold_quota")
-                    .organizationId("c9b4ac17-ab4b-4368-b3e2-5cbf09b17a24")
-                    .nonBasicServicesAllowed(true)
-                    .totalServices(-1)
-                    .totalRoutes(10)
-                    .memoryLimit(5120)
-                    .instanceMemoryLimit(-1)
-                    .applicationInstanceLimit(-1)
-                    .applicationTaskLimit(5)
-                    .totalServiceKeys(-1)
-                    .totalReservedRoutePorts(5)
-                    .organizationUrl("/v2/organizations/c9b4ac17-ab4b-4368-b3e2-5cbf09b17a24")
-                    .spacesUrl("/v2/space_quota_definitions/17f055b8-b4c8-47cf-8737-0220d5706b4a/spaces")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -208,17 +212,19 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteSpaceQuotaDefinitionResponse> expectations() {
-            return DeleteSpaceQuotaDefinitionResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .createdAt("2016-02-02T17:16:31Z")
+            return ScriptedSubscriber.<DeleteSpaceQuotaDefinitionResponse>create()
+                .expectValue(DeleteSpaceQuotaDefinitionResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .createdAt("2016-02-02T17:16:31Z")
+                        .build())
+                    .entity(JobEntity.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .status("queued")
+                        .build())
                     .build())
-                .entity(JobEntity.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .status("queued")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -254,25 +260,27 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<GetSpaceQuotaDefinitionResponse> expectations() {
-            return GetSpaceQuotaDefinitionResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("4b8e7d14-71bd-4abb-b474-183375c75c84")
-                    .url("/v2/space_quota_definitions/4b8e7d14-71bd-4abb-b474-183375c75c84")
-                    .createdAt("2015-11-30T23:38:46Z")
+            return ScriptedSubscriber.<GetSpaceQuotaDefinitionResponse>create()
+                .expectValue(GetSpaceQuotaDefinitionResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("4b8e7d14-71bd-4abb-b474-183375c75c84")
+                        .url("/v2/space_quota_definitions/4b8e7d14-71bd-4abb-b474-183375c75c84")
+                        .createdAt("2015-11-30T23:38:46Z")
+                        .build())
+                    .entity(SpaceQuotaDefinitionEntity.builder()
+                        .name("name-1892")
+                        .organizationId("0dbbac8c-16ac-4ba5-8f59-3d3a79874f5d")
+                        .nonBasicServicesAllowed(true)
+                        .totalServices(60)
+                        .totalRoutes(1000)
+                        .memoryLimit(20480)
+                        .instanceMemoryLimit(-1)
+                        .applicationInstanceLimit(-1)
+                        .organizationUrl("/v2/organizations/0dbbac8c-16ac-4ba5-8f59-3d3a79874f5d")
+                        .spacesUrl("/v2/space_quota_definitions/4b8e7d14-71bd-4abb-b474-183375c75c84/spaces")
+                        .build())
                     .build())
-                .entity(SpaceQuotaDefinitionEntity.builder()
-                    .name("name-1892")
-                    .organizationId("0dbbac8c-16ac-4ba5-8f59-3d3a79874f5d")
-                    .nonBasicServicesAllowed(true)
-                    .totalServices(60)
-                    .totalRoutes(1000)
-                    .memoryLimit(20480)
-                    .instanceMemoryLimit(-1)
-                    .applicationInstanceLimit(-1)
-                    .organizationUrl("/v2/organizations/0dbbac8c-16ac-4ba5-8f59-3d3a79874f5d")
-                    .spacesUrl("/v2/space_quota_definitions/4b8e7d14-71bd-4abb-b474-183375c75c84/spaces")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -308,29 +316,31 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<ListSpaceQuotaDefinitionsResponse> expectations() {
-            return ListSpaceQuotaDefinitionsResponse.builder()
-                .totalResults(1)
-                .totalPages(1)
-                .resource(SpaceQuotaDefinitionResource.builder()
-                    .metadata(Metadata.builder()
-                        .id("be2d5c01-3413-43db-bea2-49b0b60ec74d")
-                        .url("/v2/space_quota_definitions/be2d5c01-3413-43db-bea2-49b0b60ec74d")
-                        .createdAt("2015-07-27T22:43:32Z")
-                        .build())
-                    .entity(SpaceQuotaDefinitionEntity.builder()
-                        .name("name-2236")
-                        .organizationId("a81d5218-b473-474e-9afb-3223a8b2ae9f")
-                        .nonBasicServicesAllowed(true)
-                        .totalServices(60)
-                        .totalRoutes(1000)
-                        .memoryLimit(20480)
-                        .instanceMemoryLimit(-1)
-                        .organizationUrl("/v2/organizations/a81d5218-b473-474e-9afb-3223a8b2ae9f")
-                        .spacesUrl
-                            ("/v2/space_quota_definitions/be2d5c01-3413-43db-bea2-49b0b60ec74d/spaces")
+            return ScriptedSubscriber.<ListSpaceQuotaDefinitionsResponse>create()
+                .expectValue(ListSpaceQuotaDefinitionsResponse.builder()
+                    .totalResults(1)
+                    .totalPages(1)
+                    .resource(SpaceQuotaDefinitionResource.builder()
+                        .metadata(Metadata.builder()
+                            .id("be2d5c01-3413-43db-bea2-49b0b60ec74d")
+                            .url("/v2/space_quota_definitions/be2d5c01-3413-43db-bea2-49b0b60ec74d")
+                            .createdAt("2015-07-27T22:43:32Z")
+                            .build())
+                        .entity(SpaceQuotaDefinitionEntity.builder()
+                            .name("name-2236")
+                            .organizationId("a81d5218-b473-474e-9afb-3223a8b2ae9f")
+                            .nonBasicServicesAllowed(true)
+                            .totalServices(60)
+                            .totalRoutes(1000)
+                            .memoryLimit(20480)
+                            .instanceMemoryLimit(-1)
+                            .organizationUrl("/v2/organizations/a81d5218-b473-474e-9afb-3223a8b2ae9f")
+                            .spacesUrl
+                                ("/v2/space_quota_definitions/be2d5c01-3413-43db-bea2-49b0b60ec74d/spaces")
+                            .build())
                         .build())
                     .build())
-                .build();
+                .expectComplete();
         }
 
         @Override

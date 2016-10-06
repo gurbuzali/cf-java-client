@@ -37,20 +37,22 @@ public final class ReactorInfoTest {
 
         @Override
         protected ScriptedSubscriber<GetInfoResponse> expectations() {
-            return GetInfoResponse.builder()
-                .name("vcap")
-                .buildNumber("2222")
-                .support("http://support.cloudfoundry.com")
-                .version(2)
-                .description("Cloud Foundry sponsored by Pivotal")
-                .authorizationEndpoint("http://localhost:8080/uaa")
-                .tokenEndpoint("http://localhost:8080/uaa")
-                .apiVersion("2.44.0")
-                .applicationSshEndpoint("ssh.system.domain.example.com:2222")
-                .applicationSshHostKeyFingerprint("47:0d:d1:c8:c3:3d:0a:36:d1:49:2f:f2:90:27:31:d0")
-                .routingEndpoint("http://localhost:3000")
-                .loggingEndpoint("ws://loggregator.vcap.me:80")
-                .build();
+            return ScriptedSubscriber.<GetInfoResponse>create()
+                .expectValue(GetInfoResponse.builder()
+                    .name("vcap")
+                    .buildNumber("2222")
+                    .support("http://support.cloudfoundry.com")
+                    .version(2)
+                    .description("Cloud Foundry sponsored by Pivotal")
+                    .authorizationEndpoint("http://localhost:8080/uaa")
+                    .tokenEndpoint("http://localhost:8080/uaa")
+                    .apiVersion("2.44.0")
+                    .applicationSshEndpoint("ssh.system.domain.example.com:2222")
+                    .applicationSshHostKeyFingerprint("47:0d:d1:c8:c3:3d:0a:36:d1:49:2f:f2:90:27:31:d0")
+                    .routingEndpoint("http://localhost:3000")
+                    .loggingEndpoint("ws://loggregator.vcap.me:80")
+                    .build())
+                .expectComplete();
         }
 
         @Override

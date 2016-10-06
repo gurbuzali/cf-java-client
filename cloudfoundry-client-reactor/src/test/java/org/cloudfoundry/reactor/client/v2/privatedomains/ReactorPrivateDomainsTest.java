@@ -50,19 +50,21 @@ public final class ReactorPrivateDomainsTest {
 
         @Override
         protected ScriptedSubscriber<CreatePrivateDomainResponse> expectations() {
-            return CreatePrivateDomainResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("4af3234e-813d-453f-b3ae-fcdecfd87a47")
-                    .url("/v2/private_domains/4af3234e-813d-453f-b3ae-fcdecfd87a47")
-                    .createdAt("2016-01-19T19:41:12Z")
+            return ScriptedSubscriber.<CreatePrivateDomainResponse>create()
+                .expectValue(CreatePrivateDomainResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("4af3234e-813d-453f-b3ae-fcdecfd87a47")
+                        .url("/v2/private_domains/4af3234e-813d-453f-b3ae-fcdecfd87a47")
+                        .createdAt("2016-01-19T19:41:12Z")
+                        .build())
+                    .entity(PrivateDomainEntity.builder()
+                        .name("exmaple.com")
+                        .owningOrganizationId("22bb8ae1-6324-40eb-b077-bd1bfad773f8")
+                        .owningOrganizationUrl("/v2/organizations/22bb8ae1-6324-40eb-b077-bd1bfad773f8")
+                        .sharedOrganizationsUrl("/v2/private_domains/4af3234e-813d-453f-b3ae-fcdecfd87a47/shared_organizations")
+                        .build())
                     .build())
-                .entity(PrivateDomainEntity.builder()
-                    .name("exmaple.com")
-                    .owningOrganizationId("22bb8ae1-6324-40eb-b077-bd1bfad773f8")
-                    .owningOrganizationUrl("/v2/organizations/22bb8ae1-6324-40eb-b077-bd1bfad773f8")
-                    .sharedOrganizationsUrl("/v2/private_domains/4af3234e-813d-453f-b3ae-fcdecfd87a47/shared_organizations")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -135,17 +137,19 @@ public final class ReactorPrivateDomainsTest {
 
         @Override
         protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
-            return DeletePrivateDomainResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .createdAt("2016-02-02T17:16:31Z")
-                    .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+            return ScriptedSubscriber.<DeletePrivateDomainResponse>create()
+                .expectValue(DeletePrivateDomainResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .createdAt("2016-02-02T17:16:31Z")
+                        .url("/v2/jobs/2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .build())
+                    .entity(JobEntity.builder()
+                        .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
+                        .status("queued")
+                        .build())
                     .build())
-                .entity(JobEntity.builder()
-                    .id("2d9707ba-6f0b-4aef-a3de-fe9bdcf0c9d1")
-                    .status("queued")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -182,19 +186,21 @@ public final class ReactorPrivateDomainsTest {
 
         @Override
         protected ScriptedSubscriber<GetPrivateDomainResponse> expectations() {
-            return GetPrivateDomainResponse.builder()
-                .metadata(Metadata.builder()
-                    .id("3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
-                    .url("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
-                    .createdAt("2016-02-19T02:04:00Z")
+            return ScriptedSubscriber.<GetPrivateDomainResponse>create()
+                .expectValue(GetPrivateDomainResponse.builder()
+                    .metadata(Metadata.builder()
+                        .id("3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
+                        .url("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
+                        .createdAt("2016-02-19T02:04:00Z")
+                        .build())
+                    .entity(PrivateDomainEntity.builder()
+                        .name("my-domain.com")
+                        .owningOrganizationId("2f70efed-abb2-4b7a-9f31-d4fe4d849932")
+                        .owningOrganizationUrl("/v2/organizations/2f70efed-abb2-4b7a-9f31-d4fe4d849932")
+                        .sharedOrganizationsUrl("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d/shared_organizations")
+                        .build())
                     .build())
-                .entity(PrivateDomainEntity.builder()
-                    .name("my-domain.com")
-                    .owningOrganizationId("2f70efed-abb2-4b7a-9f31-d4fe4d849932")
-                    .owningOrganizationUrl("/v2/organizations/2f70efed-abb2-4b7a-9f31-d4fe4d849932")
-                    .sharedOrganizationsUrl("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d/shared_organizations")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -230,23 +236,25 @@ public final class ReactorPrivateDomainsTest {
 
         @Override
         protected ScriptedSubscriber<ListPrivateDomainsResponse> expectations() {
-            return ListPrivateDomainsResponse.builder()
-                .totalResults(1)
-                .totalPages(1)
-                .resource(PrivateDomainResource.builder()
-                    .metadata(Metadata.builder()
-                        .id("3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
-                        .url("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
-                        .createdAt("2016-02-19T02:04:00Z")
-                        .build())
-                    .entity(PrivateDomainEntity.builder()
-                        .name("my-domain.com")
-                        .owningOrganizationId("2f70efed-abb2-4b7a-9f31-d4fe4d849932")
-                        .owningOrganizationUrl("/v2/organizations/2f70efed-abb2-4b7a-9f31-d4fe4d849932")
-                        .sharedOrganizationsUrl("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d/shared_organizations")
+            return ScriptedSubscriber.<ListPrivateDomainsResponse>create()
+                .expectValue(ListPrivateDomainsResponse.builder()
+                    .totalResults(1)
+                    .totalPages(1)
+                    .resource(PrivateDomainResource.builder()
+                        .metadata(Metadata.builder()
+                            .id("3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
+                            .url("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d")
+                            .createdAt("2016-02-19T02:04:00Z")
+                            .build())
+                        .entity(PrivateDomainEntity.builder()
+                            .name("my-domain.com")
+                            .owningOrganizationId("2f70efed-abb2-4b7a-9f31-d4fe4d849932")
+                            .owningOrganizationUrl("/v2/organizations/2f70efed-abb2-4b7a-9f31-d4fe4d849932")
+                            .sharedOrganizationsUrl("/v2/private_domains/3de9db5f-8e3b-4d10-a8c9-8137caafe43d/shared_organizations")
+                            .build())
                         .build())
                     .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
