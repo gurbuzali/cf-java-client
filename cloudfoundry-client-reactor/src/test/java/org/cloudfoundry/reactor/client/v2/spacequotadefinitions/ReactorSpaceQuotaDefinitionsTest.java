@@ -173,7 +173,8 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteSpaceQuotaDefinitionResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteSpaceQuotaDefinitionResponse>create()
+                .expectComplete();
         }
 
         @Override
@@ -365,7 +366,8 @@ public final class ReactorSpaceQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

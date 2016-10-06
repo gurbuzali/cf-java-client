@@ -161,7 +161,8 @@ public final class ReactorServiceUsageEventsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

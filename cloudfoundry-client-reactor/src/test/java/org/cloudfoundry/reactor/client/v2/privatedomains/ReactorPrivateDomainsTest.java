@@ -99,7 +99,8 @@ public final class ReactorPrivateDomainsTest {
 
         @Override
         protected ScriptedSubscriber<DeletePrivateDomainResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeletePrivateDomainResponse>create()
+                .expectComplete();
         }
 
         @Override

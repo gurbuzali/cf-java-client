@@ -200,7 +200,8 @@ public final class ReactorServiceInstancesTest {
 
         @Override
         protected ScriptedSubscriber<DeleteServiceInstanceResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteServiceInstanceResponse>create()
+                .expectComplete();
         }
 
         @Override

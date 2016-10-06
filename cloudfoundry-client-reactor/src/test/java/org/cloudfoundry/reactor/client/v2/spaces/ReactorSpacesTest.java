@@ -607,7 +607,8 @@ public final class ReactorSpacesTest {
 
         @Override
         protected ScriptedSubscriber<DeleteSpaceResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteSpaceResponse>create()
+                .expectComplete();
         }
 
         @Override
@@ -1580,7 +1581,8 @@ public final class ReactorSpacesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1676,7 +1678,8 @@ public final class ReactorSpacesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1771,7 +1774,8 @@ public final class ReactorSpacesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1867,7 +1871,8 @@ public final class ReactorSpacesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

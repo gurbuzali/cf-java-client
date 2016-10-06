@@ -73,25 +73,27 @@ public final class ReactorPackagesTest {
 
         @Override
         protected ScriptedSubscriber<CopyPackageResponse> expectations() {
-            return CopyPackageResponse.builder()
-                .id("041af871-9d09-45de-ad2d-df8c4771a1ee")
-                .type(PackageType.DOCKER)
-                .data(DockerData.builder()
-                    .image("http://awesome-sauce.com")
+            return ScriptedSubscriber.<CopyPackageResponse>create()
+                .expectValue(CopyPackageResponse.builder()
+                    .id("041af871-9d09-45de-ad2d-df8c4771a1ee")
+                    .type(PackageType.DOCKER)
+                    .data(DockerData.builder()
+                        .image("http://awesome-sauce.com")
+                        .build())
+                    .state(State.READY)
+                    .createdAt("2016-01-26T22:20:12Z")
+                    .link("self", Link.builder()
+                        .href("/v3/packages/041af871-9d09-45de-ad2d-df8c4771a1ee")
+                        .build())
+                    .link("stage", Link.builder()
+                        .href("/v3/packages/041af871-9d09-45de-ad2d-df8c4771a1ee/droplets")
+                        .method("POST")
+                        .build())
+                    .link("app", Link.builder()
+                        .href("/v3/apps/guid-459a9d65-c9d0-40ad-ae6d-4cd2bd042b4e")
+                        .build())
                     .build())
-                .state(State.READY)
-                .createdAt("2016-01-26T22:20:12Z")
-                .link("self", Link.builder()
-                    .href("/v3/packages/041af871-9d09-45de-ad2d-df8c4771a1ee")
-                    .build())
-                .link("stage", Link.builder()
-                    .href("/v3/packages/041af871-9d09-45de-ad2d-df8c4771a1ee/droplets")
-                    .method("POST")
-                    .build())
-                .link("app", Link.builder()
-                    .href("/v3/apps/guid-459a9d65-c9d0-40ad-ae6d-4cd2bd042b4e")
-                    .build())
-                .build();
+                .expectComplete();
         }
 
         @Override
@@ -187,7 +189,8 @@ public final class ReactorPackagesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

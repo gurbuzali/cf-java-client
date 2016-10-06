@@ -107,7 +107,8 @@ public final class ReactorServicePlanVisibilitiesTest {
 
         @Override
         protected ScriptedSubscriber<DeleteServicePlanVisibilityResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteServicePlanVisibilityResponse>create()
+                .expectComplete();
         }
 
         @Override

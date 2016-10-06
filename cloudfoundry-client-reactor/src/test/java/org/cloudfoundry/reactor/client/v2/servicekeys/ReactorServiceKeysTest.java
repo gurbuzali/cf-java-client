@@ -97,7 +97,8 @@ public final class ReactorServiceKeysTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

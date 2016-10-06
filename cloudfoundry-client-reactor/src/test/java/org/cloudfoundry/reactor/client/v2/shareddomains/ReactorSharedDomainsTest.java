@@ -101,7 +101,8 @@ public final class ReactorSharedDomainsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteSharedDomainResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteSharedDomainResponse>create()
+                .expectComplete();
         }
 
         @Override

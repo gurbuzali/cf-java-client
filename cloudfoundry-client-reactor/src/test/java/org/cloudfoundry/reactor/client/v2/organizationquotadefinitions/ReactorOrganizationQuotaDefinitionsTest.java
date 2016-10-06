@@ -119,7 +119,8 @@ public final class ReactorOrganizationQuotaDefinitionsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteOrganizationQuotaDefinitionResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteOrganizationQuotaDefinitionResponse>create()
+                .expectComplete();
         }
 
         @Override

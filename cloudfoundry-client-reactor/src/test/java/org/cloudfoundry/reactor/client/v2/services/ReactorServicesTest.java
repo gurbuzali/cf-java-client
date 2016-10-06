@@ -54,7 +54,8 @@ public final class ReactorServicesTest {
 
         @Override
         protected ScriptedSubscriber<DeleteServiceResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteServiceResponse>create()
+                .expectComplete();
         }
 
         @Override

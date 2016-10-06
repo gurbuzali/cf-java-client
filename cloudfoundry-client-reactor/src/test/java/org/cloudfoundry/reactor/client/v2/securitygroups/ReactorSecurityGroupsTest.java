@@ -153,7 +153,8 @@ public final class ReactorSecurityGroupsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteSecurityGroupResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteSecurityGroupResponse>create()
+                .expectComplete();
         }
 
         @Override
@@ -237,7 +238,8 @@ public final class ReactorSecurityGroupsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -272,7 +274,8 @@ public final class ReactorSecurityGroupsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

@@ -720,7 +720,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteOrganizationResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteOrganizationResponse>create()
+                .expectComplete();
         }
 
         @Override
@@ -1618,7 +1619,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1654,7 +1656,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1691,7 +1694,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1727,7 +1731,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1763,7 +1768,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1800,7 +1806,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1837,7 +1844,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1872,7 +1880,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override
@@ -1907,7 +1916,8 @@ public final class ReactorOrganizationsTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

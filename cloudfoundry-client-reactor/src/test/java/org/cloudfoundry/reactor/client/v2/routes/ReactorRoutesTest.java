@@ -176,7 +176,8 @@ public final class ReactorRoutesTest {
 
         @Override
         protected ScriptedSubscriber<DeleteRouteResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteRouteResponse>create()
+                .expectComplete();
         }
 
         @Override
@@ -492,7 +493,8 @@ public final class ReactorRoutesTest {
 
         @Override
         protected ScriptedSubscriber<Void> expectations() {
-            return null;
+            return ScriptedSubscriber.<Void>create()
+                .expectComplete();
         }
 
         @Override

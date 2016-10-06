@@ -105,7 +105,8 @@ public final class ReactorRouteMappingsTest {
 
         @Override
         protected ScriptedSubscriber<DeleteRouteMappingResponse> expectations() {
-            return null;
+            return ScriptedSubscriber.<DeleteRouteMappingResponse>create()
+                .expectComplete();
         }
 
         @Override
